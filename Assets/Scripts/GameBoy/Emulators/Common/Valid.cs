@@ -57,11 +57,6 @@
         private static bool GlobalCheckSum(in byte[] romData, out string errorMessage)
         {
             errorMessage = string.Empty;
-            if (romData == null || romData.Length <= (int)CartridgeHeader.GlobalChecksumEnd)
-            {
-                errorMessage = "ROM数据为空或者长度不够";
-                return false;
-            }
 
             ushort globalCheckSum = 0;
             for (int i = 0; i < (int)CartridgeHeader.GlobalChecksum; i++)
@@ -88,11 +83,6 @@
         private static bool HeaderCheckSum(in byte[] romData, out string errorMessage)
         {
             errorMessage = string.Empty;
-            if (romData == null || romData.Length <= (int)CartridgeHeader.GlobalChecksumEnd)
-            {
-                errorMessage = "ROM数据为空或者长度不够";
-                return false;
-            }
 
             byte headerCheckSum = 0;
             for (ushort i = (ushort)CartridgeHeader.Title; i < (ushort)CartridgeHeader.HeaderChecksum; i++)
@@ -109,24 +99,9 @@
             return true;
         }
 
-        public static bool CheckSum(in byte[] romData, out string errorMessage)
+        public static bool LogoCheckSum(in byte[] romData, out string errorMessage)
         {
-            if (!HeaderCheckSum(romData, out errorMessage))
-            {
-                return false;
-            }
-
-            if (!GlobalCheckSum(romData, out errorMessage))
-            {
-                return false;
-            }
-
-            if (romData == null || romData.Length <= (int)CartridgeHeader.LogoBottomEnd)
-            {
-                errorMessage = "ROM数据为空或者长度不够";
-                return false;
-            }
-
+            errorMessage = string.Empty;
             for (ushort i = (ushort)CartridgeHeader.LogoTopStart; i <= (ushort)CartridgeHeader.LogoBottomEnd; i++)
             {
                 ushort checkIndex = (ushort)(i - (ushort)CartridgeHeader.LogoTopStart);
@@ -135,6 +110,32 @@
                     errorMessage = $"ROM数据校验失败，索引{i:X4}的数据不匹配";
                     return false;
                 }
+            }
+
+            return true;
+        }
+
+        public static bool CheckSum(in byte[] romData, out string errorMessage)
+        {
+            if (romData == null || romData.Length <= (int)CartridgeHeader.GlobalChecksumEnd)
+            {
+                errorMessage = "ROM数据为空或者长度不够";
+                return false;
+            }
+
+            if (!LogoCheckSum(romData, out errorMessage))
+            {
+                return false;
+            }
+
+            if (!HeaderCheckSum(romData, out errorMessage))
+            {
+                return false;
+            }
+
+            if (!GlobalCheckSum(romData, out errorMessage))
+            {
+                return false;
             }
 
             return true;
