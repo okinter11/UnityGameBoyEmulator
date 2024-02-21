@@ -1,4 +1,4 @@
-﻿namespace Emulator
+﻿namespace GameBoy.Emulators
 {
     // https://gbdev.io/pandocs/The_Cartridge_Header.html
     public enum CartridgeHeader : ushort

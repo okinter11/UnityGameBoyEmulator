@@ -1,6 +1,6 @@
-﻿namespace Emulator
+﻿namespace GameBoy.Emulators.Common
 {
-    public static class GameBoyEmulatorCheckSum
+    public static class Valid
     {
         private static readonly byte[] CHECK_SUM = new byte[]
         {

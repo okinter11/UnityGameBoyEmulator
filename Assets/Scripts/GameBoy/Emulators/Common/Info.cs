@@ -1,10 +1,8 @@
-﻿using System;
-using System.Text;
-using UnityEngine;
+﻿using System.Text;
 
-namespace Emulator
+namespace GameBoy.Emulators.Common
 {
-    public class GameBoyEmulatorInfo
+    public class Info
     {
         public string CartridgeType;
         public string CGBFlag = string.Empty;
@@ -17,7 +15,7 @@ namespace Emulator
         public string SGBFlag = string.Empty;
         public string Title;
 
-        public GameBoyEmulatorInfo(in byte[] romData)
+        public Info(in byte[] romData)
         {
             Title = GetTitle(romData);
             Manufacturer = GetManufacturer(romData);
