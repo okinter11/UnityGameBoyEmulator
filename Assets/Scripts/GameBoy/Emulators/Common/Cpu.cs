@@ -6,19 +6,21 @@ namespace GameBoy.Emulators.Common
 {
     public sealed class Cpu
     {
-        public byte[] RomData = Array.Empty<byte>();
-        public Stack<ushort> CallStack = new Stack<ushort>();
         /// <summary>
-        ///   Clock speed of the GameBoy
+        ///     Clock speed of the GameBoy
         /// </summary>
-        public const uint CLOCK_SPEED = 4194304;
+        public const ulong CLOCK_SPEED = 4194304;
+        public Stack<ushort> CallStack = new();
         /// <summary>
-        ///  Clock counter
+        ///     Clock counter
         /// </summary>
-        public uint ClockCounter;
+        public ulong ClockCounter;
+
+        public GameBoyEmulatorCpuRegister Registers = default(GameBoyEmulatorCpuRegister);
+        public byte[]                     RomData   = Array.Empty<byte>();
 
         /// <summary>
-        ///   GameBoy Emulator CPU Registers Program Counter
+        ///     GameBoy Emulator CPU Registers Program Counter
         /// </summary>
         public ushort ProgramCounter
         {
@@ -26,49 +28,41 @@ namespace GameBoy.Emulators.Common
             set => Registers.PC = value;
         }
 
-        public GameBoyEmulatorCpuRegister Registers = default(GameBoyEmulatorCpuRegister);
-
         /// <summary>
         ///     GameBoy Emulator CPU Registers
         /// </summary>
         [StructLayout(LayoutKind.Explicit)]
         public struct GameBoyEmulatorCpuRegister
         {
-            public void ADC(ref byte left, byte right)
-            {
-                c = DetectOverflow(left, right);
-                h = DetectHalfOverflow(left, right);
-                left += right;
-                z = left == 0;
-                n = false;
-            }
-
-            public void ADD(ref byte left, byte right)
-            {
-                c = DetectOverflow(left, right);
-                h = DetectHalfOverflow(left, right);
-                left += right;
-                z = left == 0;
-                n = false;
-            }
-
-            public void AND(byte left, byte right)
-            {
-                z = (left & right) == 0;
-                n = false;
-                h = true;
-                c = false;
-            }
-
-            public static bool DetectHalfOverflow(byte left, byte right)
-            {
-                return (left & 0x0F) + (right & 0x0F) > 0x0F;
-            }
-
-            public static bool DetectOverflow(byte left, byte right)
-            {
-                return left + right > 0xFF;
-            }
+            // public void ADC(ref byte left, byte right)
+            // {
+            //     c = DetectOverflow(left, right);
+            //     h = DetectHalfOverflow(left, right);
+            //     left += right;
+            //     z = left == 0;
+            //     n = false;
+            // }
+            //
+            // public void ADD(ref byte left, byte right)
+            // {
+            //     c = DetectOverflow(left, right);
+            //     h = DetectHalfOverflow(left, right);
+            //     left += right;
+            //     z = left == 0;
+            //     n = false;
+            // }
+            //
+            // public void AND(byte left, byte right)
+            // {
+            //     z = (left & right) == 0;
+            //     n = false;
+            //     h = true;
+            //     c = false;
+            // }
+            //
+            // public static bool DetectHalfOverflow(byte left, byte right) => (left & 0x0F) + (right & 0x0F) > 0x0F;
+            //
+            // public static bool DetectOverflow(byte left, byte right) => left + right > 0xFF;
 
             /// <summary>
             ///     Accumulator & Flags

@@ -12,23 +12,51 @@ namespace GameBoy.Emulators
         public const string TEST_ROM_PATH2 = @"Assets/Resources/ROMs/Pokemon Red-Blue 2-in-1 (Unl) [S].gb";
         [HideInInspector] public byte[] romData = Array.Empty<byte>();
 
-        private Cpu cpu = new Cpu();
+        [SerializeField]
+        private ulong clockCounter = 0;
+
+        [SerializeField]
+        private ushort programCounter = 0;
+
+        private Cpu cpu = new();
+
+        private bool isException = false;
+
         private void Awake()
         {
             romData = File.ReadAllBytes(Path.GetFullPath(TEST_ROM_PATH));
             if (!Valid.CheckSum(romData, out string err))
             {
                 Debug.LogError(err);
+                return;
             }
+
+            cpu.ProgramCounter = 0x100;
+            cpu.RomData = romData;
+            isException = false;
 
             Debug.Log(new Info(romData).ToString());
             Debug.Log(new Info(File.ReadAllBytes(Path.GetFullPath(TEST_ROM_PATH2))).ToString());
+        }
 
-            cpu.RomData = romData;
-            cpu.ProgramCounter = 0x100;
-            for (int i = 0; i < 10; i++)
+        private void Update()
+        {
+            if (cpu != null
+             && !isException
+             && cpu.RomData != null
+             && cpu.RomData.Length > 0)
             {
-                CpuOp.Step(cpu);
+                try
+                {
+                    CpuOp.Step(cpu, Time.deltaTime);
+                    clockCounter = cpu.ClockCounter;
+                    programCounter = cpu.ProgramCounter;
+                }
+                catch (Exception e)
+                {
+                    Debug.LogException(e);
+                    isException = true;
+                }
             }
         }
     }
