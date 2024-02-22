@@ -6,8 +6,15 @@ namespace GameBoy.Emulators.Common
 {
     public sealed class Cpu
     {
+        private bool _ime;
+        public bool IME
+        {
+            get => throw new Exception("Interrupt Master Enable cannot be read");
+            set => _ime = value;
+        }
         /// <summary>
         ///     Clock speed of the GameBoy
+        ///     https://gbdev.io/pandocs/Specifications.html
         /// </summary>
         public const ulong CLOCK_SPEED = 4194304;
         public Stack<ushort> CallStack = new();
@@ -16,16 +23,18 @@ namespace GameBoy.Emulators.Common
         /// </summary>
         public ulong ClockCounter;
 
-        public GameBoyEmulatorCpuRegister Registers = default(GameBoyEmulatorCpuRegister);
-        public byte[]                     RomData   = Array.Empty<byte>();
+        /// <summary>
+        ///     CPU Registers
+        /// </summary>
+        public GameBoyEmulatorCpuRegister Reg = default(GameBoyEmulatorCpuRegister);
 
         /// <summary>
         ///     GameBoy Emulator CPU Registers Program Counter
         /// </summary>
         public ushort ProgramCounter
         {
-            get => Registers.PC;
-            set => Registers.PC = value;
+            get => Reg.PC;
+            set => Reg.PC = value;
         }
 
         /// <summary>
@@ -130,5 +139,34 @@ namespace GameBoy.Emulators.Common
                 set => F = (byte)(value ? F | 0b00010000 : F & 0b11101111);
             }
         }
+
+        #region ROM
+
+        private byte[] _romData = Array.Empty<byte>();
+
+        public byte[] RomData
+        {
+            get => _romData;
+            set
+            {
+                _romData = value;
+                Ram.LoadRom(value);
+            }
+        }
+
+        #endregion
+
+        #region RAM
+
+        public readonly Ram Ram = new();
+
+        #endregion
+
+        #region Graphics
+
+        public const ushort SCREEN_WIDTH  = 160;
+        public const ushort SCREEN_HEIGHT = 144;
+
+        #endregion
     }
 }

@@ -59,18 +59,18 @@
             errorMessage = string.Empty;
 
             ushort globalCheckSum = 0;
-            for (int i = 0; i < (int)CartridgeHeader.GlobalChecksum; i++)
+            for (int i = 0; i < Rom.MAP_GLOBAL_CHECKSUM; i++)
             {
                 globalCheckSum += romData[i];
             }
 
-            for (int i = (int)CartridgeHeader.GlobalChecksumEnd + 1; i < romData.Length; i++)
+            for (int i = Rom.MAP_GLOBAL_CHECKSUM_END + 1; i < romData.Length; i++)
             {
                 globalCheckSum += romData[i];
             }
 
-            ushort checkSum = (ushort)((romData[(int)CartridgeHeader.GlobalChecksum] << 8)
-                                     | romData[(int)CartridgeHeader.GlobalChecksumEnd]);
+            ushort checkSum = (ushort)((romData[Rom.MAP_GLOBAL_CHECKSUM] << 8)
+                                     | romData[Rom.MAP_GLOBAL_CHECKSUM_END]);
             if (globalCheckSum != checkSum)
             {
                 errorMessage = $"ROM数据全局校验失败 0x{globalCheckSum:X4} != 0x{checkSum:X4}";
@@ -85,12 +85,12 @@
             errorMessage = string.Empty;
 
             byte headerCheckSum = 0;
-            for (ushort i = (ushort)CartridgeHeader.Title; i < (ushort)CartridgeHeader.HeaderChecksum; i++)
+            for (ushort i = Rom.MAP_TITLE_START; i < Rom.MAP_HEADER_CHECKSUM; i++)
             {
                 headerCheckSum = (byte)(headerCheckSum - romData[i] - 1);
             }
 
-            if (headerCheckSum != romData[(int)CartridgeHeader.HeaderChecksum])
+            if (headerCheckSum != romData[Rom.MAP_HEADER_CHECKSUM])
             {
                 errorMessage = "ROM数据头校验失败";
                 return false;
@@ -102,9 +102,9 @@
         public static bool LogoCheckSum(in byte[] romData, out string errorMessage)
         {
             errorMessage = string.Empty;
-            for (ushort i = (ushort)CartridgeHeader.LogoTopStart; i <= (ushort)CartridgeHeader.LogoBottomEnd; i++)
+            for (ushort i = Rom.MAP_LOGO_TOP_START; i <= Rom.MAP_LOGO_BOTTOM_END; i++)
             {
-                ushort checkIndex = (ushort)(i - (ushort)CartridgeHeader.LogoTopStart);
+                ushort checkIndex = (ushort)(i - Rom.MAP_LOGO_TOP_START);
                 if (romData[i] != CHECK_SUM[checkIndex])
                 {
                     errorMessage = $"ROM数据校验失败，索引{i:X4}的数据不匹配";
@@ -117,7 +117,7 @@
 
         public static bool CheckSum(in byte[] romData, out string errorMessage)
         {
-            if (romData == null || romData.Length <= (int)CartridgeHeader.GlobalChecksumEnd)
+            if (romData == null || romData.Length <= Rom.MAP_GLOBAL_CHECKSUM_END)
             {
                 errorMessage = "ROM数据为空或者长度不够";
                 return false;

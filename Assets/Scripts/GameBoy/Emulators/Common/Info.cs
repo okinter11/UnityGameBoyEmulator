@@ -41,7 +41,7 @@ namespace GameBoy.Emulators.Common
         private static string GetTitle(in byte[] romData)
         {
             StringBuilder title = new();
-            for (int i = (int)CartridgeHeader.Title; i <= (int)CartridgeHeader.TitleEnd; i++)
+            for (int i = (int)Rom.MAP_TITLE_START; i <= (int)Rom.MAP_TITLE_END; i++)
             {
                 char character = (char)romData[i];
                 if (character == 0)
@@ -58,7 +58,7 @@ namespace GameBoy.Emulators.Common
         private static string GetManufacturer(in byte[] romData)
         {
             StringBuilder manufacturer = new();
-            for (int i = (int)CartridgeHeader.Manufacturer; i <= (int)CartridgeHeader.ManufacturerEnd; i++)
+            for (int i = (int)Rom.MAP_MANUFACTURER_START; i <= (int)Rom.MAP_MANUFACTURER_END; i++)
             {
                 char character = (char)romData[i];
                 if (character == 0)
@@ -74,7 +74,7 @@ namespace GameBoy.Emulators.Common
 
         private static string GetCartridgeType(in byte[] romData)
         {
-            byte cartridgeType = romData[(int)CartridgeHeader.CartridgeType];
+            byte cartridgeType = romData[(int)Rom.MAP_CARTRIDGE_TYPE];
             switch (cartridgeType)
             {
                 case 0x00: return "ROM ONLY";
@@ -111,7 +111,7 @@ namespace GameBoy.Emulators.Common
 
         private static string GetRomSize(in byte[] romData)
         {
-            byte romSize = romData[(int)CartridgeHeader.ROMSize];
+            byte romSize = romData[(int)Rom.MAP_ROM_SIZE];
             switch (romSize)
             {
                 case 0x00: return "32KiB (no ROM banking)";
@@ -132,7 +132,7 @@ namespace GameBoy.Emulators.Common
 
         private static string GetRamSizeType(in byte[] romData)
         {
-            byte ramSize = romData[(int)CartridgeHeader.RAMSize];
+            byte ramSize = romData[(int)Rom.MAP_RAM_SIZE];
             switch (ramSize)
             {
                 case 0x00: return "No RAM";
@@ -147,7 +147,7 @@ namespace GameBoy.Emulators.Common
 
         private static string GetDestinationCode(in byte[] romData)
         {
-            byte destinationCode = romData[(int)CartridgeHeader.Destination];
+            byte destinationCode = romData[(int)Rom.MAP_DESTINATION];
             switch (destinationCode)
             {
                 case 0x00: return "Japan (and possibly overseas)";
@@ -158,7 +158,7 @@ namespace GameBoy.Emulators.Common
 
         private static string GetLicensee(in byte[] romData)
         {
-            byte licensee = romData[(int)CartridgeHeader.OldLicensee];
+            byte licensee = romData[(int)Rom.MAP_OLD_LICENSEE];
             switch (licensee)
             {
                 case 0x00: return "None";
@@ -316,8 +316,8 @@ namespace GameBoy.Emulators.Common
         {
             string newLicensee = new(new[]
             {
-                (char)romData[(int)CartridgeHeader.NewLicensee],
-                (char)romData[(int)CartridgeHeader.NewLicenseeEnd],
+                (char)romData[(int)Rom.MAP_NEW_LICENSEE],
+                (char)romData[(int)Rom.MAP_NEW_LICENSEE_END],
             });
             switch (newLicensee)
             {
@@ -389,7 +389,7 @@ namespace GameBoy.Emulators.Common
 
         private static string GetRomVersion(in byte[] romData)
         {
-            byte romVersion = romData[(int)CartridgeHeader.MaskROMVersion];
+            byte romVersion = romData[(int)Rom.MAP_MASK_ROM_VERSION];
             return romVersion.ToString();
         }
     }
