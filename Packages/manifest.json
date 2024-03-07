@@ -1,7 +1,8 @@
 {
   "dependencies": {
+    "com.cysharp.magiconion": "https://github.com/Cysharp/MagicOnion.git?path=src/MagicOnion.Client.Unity/Assets/Scripts/MagicOnion",
     "com.unity.feature.2d": "1.0.0",
-    "com.unity.ide.rider": "3.0.27",
+    "com.unity.ide.rider": "3.0.28",
     "com.unity.render-pipelines.universal": "12.1.11",
     "com.unity.test-framework": "1.1.33",
     "com.unity.textmeshpro": "3.0.8",

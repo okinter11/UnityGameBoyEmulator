@@ -1,5 +1,12 @@
 {
   "dependencies": {
+    "com.cysharp.magiconion": {
+      "version": "https://github.com/Cysharp/MagicOnion.git?path=src/MagicOnion.Client.Unity/Assets/Scripts/MagicOnion",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "e8f6b5a1d11b791ed0bce502f92d52ae8d9c3243"
+    },
     "com.unity.2d.animation": {
       "version": "7.0.10",
       "depth": 1,
@@ -116,7 +123,7 @@
       }
     },
     "com.unity.ide.rider": {
-      "version": "3.0.27",
+      "version": "3.0.28",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -218,6 +225,96 @@
         "com.unity.modules.jsonserialize": "1.0.0"
       },
       "url": "https://packages.unity.com"
+    },
+    "org.nuget.grpc.core.api": {
+      "version": "file:org.nuget.grpc.core.api",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "org.nuget.system.memory": "4.5.3"
+      }
+    },
+    "org.nuget.grpc.net.client": {
+      "version": "file:org.nuget.grpc.net.client",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "org.nuget.grpc.net.common": "2.57.0",
+        "org.nuget.microsoft.extensions.logging.abstractions": "6.0.0",
+        "org.nuget.system.diagnostics.diagnosticsource": "6.0.1"
+      }
+    },
+    "org.nuget.grpc.net.common": {
+      "version": "file:org.nuget.grpc.net.common",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "org.nuget.grpc.core.api": "2.57.0"
+      }
+    },
+    "org.nuget.microsoft.extensions.logging.abstractions": {
+      "version": "file:org.nuget.microsoft.extensions.logging.abstractions",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "org.nuget.system.buffers": "4.5.1",
+        "org.nuget.system.memory": "4.5.4"
+      }
+    },
+    "org.nuget.system.buffers": {
+      "version": "file:org.nuget.system.buffers",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
+    "org.nuget.system.diagnostics.diagnosticsource": {
+      "version": "file:org.nuget.system.diagnostics.diagnosticsource",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "org.nuget.system.runtime.compilerservices.unsafe": "6.0.0",
+        "org.nuget.system.memory": "4.5.4"
+      }
+    },
+    "org.nuget.system.io.pipelines": {
+      "version": "file:org.nuget.system.io.pipelines",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "org.nuget.system.buffers": "4.5.1",
+        "org.nuget.system.memory": "4.5.5",
+        "org.nuget.system.threading.tasks.extensions": "4.5.4"
+      }
+    },
+    "org.nuget.system.memory": {
+      "version": "file:org.nuget.system.memory",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "org.nuget.system.buffers": "4.5.1",
+        "org.nuget.system.numerics.vectors": "4.4.0",
+        "org.nuget.system.runtime.compilerservices.unsafe": "4.5.3"
+      }
+    },
+    "org.nuget.system.numerics.vectors": {
+      "version": "file:org.nuget.system.numerics.vectors",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
+    "org.nuget.system.runtime.compilerservices.unsafe": {
+      "version": "file:org.nuget.system.runtime.compilerservices.unsafe",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
+    "org.nuget.system.threading.tasks.extensions": {
+      "version": "file:org.nuget.system.threading.tasks.extensions",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "org.nuget.system.runtime.compilerservices.unsafe": "4.5.3"
+      }
     },
     "com.unity.modules.ai": {
       "version": "1.0.0",
