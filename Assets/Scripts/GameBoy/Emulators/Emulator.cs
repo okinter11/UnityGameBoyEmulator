@@ -1,8 +1,19 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
+using System.Threading.Tasks;
 using GameBoy.Emulators.Common;
 using GameBoy.Emulators.Common.Opcodes;
+using GameBoy.Network;
+using Grpc.Core;
+using MagicOnion;
+using MagicOnion.Client;
+using MagicOnion.Unity;
+using MagicOnionService.Network.MagicOnionServer;
 using UnityEngine;
+using Debug = UnityEngine.Debug;
+using Random = UnityEngine.Random;
 
 namespace GameBoy.Emulators
 {
@@ -22,6 +33,24 @@ namespace GameBoy.Emulators
         private Cpu cpu = new();
 
         private bool isException = false;
+
+        private async void Start()
+        { 
+            // var channel = GrpcChannelx.ForTarget(new GrpcChannelTarget("localhost", 5000, ChannelCredentials.Insecure));
+            var channel = GrpcChannelx.ForAddress("http://localhost:5000");
+            var client = MagicOnionClient.Create<IMyFirstService>(channel);
+            Stopwatch sw = Stopwatch.StartNew();
+            for (int i = 0; i < 1000; i++)
+            {
+                var left = Random.Range(1, 1000);
+                var right = Random.Range(1, 1000);
+                sw.Restart();
+                var result = await client.SumAsync(left, right);
+                sw.Stop();
+                var microSeconds = sw.ElapsedTicks / (Stopwatch.Frequency / (1000L * 1000L));
+                Debug.Log($"{left}+{right}={result} in {microSeconds} microSeconds");
+            }
+        }
 
         private void Awake()
         {

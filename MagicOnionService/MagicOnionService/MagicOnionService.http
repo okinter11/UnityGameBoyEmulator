@@ -1,0 +1,6 @@
+@MagicOnionService_HostAddress = http://localhost:5081
+
+GET {{MagicOnionService_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
