@@ -7,6 +7,13 @@
       "dependencies": {},
       "hash": "e8f6b5a1d11b791ed0bce502f92d52ae8d9c3243"
     },
+    "com.cysharp.yetanotherhttphandler": {
+      "version": "https://github.com/Cysharp/YetAnotherHttpHandler.git?path=src/YetAnotherHttpHandler",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "f4bbb73d16e38f072db1854de3f3eff8c25ac594"
+    },
     "com.unity.2d.animation": {
       "version": "7.0.10",
       "depth": 1,
