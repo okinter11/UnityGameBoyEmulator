@@ -52,36 +52,6 @@ namespace GameBoy.Emulators.Common
         [StructLayout(LayoutKind.Explicit)]
         public struct GameBoyEmulatorCpuRegister
         {
-            // public void ADC(ref byte left, byte right)
-            // {
-            //     c = DetectOverflow(left, right);
-            //     h = DetectHalfOverflow(left, right);
-            //     left += right;
-            //     z = left == 0;
-            //     n = false;
-            // }
-            //
-            // public void ADD(ref byte left, byte right)
-            // {
-            //     c = DetectOverflow(left, right);
-            //     h = DetectHalfOverflow(left, right);
-            //     left += right;
-            //     z = left == 0;
-            //     n = false;
-            // }
-            //
-            // public void AND(byte left, byte right)
-            // {
-            //     z = (left & right) == 0;
-            //     n = false;
-            //     h = true;
-            //     c = false;
-            // }
-            //
-            // public static bool DetectHalfOverflow(byte left, byte right) => (left & 0x0F) + (right & 0x0F) > 0x0F;
-            //
-            // public static bool DetectOverflow(byte left, byte right) => left + right > 0xFF;
-
             /// <summary>
             ///     Accumulator & Flags
             /// </summary>
@@ -171,6 +141,11 @@ namespace GameBoy.Emulators.Common
         {
             ProgramCounter += ticks;
             ClockCounter += ticks * 4UL;
+        }
+
+        public void EnableInterruptMaster()
+        {
+            throw new NotImplementedException();
         }
 
         #endregion

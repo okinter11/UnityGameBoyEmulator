@@ -91,13 +91,12 @@
             cpu.ClockCounter += 4;
         }
 
-        // public static void X18_JR_Z_E8(Cpu cpu)
-        // {
-        //     sbyte sign = unchecked((sbyte)Op.Read(cpu, cpu.ProgramCounter + 1));
-        //     cpu.ProgramCounter =  cpu.Reg.z ? (ushort)(cpu.ProgramCounter + sign) : (ushort)(cpu.ProgramCounter + 2);
-        //     cpu.ClockCounter += 12;
-        // }
-        //
+        public static void X28_JR_Z_E8(Cpu cpu)
+        {
+            cpu.ProgramCounter += (ushort)(cpu.Reg.z ? unchecked((sbyte)Op.Read(cpu, cpu.ProgramCounter + 1)) : 2);
+            cpu.ClockCounter += (ulong)(cpu.Reg.z ? 12 : 8);
+        }
+
         // public static void X19_ADD_HL_DE(Cpu cpu)
         // {
         //     cpu.Reg.n = false;

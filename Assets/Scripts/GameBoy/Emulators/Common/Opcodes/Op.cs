@@ -20,8 +20,8 @@ namespace GameBoy.Emulators.Common.Opcodes
 
         public static byte Read(Cpu cpu, int address) => cpu.Ram[address];
 
-        public static ushort Read16(Cpu cpu, int address) =>
-            (ushort)(cpu.Ram[address] | (cpu.Ram[address + 1] << 8));
+        public static ushort Read16(Cpu cpu, int address) => (ushort)(cpu.Ram[address]
+                                                                    | (cpu.Ram[address + 1] << 8));
 
         public static void Write(Cpu cpu, int address, byte value)
         {
@@ -32,6 +32,19 @@ namespace GameBoy.Emulators.Common.Opcodes
         {
             cpu.Ram[address] = (byte)(value & 0x00FF);
             cpu.Ram[address + 1] = (byte)((value & 0xFF00) >> 8);
+        }
+
+        public static void Push16(Cpu cpu, ushort value)
+        {
+            cpu.Reg.SP -= 2;
+            Write16(cpu, cpu.Reg.SP, value);
+        }
+
+        public static ushort Pop16(Cpu cpu)
+        {
+            ushort value = Read16(cpu, cpu.Reg.SP);
+            cpu.Reg.SP += 2;
+            return value;
         }
 
         #endregion

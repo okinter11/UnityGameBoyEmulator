@@ -2,6 +2,12 @@
 {
     public static class Op3X
     {
+        public static void X30_JR_NZ_E8(Cpu cpu)
+        {
+            cpu.ProgramCounter += (ushort)(!cpu.Reg.c ? unchecked((sbyte)Op.Read(cpu, cpu.ProgramCounter + 1)) : 2);
+            cpu.ClockCounter += (ulong)(!cpu.Reg.c ? 12 : 8);
+        }
+
         public static void X31_LD_SP_N16(Cpu cpu)
         {
             cpu.Reg.SP = Op.Read16(cpu, cpu.ProgramCounter + 1);
@@ -25,6 +31,12 @@
             Op.Write(cpu, cpu.Reg.HL, data);
             cpu.ProgramCounter += 2;
             cpu.ClockCounter += 8;
+        }
+
+        public static void X38_JR_NZ_E8(Cpu cpu)
+        {
+            cpu.ProgramCounter += (ushort)(cpu.Reg.c ? unchecked((sbyte)Op.Read(cpu, cpu.ProgramCounter + 1)) : 2);
+            cpu.ClockCounter += (ulong)(cpu.Reg.c ? 12 : 8);
         }
 
         public static void X3A_LD_A_HLd(Cpu cpu)

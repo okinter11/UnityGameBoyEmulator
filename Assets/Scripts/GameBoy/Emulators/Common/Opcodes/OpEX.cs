@@ -12,13 +12,34 @@
             cpu.ClockCounter += 8;
         }
 
+        public static void XE1_POP_HL(Cpu cpu)
+        {
+            cpu.Reg.HL = Op.Pop16(cpu);
+            cpu.ProgramCounter += 1;
+            cpu.ClockCounter += 12;
+        }
+
         public static void XE2_LDH_C_A(Cpu cpu)
         {
             Op.Write(cpu, Ram.MAP_IO_REGISTERS + cpu.Reg.C, cpu.Reg.A);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 8;
         }
-        
+
+        public static void XE5_PUSH_HL(Cpu cpu)
+        {
+            Op.Push16(cpu, cpu.Reg.HL);
+            cpu.ProgramCounter += 1;
+            cpu.ClockCounter += 16;
+        }
+
+        public static void XE7_RST_20H(Cpu cpu)
+        {
+            Op.Push16(cpu, cpu.ProgramCounter);
+            cpu.ProgramCounter = 0x20;
+            cpu.ClockCounter += 16;
+        }
+
         public static void XE9_JP_HL(Cpu cpu)
         {
             cpu.ProgramCounter = cpu.Reg.HL;
@@ -33,6 +54,13 @@
             Op.Write(cpu, Ram.MAP_IO_REGISTERS + address, cpu.Reg.A);
             cpu.ProgramCounter += 2;
             cpu.ClockCounter += 8;
+        }
+
+        public static void XEF_RST_28H(Cpu cpu)
+        {
+            Op.Push16(cpu, cpu.ProgramCounter);
+            cpu.ProgramCounter = 0x28;
+            cpu.ClockCounter += 16;
         }
     }
 }

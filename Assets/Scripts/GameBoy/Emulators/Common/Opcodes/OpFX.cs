@@ -12,6 +12,14 @@
             cpu.ClockCounter += 8;
         }
 
+        public static void XF1_POP_AF(Cpu cpu)
+        {
+            cpu.Reg.AF = Op.Pop16(cpu);
+            // TODO 还有标志位
+            cpu.ProgramCounter += 1;
+            cpu.ClockCounter += 12;
+        }
+
         public static void XF2_LDH_A_C(Cpu cpu)
         {
             cpu.Reg.A = Op.Read(cpu, Ram.MAP_IO_REGISTERS + cpu.Reg.C);
@@ -24,6 +32,20 @@
             cpu.IME = true;
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
+        }
+
+        public static void XF5_PUSH_AF(Cpu cpu)
+        {
+            Op.Push16(cpu, cpu.Reg.AF);
+            cpu.ProgramCounter += 1;
+            cpu.ClockCounter += 16;
+        }
+
+        public static void XF7_RST_30H(Cpu cpu)
+        {
+            Op.Push16(cpu, cpu.ProgramCounter);
+            cpu.ProgramCounter = 0x30;
+            cpu.ClockCounter += 16;
         }
 
         public static void XF8_LD_HL_SP_N8(Cpu cpu)
@@ -69,6 +91,13 @@
             cpu.Reg.c = value > cpu.Reg.A;
             cpu.ProgramCounter += 2;
             cpu.ClockCounter += 8;
+        }
+
+        public static void XFF_RST_38H(Cpu cpu)
+        {
+            Op.Push16(cpu, cpu.ProgramCounter);
+            cpu.ProgramCounter = 0x38;
+            cpu.ClockCounter += 16;
         }
     }
 }

@@ -2,16 +2,27 @@
 {
     public class OpCX
     {
-        public static void XCB_PREFIX(Cpu cpu)
+        public static void XC0_RET_NZ(Cpu cpu)
         {
-            byte opcode = Op.Read(cpu, cpu.ProgramCounter + 1);
-            byte opBit = (byte)((opcode & 0xF8) >> 5);
-            byte opReg = (byte)(opcode & 0x07);
-            ref byte opRef = ref cpu.Reg.A;
-            Op.GetRegister(cpu, opReg, ref opRef);
-            Op.CbOperation(cpu, opBit, ref opRef);
+            if (!cpu.Reg.z)
+            {
+                cpu.ProgramCounter = Op.Pop16(cpu);
+                cpu.ClockCounter += 20;
+            }
+            else
+            {
+                cpu.ProgramCounter += 1;
+                cpu.ClockCounter += 8;
+            }
         }
-        
+
+        public static void XC1_POP_BC(Cpu cpu)
+        {
+            cpu.Reg.BC = Op.Pop16(cpu);
+            cpu.ProgramCounter += 1;
+            cpu.ClockCounter += 12;
+        }
+
         public static void XC2_JP_NZ_A16(Cpu cpu)
         {
             if (!cpu.Reg.z)
@@ -36,20 +47,51 @@
 
         public static void XC4_CALL_NZ_A16(Cpu cpu)
         {
+            ushort address = Op.Read16(cpu, cpu.ProgramCounter + 1);
+            cpu.ProgramCounter += 3;
+            cpu.ClockCounter += 12;
             if (!cpu.Reg.z)
             {
-                cpu.CallStack.Push(cpu.ProgramCounter);
-                ushort address = Op.Read16(cpu, cpu.ProgramCounter + 1);
+                Op.Push16(cpu, cpu.ProgramCounter);
                 cpu.ProgramCounter = address;
-                cpu.ClockCounter += 24;
-            }
-            else
-            {
-                cpu.ProgramCounter += 3;
                 cpu.ClockCounter += 12;
             }
         }
-        
+
+        public static void XC5_PUSH_BC(Cpu cpu)
+        {
+            Op.Push16(cpu, cpu.Reg.BC);
+            cpu.ProgramCounter += 1;
+            cpu.ClockCounter += 16;
+        }
+
+        public static void XC7_RST_00H(Cpu cpu)
+        {
+            Op.Push16(cpu, cpu.ProgramCounter);
+            cpu.ProgramCounter = 0x00;
+            cpu.ClockCounter += 16;
+        }
+
+        public static void XC8_RET_Z(Cpu cpu)
+        {
+            if (cpu.Reg.z)
+            {
+                cpu.ProgramCounter = Op.Pop16(cpu);
+                cpu.ClockCounter += 20;
+            }
+            else
+            {
+                cpu.ProgramCounter += 1;
+                cpu.ClockCounter += 8;
+            }
+        }
+
+        public static void XC9_RET(Cpu cpu)
+        {
+            cpu.ProgramCounter = Op.Pop16(cpu);
+            cpu.ClockCounter += 16;
+        }
+
         public static void XCA_JP_Z_A16(Cpu cpu)
         {
             if (cpu.Reg.z)
@@ -65,12 +107,44 @@
             }
         }
 
+        public static void XCB_PREFIX(Cpu cpu)
+        {
+            byte opcode = Op.Read(cpu, cpu.ProgramCounter + 1);
+            byte opBit = (byte)((opcode & 0xF8) >> 5);
+            byte opReg = (byte)(opcode & 0x07);
+            ref byte opRef = ref cpu.Reg.A;
+            Op.GetRegister(cpu, opReg, ref opRef);
+            Op.CbOperation(cpu, opBit, ref opRef);
+        }
+
+        public static void XCC_CALL_Z_A16(Cpu cpu)
+        {
+            ushort address = Op.Read16(cpu, cpu.ProgramCounter + 1);
+            cpu.ProgramCounter += 3;
+            cpu.ClockCounter += 12;
+            if (cpu.Reg.z)
+            {
+                Op.Push16(cpu, cpu.ProgramCounter);
+                cpu.ProgramCounter = address;
+                cpu.ClockCounter += 12;
+            }
+        }
+
         public static void XCD_CALL_A16(Cpu cpu)
         {
-            cpu.CallStack.Push(cpu.ProgramCounter);
             ushort address = Op.Read16(cpu, cpu.ProgramCounter + 1);
+            cpu.ProgramCounter += 3;
+            cpu.ClockCounter += 8;
+            Op.Push16(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter = address;
-            cpu.ClockCounter += 24;
+            cpu.ClockCounter += 16;
+        }
+
+        public static void XCF_RST_08H(Cpu cpu)
+        {
+            Op.Push16(cpu, cpu.ProgramCounter);
+            cpu.ProgramCounter = 0x08;
+            cpu.ClockCounter += 16;
         }
     }
 }
