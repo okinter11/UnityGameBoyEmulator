@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Diagnostics;
 using System.IO;
 using GameBoy.Emulators.Common;
 using GameBoy.Emulators.Common.Opcodes;
-using MagicOnion;
-using MagicOnion.Client;
-using MagicOnionService.Network.MagicOnionServer;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
-using Random = UnityEngine.Random;
 
 namespace GameBoy.Emulators
 {
@@ -47,24 +42,24 @@ namespace GameBoy.Emulators
             Debug.Log(new Info(File.ReadAllBytes(Path.GetFullPath(TEST_ROM_PATH))).ToString());
         }
 
-        private async void Start()
-        {
-            // var channel = GrpcChannelx.ForTarget(new GrpcChannelTarget("localhost", 5000, ChannelCredentials.Insecure));
-            GrpcChannelx channel = GrpcChannelx.ForAddress("http://localhost:5000");
-            IMyFirstService client = MagicOnionClient.Create<IMyFirstService>(channel);
-
-            Stopwatch sw = Stopwatch.StartNew();
-            for (int i = 0; i < 1000; i++)
-            {
-                int left = Random.Range(1, 1000);
-                int right = Random.Range(1, 1000);
-                sw.Restart();
-                int result = await client.SumAsync(left, right);
-                sw.Stop();
-                long microSeconds = sw.ElapsedTicks / (Stopwatch.Frequency / (1000L * 1000L));
-                Debug.Log($"{left}+{right}={result} in {microSeconds} microSeconds");
-            }
-        }
+        // private async void Start()
+        // {
+        //     // var channel = GrpcChannelx.ForTarget(new GrpcChannelTarget("localhost", 5000, ChannelCredentials.Insecure));
+        //     GrpcChannelx channel = GrpcChannelx.ForAddress("http://localhost:5000");
+        //     IMyFirstService client = MagicOnionClient.Create<IMyFirstService>(channel);
+        //
+        //     Stopwatch sw = Stopwatch.StartNew();
+        //     for (int i = 0; i < 1000; i++)
+        //     {
+        //         int left = Random.Range(1, 1000);
+        //         int right = Random.Range(1, 1000);
+        //         sw.Restart();
+        //         int result = await client.SumAsync(left, right);
+        //         sw.Stop();
+        //         long microSeconds = sw.ElapsedTicks / (Stopwatch.Frequency / (1000L * 1000L));
+        //         Debug.Log($"{left}+{right}={result} in {microSeconds} microSeconds");
+        //     }
+        // }
 
         private void Update()
         {

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
 namespace GameBoy.Emulators.Common
@@ -18,8 +17,7 @@ namespace GameBoy.Emulators.Common
 
         #endregion
 
-        private bool          _ime;
-        public  Stack<ushort> CallStack = new();
+        private bool _ime;
         /// <summary>
         ///     Clock counter
         /// </summary>

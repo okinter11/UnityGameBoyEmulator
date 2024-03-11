@@ -23,6 +23,21 @@
             cpu.ClockCounter += 8;
         }
 
+        public static void X34_INC_HL(Cpu cpu)
+        {
+            byte data = Op.Read(cpu, cpu.Reg.HL);
+            cpu.ClockCounter += 4;
+            data += 1;
+            // ReSharper disable once ConditionIsAlwaysTrueOrFalse
+            cpu.Reg.z = data == 0;
+            cpu.Reg.n = false;
+            cpu.Reg.h = (data & 0x0F) == 0;
+            Op.Write(cpu, cpu.Reg.HL, data);
+            cpu.ProgramCounter += 1;
+            cpu.ClockCounter += 8;
+        }
+
+
         public static void X36_LD_HL_N8(Cpu cpu)
         {
             byte data = Op.Read(cpu, cpu.ProgramCounter + 1);
@@ -45,6 +60,16 @@
             cpu.Reg.HL -= 1;
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 8;
+        }
+
+        public static void X3C_INC_A(Cpu cpu)
+        {
+            cpu.Reg.A += 1;
+            cpu.Reg.z = cpu.Reg.A == 0;
+            cpu.Reg.n = false;
+            cpu.Reg.h = (cpu.Reg.A & 0x0F) == 0;
+            cpu.ProgramCounter += 1;
+            cpu.ClockCounter += 4;
         }
 
         public static void X3E_LD_A_N8(Cpu cpu)

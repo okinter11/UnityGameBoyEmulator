@@ -121,17 +121,17 @@
         //     cpu.ProgramCounter += 1;
         //     cpu.ClockCounter += 8;
         // }
-        //
-        // public static void X1C_INC_E(Cpu cpu)
-        // {
-        //     cpu.Reg.E += 1;
-        //     cpu.Reg.z = cpu.Reg.E == 0;
-        //     cpu.Reg.n = false;
-        //     cpu.Reg.h = (cpu.Reg.E & 0x0F) == 0;
-        //     cpu.ProgramCounter += 1;
-        //     cpu.ClockCounter += 4;
-        // }
-        //
+
+        public static void X2C_INC_L(Cpu cpu)
+        {
+            cpu.Reg.L += 1;
+            cpu.Reg.z = cpu.Reg.L == 0;
+            cpu.Reg.n = false;
+            cpu.Reg.h = (cpu.Reg.L & 0x0F) == 0;
+            cpu.ProgramCounter += 1;
+            cpu.ClockCounter += 4;
+        }
+
         // public static void X1D_DEC_E(Cpu cpu)
         // {
         //     cpu.Reg.E -= 1;
