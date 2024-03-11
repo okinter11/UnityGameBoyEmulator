@@ -102,7 +102,7 @@
 
         public static void X7F_LD_A_A(Cpu cpu)
         {
-            cpu.Reg.A = cpu.Reg.A;
+            // cpu.Reg.A = cpu.Reg.A;
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
         }

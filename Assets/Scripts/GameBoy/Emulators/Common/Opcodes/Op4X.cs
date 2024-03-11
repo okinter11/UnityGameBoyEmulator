@@ -4,7 +4,7 @@
     {
         public static void X40_LD_B_B(Cpu cpu)
         {
-            cpu.Reg.B = cpu.Reg.B;
+            // cpu.Reg.B = cpu.Reg.B;
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
         }
@@ -67,7 +67,7 @@
 
         public static void X49_LD_C_C(Cpu cpu)
         {
-            cpu.Reg.C = cpu.Reg.C;
+            // cpu.Reg.C = cpu.Reg.C;
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
         }

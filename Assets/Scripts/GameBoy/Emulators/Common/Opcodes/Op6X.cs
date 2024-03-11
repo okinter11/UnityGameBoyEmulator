@@ -32,7 +32,7 @@
 
         public static void X64_LD_H_H(Cpu cpu)
         {
-            cpu.Reg.H = cpu.Reg.H;
+            // cpu.Reg.H = cpu.Reg.H;
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
         }
@@ -95,7 +95,7 @@
 
         public static void X6D_LD_L_L(Cpu cpu)
         {
-            cpu.Reg.L = cpu.Reg.L;
+            // cpu.Reg.L = cpu.Reg.L;
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
         }

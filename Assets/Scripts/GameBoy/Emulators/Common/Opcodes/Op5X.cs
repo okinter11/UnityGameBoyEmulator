@@ -18,7 +18,7 @@
 
         public static void X52_LD_D_D(Cpu cpu)
         {
-            cpu.Reg.D = cpu.Reg.D;
+            // cpu.Reg.D = cpu.Reg.D;
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
         }
@@ -81,7 +81,7 @@
 
         public static void X5B_LD_E_E(Cpu cpu)
         {
-            cpu.Reg.E = cpu.Reg.E;
+            // cpu.Reg.E = cpu.Reg.E;
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
         }
