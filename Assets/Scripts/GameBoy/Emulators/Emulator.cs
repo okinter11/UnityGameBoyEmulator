@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Net.NetworkInformation;
+using System.Net.Sockets;
 using System.Threading.Tasks;
 using GameBoy.Emulators.Common;
 using GameBoy.Emulators.Common.Opcodes;
@@ -13,6 +15,7 @@ using MagicOnion.Unity;
 using MagicOnionService.Network.MagicOnionServer;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
+using Ping = System.Net.NetworkInformation.Ping;
 using Random = UnityEngine.Random;
 
 namespace GameBoy.Emulators
@@ -35,10 +38,11 @@ namespace GameBoy.Emulators
         private bool isException = false;
 
         private async void Start()
-        { 
+        {
             // var channel = GrpcChannelx.ForTarget(new GrpcChannelTarget("localhost", 5000, ChannelCredentials.Insecure));
             var channel = GrpcChannelx.ForAddress("http://localhost:5000");
             var client = MagicOnionClient.Create<IMyFirstService>(channel);
+            
             Stopwatch sw = Stopwatch.StartNew();
             for (int i = 0; i < 1000; i++)
             {

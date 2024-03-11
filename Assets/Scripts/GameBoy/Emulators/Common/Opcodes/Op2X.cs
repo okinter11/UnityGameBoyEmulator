@@ -107,14 +107,15 @@
         //     cpu.ProgramCounter += 1;
         //     cpu.ClockCounter += 8;
         // }
-        //
-        // public static void X1A_LD_A_DE(Cpu cpu)
-        // {
-        //     cpu.Reg.A = Op.Read(cpu, cpu.Reg.DE);
-        //     cpu.ProgramCounter += 1;
-        //     cpu.ClockCounter += 8;
-        // }
-        //
+
+        public static void X2A_LD_A_HLi(Cpu cpu)
+        {
+            cpu.Reg.A = Op.Read(cpu, cpu.Reg.HL);
+            cpu.Reg.HL += 1;
+            cpu.ProgramCounter += 1;
+            cpu.ClockCounter += 8;
+        }
+
         // public static void X1B_DEC_DE(Cpu cpu)
         // {
         //     cpu.Reg.DE -= 1;
@@ -141,14 +142,14 @@
         //     cpu.ProgramCounter += 1;
         //     cpu.ClockCounter += 4;
         // }
-        //
-        // public static void X1E_LD_E_N8(Cpu cpu)
-        // {
-        //     cpu.Reg.E = Op.Read(cpu, cpu.ProgramCounter + 1);
-        //     cpu.ProgramCounter += 2;
-        //     cpu.ClockCounter += 8;
-        // }
-        //
+
+        public static void X2E_LD_L_N8(Cpu cpu)
+        {
+            cpu.Reg.L = Op.Read(cpu, cpu.ProgramCounter + 1);
+            cpu.ProgramCounter += 2;
+            cpu.ClockCounter += 8;
+        }
+
         // public static void X1F_RRA(Cpu cpu)
         // {
         //     int cMask = cpu.Reg.c ? 0x80 : 0x00;

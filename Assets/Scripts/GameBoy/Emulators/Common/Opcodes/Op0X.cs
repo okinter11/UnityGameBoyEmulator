@@ -70,9 +70,14 @@
         public static void X08_LD_A16_SP(Cpu cpu)
         {
             ushort addr = Op.Read16(cpu, cpu.ProgramCounter + 1);
-            Op.Write16(cpu, addr, cpu.Reg.SP);
-            cpu.ProgramCounter += 3;
-            cpu.ClockCounter += 20;
+            cpu.ProgramCounter += 2;
+            cpu.ClockCounter += 8;
+            Op.Write(cpu, addr, (byte)(cpu.Reg.SP & 0x00FF));
+            cpu.ProgramCounter += 1;
+            cpu.ClockCounter += 4;
+            Op.Write(cpu, addr + 1, (byte)((cpu.Reg.SP & 0xFF00) >> 8));
+            cpu.ProgramCounter += 2;
+            cpu.ClockCounter += 8;
         }
 
         public static void X09_ADD_HL_BC(Cpu cpu)

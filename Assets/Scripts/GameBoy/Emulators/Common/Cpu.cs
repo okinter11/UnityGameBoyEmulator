@@ -6,6 +6,33 @@ namespace GameBoy.Emulators.Common
 {
     public sealed class Cpu
     {
+        #region CPU Method
+
+        public Cpu()
+        {
+            Init();
+        }
+
+        public void Init()
+        {
+            Reg.AF = 0x01B0;
+            Reg.BC = 0x0013;
+            Reg.DE = 0x00D8;
+            Reg.HL = 0x014D;
+            ProgramCounter = 0x0100;
+            Reg.SP = 0xFFFE;
+            Halted = false;
+        }
+
+        public void Tick(byte ticks)
+        {
+            ProgramCounter += ticks;
+            ClockCounter += ticks * 4UL;
+        }
+
+        #endregion
+
+        public  bool Halted;
         private bool _ime;
         public bool IME
         {
