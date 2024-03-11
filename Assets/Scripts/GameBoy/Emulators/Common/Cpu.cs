@@ -6,54 +6,36 @@ namespace GameBoy.Emulators.Common
 {
     public sealed class Cpu
     {
-        #region CPU Method
-
-        public Cpu()
-        {
-            Init();
-        }
-
-        public void Init()
-        {
-            Reg.AF = 0x01B0;
-            Reg.BC = 0x0013;
-            Reg.DE = 0x00D8;
-            Reg.HL = 0x014D;
-            ProgramCounter = 0x0100;
-            Reg.SP = 0xFFFE;
-            Halted = false;
-        }
-
-        public void Tick(byte ticks)
-        {
-            ProgramCounter += ticks;
-            ClockCounter += ticks * 4UL;
-        }
-
-        #endregion
-
-        public  bool Halted;
-        private bool _ime;
-        public bool IME
-        {
-            get => throw new Exception("Interrupt Master Enable cannot be read");
-            set => _ime = value;
-        }
         /// <summary>
         ///     Clock speed of the GameBoy
         ///     https://gbdev.io/pandocs/Specifications.html
         /// </summary>
         public const ulong CLOCK_SPEED = 4194304;
-        public Stack<ushort> CallStack = new();
+
+        #region RAM
+
+        public readonly Ram Ram = new();
+
+        #endregion
+
+        private bool          _ime;
+        public  Stack<ushort> CallStack = new();
         /// <summary>
         ///     Clock counter
         /// </summary>
         public ulong ClockCounter;
 
+        public bool Halted;
+
         /// <summary>
         ///     CPU Registers
         /// </summary>
         public GameBoyEmulatorCpuRegister Reg = default(GameBoyEmulatorCpuRegister);
+        public bool IME
+        {
+            get => throw new Exception("Interrupt Master Enable cannot be read");
+            set => _ime = value;
+        }
 
         /// <summary>
         ///     GameBoy Emulator CPU Registers Program Counter
@@ -167,6 +149,32 @@ namespace GameBoy.Emulators.Common
             }
         }
 
+        #region CPU Method
+
+        public Cpu()
+        {
+            Init();
+        }
+
+        public void Init()
+        {
+            Reg.AF = 0x01B0;
+            Reg.BC = 0x0013;
+            Reg.DE = 0x00D8;
+            Reg.HL = 0x014D;
+            ProgramCounter = 0x0100;
+            Reg.SP = 0xFFFE;
+            Halted = false;
+        }
+
+        public void Tick(byte ticks)
+        {
+            ProgramCounter += ticks;
+            ClockCounter += ticks * 4UL;
+        }
+
+        #endregion
+
         #region ROM
 
         private byte[] _romData = Array.Empty<byte>();
@@ -180,12 +188,6 @@ namespace GameBoy.Emulators.Common
                 Ram.LoadRom(value);
             }
         }
-
-        #endregion
-
-        #region RAM
-
-        public readonly Ram Ram = new();
 
         #endregion
 

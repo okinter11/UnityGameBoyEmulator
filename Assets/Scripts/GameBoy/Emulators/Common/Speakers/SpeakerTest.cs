@@ -5,17 +5,17 @@ namespace GameBoy.Emulators.Common.Speakers
     [RequireComponent(typeof(AudioSource))]
     public class SpeakerTest : MonoBehaviour
     {
-        public double bpm         = 140.0F;
-        public float  gain        = 0.5F;
-        public int    signatureHi = 4;
-        public int    signatureLo = 4;
+        public  double bpm         = 140.0F;
+        public  float  gain        = 0.5F;
+        public  int    signatureHi = 4;
+        public  int    signatureLo = 4;
+        private int    accent;
+        private float  amp = 0.0F;
 
         private double nextTick   = 0.0F;
-        private float  amp        = 0.0F;
         private float  phase      = 0.0F;
+        private bool   running    = false;
         private double sampleRate = 0.0F;
-        private int    accent;
-        private bool   running = false;
 
         private void Start()
         {
@@ -29,7 +29,9 @@ namespace GameBoy.Emulators.Common.Speakers
         private void OnAudioFilterRead(float[] data, int channels)
         {
             if (!running)
+            {
                 return;
+            }
 
             double samplesPerTick = sampleRate * 60.0F / bpm * 4.0F / signatureLo;
             double sample = AudioSettings.dspTime * sampleRate;

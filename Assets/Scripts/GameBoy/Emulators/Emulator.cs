@@ -1,21 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Net.NetworkInformation;
-using System.Net.Sockets;
-using System.Threading.Tasks;
 using GameBoy.Emulators.Common;
 using GameBoy.Emulators.Common.Opcodes;
-using GameBoy.Network;
-using Grpc.Core;
 using MagicOnion;
 using MagicOnion.Client;
-using MagicOnion.Unity;
 using MagicOnionService.Network.MagicOnionServer;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
-using Ping = System.Net.NetworkInformation.Ping;
 using Random = UnityEngine.Random;
 
 namespace GameBoy.Emulators
@@ -37,25 +29,6 @@ namespace GameBoy.Emulators
 
         private bool isException = false;
 
-        private async void Start()
-        {
-            // var channel = GrpcChannelx.ForTarget(new GrpcChannelTarget("localhost", 5000, ChannelCredentials.Insecure));
-            var channel = GrpcChannelx.ForAddress("http://localhost:5000");
-            var client = MagicOnionClient.Create<IMyFirstService>(channel);
-            
-            Stopwatch sw = Stopwatch.StartNew();
-            for (int i = 0; i < 1000; i++)
-            {
-                var left = Random.Range(1, 1000);
-                var right = Random.Range(1, 1000);
-                sw.Restart();
-                var result = await client.SumAsync(left, right);
-                sw.Stop();
-                var microSeconds = sw.ElapsedTicks / (Stopwatch.Frequency / (1000L * 1000L));
-                Debug.Log($"{left}+{right}={result} in {microSeconds} microSeconds");
-            }
-        }
-
         private void Awake()
         {
             romData = File.ReadAllBytes(Path.GetFullPath(TEST_ROM_PATH3));
@@ -72,6 +45,25 @@ namespace GameBoy.Emulators
             Debug.Log(new Info(romData).ToString());
             Debug.Log(new Info(File.ReadAllBytes(Path.GetFullPath(TEST_ROM_PATH2))).ToString());
             Debug.Log(new Info(File.ReadAllBytes(Path.GetFullPath(TEST_ROM_PATH))).ToString());
+        }
+
+        private async void Start()
+        {
+            // var channel = GrpcChannelx.ForTarget(new GrpcChannelTarget("localhost", 5000, ChannelCredentials.Insecure));
+            GrpcChannelx channel = GrpcChannelx.ForAddress("http://localhost:5000");
+            IMyFirstService client = MagicOnionClient.Create<IMyFirstService>(channel);
+
+            Stopwatch sw = Stopwatch.StartNew();
+            for (int i = 0; i < 1000; i++)
+            {
+                int left = Random.Range(1, 1000);
+                int right = Random.Range(1, 1000);
+                sw.Restart();
+                int result = await client.SumAsync(left, right);
+                sw.Stop();
+                long microSeconds = sw.ElapsedTicks / (Stopwatch.Frequency / (1000L * 1000L));
+                Debug.Log($"{left}+{right}={result} in {microSeconds} microSeconds");
+            }
         }
 
         private void Update()

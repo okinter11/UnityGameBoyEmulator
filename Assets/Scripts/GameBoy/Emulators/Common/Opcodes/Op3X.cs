@@ -8,6 +8,7 @@
             cpu.ProgramCounter += 3;
             cpu.ClockCounter += 12;
         }
+
         public static void X32_LD_HLd_A(Cpu cpu)
         {
             Op.Write(cpu, cpu.Reg.HL, cpu.Reg.A);

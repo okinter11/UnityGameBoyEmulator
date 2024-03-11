@@ -3,6 +3,7 @@ using Grpc.Core;
 #else
 using Grpc.Net.Client;
 #endif
+using Cysharp.Net.Http;
 using MagicOnion.Client;
 using MagicOnion.Unity;
 using MagicOnionService.Network.MagicOnionServer;
@@ -13,19 +14,19 @@ using UnityEngine;
 namespace GameBoy.Network
 {
     [MagicOnionClientGeneration(typeof(IMyFirstService))]
-    partial class MagicOnionClientInitializer
+    internal partial class MagicOnionClientInitializer
     {
     }
 
     public class GrpcInit
     {
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-        static void RegisterResolvers()
+        private static void RegisterResolvers()
         {
             // NOTE: Currently, CompositeResolver doesn't work on Unity IL2CPP build. Use StaticCompositeResolver instead of it.
             StaticCompositeResolver.Instance.Register(
                 MagicOnionClientInitializer.Resolver,
-                MessagePack.Resolvers.GeneratedResolver.Instance,
+                GeneratedResolver.Instance,
                 BuiltinResolver.Instance,
                 PrimitiveObjectResolver.Instance
             );
@@ -42,10 +43,10 @@ namespace GameBoy.Network
             GrpcChannelProviderHost.Initialize(
                 new GrpcNetClientGrpcChannelProvider(() => new GrpcChannelOptions()
                 {
-                    HttpHandler = new Cysharp.Net.Http.YetAnotherHttpHandler()
+                    HttpHandler = new YetAnotherHttpHandler()
                     {
                         Http2Only = true,
-                    }
+                    },
                 }));
             #endif
             #if MAGICONION_USE_GRPC_CCORE
