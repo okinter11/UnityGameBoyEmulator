@@ -18,6 +18,12 @@
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 8;
         }
+        
+        public static void XE9_JP_HL(Cpu cpu)
+        {
+            cpu.ProgramCounter = cpu.Reg.HL;
+            cpu.ClockCounter += 4;
+        }
 
         public static void XEA_LD_A16_A(Cpu cpu)
         {

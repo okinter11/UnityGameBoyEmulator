@@ -29,7 +29,7 @@
         public static void XF8_LD_HL_SP_N8(Cpu cpu)
         {
             ushort v1 = cpu.Reg.SP;
-            short v2 = (sbyte)Op.Read(cpu, cpu.ProgramCounter + 1);
+            short v2 = unchecked((sbyte)Op.Read(cpu, cpu.ProgramCounter + 1));
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
             ushort r = (ushort)(v1 + v2);

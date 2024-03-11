@@ -6,7 +6,7 @@
         {
             byte v1 = cpu.Reg.A;
             byte v2 = cpu.Reg.B;
-            sbyte r = (sbyte)((sbyte)v1 - (sbyte)v2);
+            sbyte r = unchecked((sbyte)((sbyte)v1 - (sbyte)v2));
             cpu.Reg.z = r == 0;
             cpu.Reg.n = true;
             cpu.Reg.h = (v1 & 0x0F) < (v2 & 0x0F);
@@ -19,7 +19,7 @@
         {
             byte v1 = cpu.Reg.A;
             byte v2 = cpu.Reg.C;
-            sbyte r = (sbyte)((sbyte)v1 - (sbyte)v2);
+            sbyte r = unchecked((sbyte)((sbyte)v1 - (sbyte)v2));
             cpu.Reg.z = r == 0;
             cpu.Reg.n = true;
             cpu.Reg.h = (v1 & 0x0F) < (v2 & 0x0F);
@@ -32,7 +32,7 @@
         {
             byte v1 = cpu.Reg.A;
             byte v2 = cpu.Reg.D;
-            sbyte r = (sbyte)((sbyte)v1 - (sbyte)v2);
+            sbyte r = unchecked((sbyte)((sbyte)v1 - (sbyte)v2));
             cpu.Reg.z = r == 0;
             cpu.Reg.n = true;
             cpu.Reg.h = (v1 & 0x0F) < (v2 & 0x0F);
@@ -45,7 +45,7 @@
         {
             byte v1 = cpu.Reg.A;
             byte v2 = cpu.Reg.E;
-            sbyte r = (sbyte)((sbyte)v1 - (sbyte)v2);
+            sbyte r = unchecked((sbyte)((sbyte)v1 - (sbyte)v2));
             cpu.Reg.z = r == 0;
             cpu.Reg.n = true;
             cpu.Reg.h = (v1 & 0x0F) < (v2 & 0x0F);
@@ -58,7 +58,7 @@
         {
             byte v1 = cpu.Reg.A;
             byte v2 = cpu.Reg.H;
-            sbyte r = (sbyte)((sbyte)v1 - (sbyte)v2);
+            sbyte r = unchecked((sbyte)((sbyte)v1 - (sbyte)v2));
             cpu.Reg.z = r == 0;
             cpu.Reg.n = true;
             cpu.Reg.h = (v1 & 0x0F) < (v2 & 0x0F);
@@ -71,7 +71,7 @@
         {
             byte v1 = cpu.Reg.A;
             byte v2 = cpu.Reg.L;
-            sbyte r = (sbyte)((sbyte)v1 - (sbyte)v2);
+            sbyte r = unchecked((sbyte)((sbyte)v1 - (sbyte)v2));
             cpu.Reg.z = r == 0;
             cpu.Reg.n = true;
             cpu.Reg.h = (v1 & 0x0F) < (v2 & 0x0F);
@@ -84,7 +84,7 @@
         {
             byte v1 = cpu.Reg.A;
             byte v2 = Op.Read(cpu, cpu.Reg.HL);
-            sbyte r = (sbyte)((sbyte)v1 - (sbyte)v2);
+            sbyte r = unchecked((sbyte)((sbyte)v1 - (sbyte)v2));
             cpu.Reg.z = r == 0;
             cpu.Reg.n = true;
             cpu.Reg.h = (v1 & 0x0F) < (v2 & 0x0F);
@@ -97,7 +97,7 @@
         {
             byte v1 = cpu.Reg.A;
             byte v2 = cpu.Reg.A;
-            sbyte r = (sbyte)((sbyte)v1 - (sbyte)v2);
+            sbyte r = unchecked((sbyte)((sbyte)v1 - (sbyte)v2));
             cpu.Reg.z = r == 0;
             cpu.Reg.n = true;
             cpu.Reg.h = (v1 & 0x0F) < (v2 & 0x0F);
