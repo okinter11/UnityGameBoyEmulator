@@ -34,20 +34,145 @@ namespace GameBoy.Emulators.Common.Opcodes
 
         #region ReadWrite
 
-        public static byte Read(Cpu cpu, int address) => cpu.Ram[address];
+        public static byte Read(Cpu cpu, int address)
+        {
+            if (address < Ram.MAP_ROM_BANK_0)
+            {
+                throw new Exception($"Invalid address:{address:X8}");
+            }
+            else if (address <= Ram.MAP_ROM_BANK_1_END)
+            {
+                return cpu.RomData[address];
+            }
+            else if (address <= Ram.MAP_VRAM_END)
+            {
+                return cpu.VRAM[address - Ram.MAP_VRAM];
+            }
+            else if (address <= Ram.MAP_EXTERNAL_RAM_END)
+            {
+                return cpu.RomData[address];
+            }
+            else if (address <= Ram.MAP_WORK_RAM_END)
+            {
+                return cpu.WRAM[address - Ram.MAP_WORK_RAM];
+            }
+            else if (address <= Ram.MAP_ECHO_RAM_END)
+            {
+                throw new NotImplementedException();
+            }
+            else if (address <= Ram.MAP_OAM_END)
+            {
+                throw new NotImplementedException();
+            }
+            else if (address <= Ram.MAP_UNUSED_END)
+            {
+                throw new NotImplementedException();
+            }
+            else if (address <= Ram.MAP_IO_REGISTERS_END)
+            {
+                switch (address)
+                {
+                    case 0xFF01: return 0xFF; // TODO
+                    case 0xFF02: return 0xFF; // TODO
+                    case 0xFF03: return 0xFF; // TODO
+                    case 0xFF04: return Cpu.ReadDiv(cpu);
+                    case 0xFF05: return cpu.tima;
+                    case 0xFF06: return cpu.tma;
+                    case 0xFF07: return cpu.tac;
+                    case 0xFF0F: return (byte)(cpu._intFlags | 0xE0);
+                }
 
-        public static ushort Read16(Cpu cpu, int address) => (ushort)(cpu.Ram[address]
-                                                                    | (cpu.Ram[address + 1] << 8));
+                throw new NotImplementedException($"address read:{address:X4}");
+            }
+            else if (address <= Ram.MAP_HRAM_END)
+            {
+                return cpu.HRAM[address - Ram.MAP_HRAM];
+            }
+            else if (address <= Ram.MAP_INTERRUPT_ENABLE)
+            {
+                return (byte)(cpu._intEnableFlags | 0xE0);
+            }
+
+            return 0xFF;
+        }
+
+        public static ushort Read16(Cpu cpu, int address) =>
+            (ushort)(Read(cpu, address) | (Read(cpu, address + 1) << 8));
 
         public static void Write(Cpu cpu, int address, byte value)
         {
-            cpu.Ram[address] = value;
+            if (address < Ram.MAP_ROM_BANK_0)
+            {
+                throw new Exception($"Invalid address:{address:X8}");
+            }
+            else if (address <= Ram.MAP_ROM_BANK_1_END)
+            {
+                cpu.RomData[address] = value;
+            }
+            else if (address <= Ram.MAP_VRAM_END)
+            {
+                cpu.VRAM[address - Ram.MAP_VRAM] = value;
+            }
+            else if (address <= Ram.MAP_EXTERNAL_RAM_END)
+            {
+                cpu.RomData[address] = value;
+            }
+            else if (address <= Ram.MAP_WORK_RAM_END)
+            {
+                cpu.WRAM[address - Ram.MAP_WORK_RAM] = value;
+            }
+            else if (address <= Ram.MAP_ECHO_RAM_END)
+            {
+                throw new NotImplementedException();
+            }
+            else if (address <= Ram.MAP_OAM_END)
+            {
+                throw new NotImplementedException();
+            }
+            else if (address <= Ram.MAP_UNUSED_END)
+            {
+                throw new NotImplementedException();
+            }
+            else if (address <= Ram.MAP_IO_REGISTERS_END)
+            {
+                switch (address)
+                {
+                    case 0xFF01: return; // TODO
+                    case 0xFF02: return; // TODO 
+                    case 0xFF03: return; // TODO
+                    case 0xFF04:
+                        cpu.div = 0;
+                        return;
+                    case 0xFF05:
+                        cpu.tima = value;
+                        return;
+                    case 0xFF06:
+                        cpu.tma = value;
+                        return;
+                    case 0xFF07:
+                        cpu.tac = (byte)(0xF8 | (value & 0x07));
+                        return;
+                    case 0xFF0F:
+                        cpu._intFlags = (byte)(value & 0x1F);
+                        return;
+                }
+
+                throw new NotImplementedException($"address write:{address:X4}");
+            }
+            else if (address <= Ram.MAP_HRAM_END)
+            {
+                cpu.HRAM[address - Ram.MAP_HRAM] = value;
+            }
+            else if (address <= Ram.MAP_INTERRUPT_ENABLE)
+            {
+                cpu._intEnableFlags = value;
+            }
         }
 
         public static void Write16(Cpu cpu, int address, ushort value)
         {
-            cpu.Ram[address] = (byte)(value & 0x00FF);
-            cpu.Ram[address + 1] = (byte)((value & 0xFF00) >> 8);
+            Write(cpu, address, (byte)(value & 0x00FF));
+            Write(cpu, address + 1, (byte)((value & 0xFF00) >> 8));
         }
 
         public static void Push16(Cpu cpu, ushort value)

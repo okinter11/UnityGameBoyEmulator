@@ -9,38 +9,17 @@ namespace GameBoy.Emulators
 {
     public class Emulator : MonoBehaviour
     {
-        public const string TEST_ROM_PATH = @"Assets/Resources/ROMs/Legend of Zelda, The - Link's Awakening (G) [!].gb";
-        public const string TEST_ROM_PATH2 = @"Assets/Resources/ROMs/Pokemon Red-Blue 2-in-1 (Unl) [S].gb";
-        public const string TEST_ROM_PATH3 = @"Assets/Resources/ROMs/Super Mario Land (JUE) (V1.1) [!].gb";
-        [HideInInspector] public byte[] romData = Array.Empty<byte>();
+        public const string TEST_ROM_PATH1 =
+            @"Assets/Resources/ROMs/Legend of Zelda, The - Link's Awakening (G) [!].gb";
+        public const             string TEST_ROM_PATH2 = @"Assets/Resources/ROMs/Pokemon Red-Blue 2-in-1 (Unl) [S].gb";
+        public const             string TEST_ROM_PATH3 = @"Assets/Resources/ROMs/Super Mario Land (JUE) (V1.1) [!].gb";
+        [HideInInspector] public byte[] romData        = Array.Empty<byte>();
 
         [SerializeField]
         private ulong clockCounter = 0;
 
         [SerializeField]
         private ushort programCounter = 0;
-
-        private Cpu cpu = new();
-
-        private bool isException = false;
-
-        private void Awake()
-        {
-            romData = File.ReadAllBytes(Path.GetFullPath(TEST_ROM_PATH3));
-            if (!Valid.CheckSum(romData, out string err))
-            {
-                Debug.LogError(err);
-                return;
-            }
-
-            cpu.ProgramCounter = 0x100;
-            cpu.RomData = romData;
-            isException = false;
-
-            Debug.Log(new Info(romData).ToString());
-            Debug.Log(new Info(File.ReadAllBytes(Path.GetFullPath(TEST_ROM_PATH2))).ToString());
-            Debug.Log(new Info(File.ReadAllBytes(Path.GetFullPath(TEST_ROM_PATH))).ToString());
-        }
 
         // private async void Start()
         // {
@@ -61,6 +40,34 @@ namespace GameBoy.Emulators
         //     }
         // }
 
+        [SerializeField]
+        private bool StepMode = false;
+
+        [SerializeField]
+        private bool StepNext;
+
+        private Cpu cpu = new();
+
+        private bool isException = false;
+
+        private void Awake()
+        {
+            romData = File.ReadAllBytes(Path.GetFullPath(TEST_ROM_PATH2));
+            if (!Valid.CheckSum(romData, out string err))
+            {
+                Debug.LogError(err);
+                return;
+            }
+
+            cpu.ProgramCounter = 0x100;
+            cpu.RomData = romData;
+            isException = false;
+
+            Debug.Log(new Info(File.ReadAllBytes(Path.GetFullPath(TEST_ROM_PATH1))).ToString());
+            Debug.Log(new Info(File.ReadAllBytes(Path.GetFullPath(TEST_ROM_PATH2))).ToString());
+            Debug.Log(new Info(File.ReadAllBytes(Path.GetFullPath(TEST_ROM_PATH3))).ToString());
+        }
+
         private void Update()
         {
             if (cpu != null
@@ -68,16 +75,38 @@ namespace GameBoy.Emulators
              && cpu.RomData != null
              && cpu.RomData.Length > 0)
             {
-                try
+                if (!StepMode)
                 {
-                    CpuOp.Step(cpu, Time.deltaTime);
-                    clockCounter = cpu.ClockCounter;
-                    programCounter = cpu.ProgramCounter;
+                    try
+                    {
+                        CpuOp.Step(cpu, Time.deltaTime);
+                        clockCounter = cpu.ClockCounter;
+                        programCounter = cpu.ProgramCounter;
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.LogException(e);
+                        isException = true;
+                    }
                 }
-                catch (Exception e)
+                else
                 {
-                    Debug.LogException(e);
-                    isException = true;
+                    if (StepNext)
+                    {
+                        StepNext = false;
+                        try
+                        {
+                            Debug.Log($"opcode:{Op.Read(cpu, cpu.ProgramCounter):X2}");
+                            CpuOp.Step(cpu);
+                            clockCounter = cpu.ClockCounter;
+                            programCounter = cpu.ProgramCounter;
+                        }
+                        catch (Exception e)
+                        {
+                            Debug.LogException(e);
+                            isException = true;
+                        }
+                    }
                 }
             }
         }

@@ -29,7 +29,7 @@
 
         public static void XF3_DI(Cpu cpu)
         {
-            cpu.IME = true;
+            cpu.DisableInterruptMaster();
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
         }
@@ -93,6 +93,13 @@
             cpu.Reg.A = Op.Read(cpu, Ram.MAP_IO_REGISTERS + address);
             cpu.ProgramCounter += 2;
             cpu.ClockCounter += 8;
+        }
+
+        public static void XFB_EI(Cpu cpu)
+        {
+            cpu.EnableInterruptMaster();
+            cpu.ProgramCounter += 1;
+            cpu.ClockCounter += 4;
         }
 
         public static void XFE_CP_A_N8(Cpu cpu)

@@ -171,7 +171,7 @@
 
         public static void XAF_XOR_A_A(Cpu cpu)
         {
-            cpu.Reg.A ^= cpu.Reg.B;
+            cpu.Reg.A ^= cpu.Reg.A;
             cpu.Reg.z = cpu.Reg.A == 0;
             cpu.Reg.n = false;
             cpu.Reg.h = false;

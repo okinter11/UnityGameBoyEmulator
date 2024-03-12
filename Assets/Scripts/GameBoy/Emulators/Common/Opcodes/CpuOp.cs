@@ -99,16 +99,106 @@ namespace GameBoy.Emulators.Common.Opcodes
 
         #region Step Increments
 
+        public const byte INT_VBLANK   = 1;
+        public const byte INT_LCD_STAT = 2;
+        public const byte INT_TIMER    = 4;
+        public const byte INT_SERIAL   = 8;
+        public const byte INT_JOYPAD   = 16;
+
+        public static void ServiceInterrupt(Cpu cpu)
+        {
+            byte intFlags = (byte)(cpu._intFlags & cpu._intEnableFlags);
+            byte serviceInt = 0;
+            if ((intFlags & INT_VBLANK) != 0)
+            {
+                serviceInt = INT_VBLANK;
+            }
+            else if ((intFlags & INT_LCD_STAT) != 0)
+            {
+                serviceInt = INT_LCD_STAT;
+            }
+            else if ((intFlags & INT_TIMER) != 0)
+            {
+                serviceInt = INT_TIMER;
+            }
+            else if ((intFlags & INT_SERIAL) != 0)
+            {
+                serviceInt = INT_SERIAL;
+            }
+            else if ((intFlags & INT_JOYPAD) != 0)
+            {
+                serviceInt = INT_JOYPAD;
+            }
+
+            if (serviceInt == 0)
+            {
+                throw new Exception("No interrupt to service");
+            }
+
+            cpu._intFlags &= (byte)~serviceInt;
+            cpu.DisableInterruptMaster();
+            cpu.ClockCounter += 8;
+            Op.Push16(cpu, cpu.ProgramCounter);
+            cpu.ClockCounter += 8;
+            switch (serviceInt)
+            {
+                case INT_VBLANK:
+                    cpu.ProgramCounter = 0x40;
+                    break;
+                case INT_LCD_STAT:
+                    cpu.ProgramCounter = 0x48;
+                    break;
+                case INT_TIMER:
+                    cpu.ProgramCounter = 0x50;
+                    break;
+                case INT_SERIAL:
+                    cpu.ProgramCounter = 0x58;
+                    break;
+                case INT_JOYPAD:
+                    cpu.ProgramCounter = 0x60;
+                    break;
+            }
+
+            cpu.ClockCounter += 4;
+        }
+
         public static void Step(Cpu cpu)
         {
-            byte opcode = Op.Read(cpu, cpu.ProgramCounter);
-            try
+            if (!cpu.Halted)
             {
-                Instruction[opcode](cpu);
+                if (cpu._ime && cpu._intFlags != 0 && cpu._intEnableFlags != 0)
+                {
+                    ServiceInterrupt(cpu);
+                }
+                else
+                {
+                    byte opcode = Op.Read(cpu, cpu.ProgramCounter);
+                    try
+                    {
+                        Instruction[opcode](cpu);
+                    }
+                    catch (Exception e)
+                    {
+                        throw new Exception($"Opcode {opcode:X2} -> {e}");
+                    }
+                }
             }
-            catch (Exception e)
+            else
             {
-                throw new Exception($"Opcode {opcode:X2} -> {e}");
+                cpu.ClockCounter += 4;
+                if (cpu._intFlags != 0 && cpu._intEnableFlags != 0)
+                {
+                    cpu.Halted = false;
+                }
+            }
+
+            if (cpu._imeCountdown != 0)
+            {
+                cpu._imeCountdown -= 1;
+                if (cpu._imeCountdown == 0)
+                {
+                    cpu._ime = true;
+                }
             }
         }
 
