@@ -80,6 +80,18 @@ namespace GameBoy.Emulators.Common.Opcodes
                     case 0xFF06: return cpu.tma;
                     case 0xFF07: return cpu.tac;
                     case 0xFF0F: return (byte)(cpu._intFlags | 0xE0);
+                    case 0xFF40: return cpu.Ppu.lcdc;
+                    case 0xFF41: return cpu.Ppu.lcds;
+                    case 0xFF42: return cpu.Ppu.scroll_y;
+                    case 0xFF43: return cpu.Ppu.scroll_x;
+                    case 0xFF44: return cpu.Ppu.ly;
+                    case 0xFF45: return cpu.Ppu.lyc;
+                    case 0xFF46: return cpu.Ppu.dma;
+                    case 0xFF47: return cpu.Ppu.bgp;
+                    case 0xFF48: return cpu.Ppu.obp0;
+                    case 0xFF49: return cpu.Ppu.obp1;
+                    case 0xFF4A: return cpu.Ppu.wy;
+                    case 0xFF4B: return cpu.Ppu.wx;
                 }
 
                 throw new NotImplementedException($"address read:{address:X4}");
@@ -154,6 +166,46 @@ namespace GameBoy.Emulators.Common.Opcodes
                         return;
                     case 0xFF0F:
                         cpu._intFlags = (byte)(value & 0x1F);
+                        return;
+                    case 0xFF40:
+                        if (cpu.Ppu.Enabled && (value & (1 << 7)) == 0)
+                        {
+                            cpu.Ppu.lcds &= 0x7C;
+                            cpu.Ppu.ly = 0;
+                            cpu.Ppu.lineCycles = 0;
+                        }
+
+                        return;
+                    case 0xFF41:
+                        cpu.Ppu.lcds = (byte)((cpu.Ppu.lcds & 0x07) | (byte)(value & 0xF8));
+                        return;
+                    case 0xFF42:
+                        cpu.Ppu.scroll_y = value;
+                        return;
+                    case 0xFF43:
+                        cpu.Ppu.scroll_x = value;
+                        return;
+                    case 0xFF44: return; // read only
+                    case 0xFF45:
+                        cpu.Ppu.lyc = value;
+                        return;
+                    case 0xFF46:
+                        cpu.Ppu.dma = value;
+                        return;
+                    case 0xFF47:
+                        cpu.Ppu.bgp = value;
+                        return;
+                    case 0xFF48:
+                        cpu.Ppu.obp0 = value;
+                        return;
+                    case 0xFF49:
+                        cpu.Ppu.obp1 = value;
+                        return;
+                    case 0xFF4A:
+                        cpu.Ppu.wy = value;
+                        return;
+                    case 0xFF4B:
+                        cpu.Ppu.wx = value;
                         return;
                 }
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using GameBoy.Emulators.Common.Cpus;
 
 namespace GameBoy.Emulators.Common.Opcodes
 {
@@ -204,10 +205,13 @@ namespace GameBoy.Emulators.Common.Opcodes
 
         public static void Step(Cpu cpu, double deltaTime)
         {
+            deltaTime = Math.Clamp(deltaTime, 0, 0.125);
             int cycles = (int)(Cpu.CLOCK_SPEED * deltaTime);
             for (int i = 0; i < cycles; i++)
             {
                 Step(cpu);
+                Cpu.TimerTick(cpu);
+                Ppu.PpuTick(cpu);
             }
         }
 

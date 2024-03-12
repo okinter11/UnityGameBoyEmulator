@@ -46,7 +46,7 @@ namespace GameBoy.Emulators
         [SerializeField]
         private bool StepNext;
 
-        private Cpu cpu = new();
+        public Cpu cpu = new();
 
         private bool isException = false;
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using GameBoy.Emulators.Common.Cpus;
 using GameBoy.Emulators.Common.Opcodes;
 
 namespace GameBoy.Emulators.Common
@@ -12,6 +13,7 @@ namespace GameBoy.Emulators.Common
         /// </summary>
         public const ulong CLOCK_SPEED = 4194304;
         public readonly byte[] HRAM = new byte[Ram.MAP_HRAM_END - Ram.MAP_HRAM + 1];
+        public readonly Ppu    Ppu  = new();
 
         #region RAM
 
@@ -205,6 +207,8 @@ namespace GameBoy.Emulators.Common
 
         public Cpu()
         {
+            Ram = new Ram();
+            Ppu = new Ppu();
             Init();
         }
 
@@ -259,13 +263,6 @@ namespace GameBoy.Emulators.Common
                 Ram.LoadRom(value);
             }
         }
-
-        #endregion
-
-        #region Graphics
-
-        public const ushort SCREEN_WIDTH  = 160;
-        public const ushort SCREEN_HEIGHT = 144;
 
         #endregion
     }
