@@ -606,6 +606,8 @@ MonoBehaviour:
   romData: 
   clockCounter: 0
   programCounter: 0
+  StepMode: 0
+  StepNext: 0
 --- !u!4 &1820608263
 Transform:
   m_ObjectHideFlags: 0
