@@ -6,13 +6,29 @@ namespace GameBoy.Emulators.Common.Opcodes
     {
         #region OverFlowDetect
 
-        public static bool DetectHalfOverflowAdd(byte left, byte right) => (left & 0x0F) + (right & 0x0F) > 0x0F;
-        public static bool DetectOverflowAdd(byte     left, byte right) => left + right > 0xFF;
+        public static bool DetectHalfOverflowAdd(byte left, byte right, byte val = 0)
+            => (left & 0x0F)
+             + (right & 0x0F)
+             + val
+             > 0x0F;
 
-        public static bool DetectHalfOverflowAdd(ushort left, ushort right) =>
-            (left & 0x00FF) + (right & 0x00FF) > 0x00FF;
+        public static bool DetectOverflowAdd(byte left, byte right, byte val = 0)
+            => left
+             + right
+             + val
+             > 0xFF;
 
-        public static bool DetectOverflowAdd(ushort left, ushort right) => left + right > 0xFFFF;
+        public static bool DetectHalfOverflowAdd(ushort left, ushort right, ushort val = 0)
+            => (left & 0x00FF)
+             + (right & 0x00FF)
+             + val
+             > 0x00FF;
+
+        public static bool DetectOverflowAdd(ushort left, ushort right, ushort val = 0)
+            => left
+             + right
+             + val
+             > 0xFFFF;
 
         #endregion
 

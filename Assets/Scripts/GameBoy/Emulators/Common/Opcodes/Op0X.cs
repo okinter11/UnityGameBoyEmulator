@@ -82,10 +82,12 @@
 
         public static void X09_ADD_HL_BC(Cpu cpu)
         {
+            ushort v1 = cpu.Reg.HL;
+            ushort v2 = cpu.Reg.BC;
             cpu.Reg.n = false;
-            cpu.Reg.h = Op.DetectHalfOverflowAdd(cpu.Reg.HL, cpu.Reg.BC);
-            cpu.Reg.c = Op.DetectHalfOverflowAdd(cpu.Reg.HL, cpu.Reg.BC);
-            cpu.Reg.HL += cpu.Reg.BC;
+            cpu.Reg.h = Op.DetectHalfOverflowAdd(v1, v2);
+            cpu.Reg.c = Op.DetectHalfOverflowAdd(v1, v2);
+            cpu.Reg.HL += v2;
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 8;
         }

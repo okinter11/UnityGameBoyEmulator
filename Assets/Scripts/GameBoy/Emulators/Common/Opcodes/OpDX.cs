@@ -57,6 +57,22 @@
             cpu.ClockCounter += 16;
         }
 
+        public static void XD6_SUB_N8(Cpu cpu)
+        {
+            byte v1 = cpu.Reg.A;
+            byte v2 = Op.Read(cpu, cpu.ProgramCounter + 1);
+            byte r = (byte)(v1 - v2);
+            cpu.ProgramCounter += 1;
+            cpu.ClockCounter += 4;
+            cpu.Reg.z = r == 0;
+            cpu.Reg.n = true;
+            cpu.Reg.h = (v1 & 0x0F) < (v2 & 0x0F);
+            cpu.Reg.c = v1 < v2;
+            cpu.Reg.A = r;
+            cpu.ProgramCounter += 1;
+            cpu.ClockCounter += 4;
+        }
+
         public static void XD7_RST_10H(Cpu cpu)
         {
             Op.Push16(cpu, cpu.ProgramCounter);
@@ -109,6 +125,23 @@
                 cpu.ProgramCounter = address;
                 cpu.ClockCounter += 12;
             }
+        }
+
+        public static void XDE_SUC_A_N8(Cpu cpu)
+        {
+            byte c = cpu.Reg.c ? (byte)1 : (byte)0;
+            byte v1 = cpu.Reg.A;
+            byte v2 = Op.Read(cpu, cpu.ProgramCounter + 1);
+            byte r = (byte)(v1 - v2 - c);
+            cpu.ProgramCounter += 1;
+            cpu.ClockCounter += 4;
+            cpu.Reg.z = r == 0;
+            cpu.Reg.n = true;
+            cpu.Reg.h = (v1 & 0x0F) < (v2 & 0x0F) + c;
+            cpu.Reg.c = v1 < v2 + c;
+            cpu.Reg.A = r;
+            cpu.ProgramCounter += 1;
+            cpu.ClockCounter += 4;
         }
 
         public static void XDF_RST_18H(Cpu cpu)

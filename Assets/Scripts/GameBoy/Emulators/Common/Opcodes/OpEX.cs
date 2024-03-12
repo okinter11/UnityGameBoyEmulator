@@ -40,6 +40,22 @@
             cpu.ClockCounter += 16;
         }
 
+        public static void XE8_ADD_SP_E8(Cpu cpu)
+        {
+            cpu.Reg.z = false;
+            cpu.Reg.n = false;
+            ushort v1 = cpu.Reg.SP;
+            ushort v2 = Op.Read(cpu, cpu.ProgramCounter + 1);
+            cpu.ClockCounter += 4;
+            ushort r = (ushort)(v1 + v2);
+            ushort check = (ushort)(v1 ^ v2 ^ r);
+            cpu.Reg.h = (check & 0x10) != 0;
+            cpu.Reg.c = (check & 0x100) != 0;
+            cpu.Reg.SP = r;
+            cpu.ProgramCounter += 2;
+            cpu.ClockCounter += 12;
+        }
+
         public static void XE9_JP_HL(Cpu cpu)
         {
             cpu.ProgramCounter = cpu.Reg.HL;

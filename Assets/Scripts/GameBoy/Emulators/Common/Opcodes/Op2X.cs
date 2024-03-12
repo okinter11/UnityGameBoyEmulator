@@ -97,15 +97,17 @@
             cpu.ClockCounter += (ulong)(cpu.Reg.z ? 12 : 8);
         }
 
-        // public static void X19_ADD_HL_DE(Cpu cpu)
-        // {
-        //     cpu.Reg.n = false;
-        //     cpu.Reg.h = Op.DetectHalfOverflowAdd(cpu.Reg.HL, cpu.Reg.DE);
-        //     cpu.Reg.c = Op.DetectHalfOverflowAdd(cpu.Reg.HL, cpu.Reg.DE);
-        //     cpu.Reg.HL += cpu.Reg.DE;
-        //     cpu.ProgramCounter += 1;
-        //     cpu.ClockCounter += 8;
-        // }
+        public static void X29_ADD_HL_HL(Cpu cpu)
+        {
+            ushort v1 = cpu.Reg.HL;
+            ushort v2 = cpu.Reg.HL;
+            cpu.Reg.n = false;
+            cpu.Reg.h = Op.DetectHalfOverflowAdd(v1, v2);
+            cpu.Reg.c = Op.DetectHalfOverflowAdd(v1, v2);
+            cpu.Reg.HL += v2;
+            cpu.ProgramCounter += 1;
+            cpu.ClockCounter += 8;
+        }
 
         public static void X2A_LD_A_HLi(Cpu cpu)
         {
@@ -115,12 +117,12 @@
             cpu.ClockCounter += 8;
         }
 
-        // public static void X1B_DEC_DE(Cpu cpu)
-        // {
-        //     cpu.Reg.DE -= 1;
-        //     cpu.ProgramCounter += 1;
-        //     cpu.ClockCounter += 8;
-        // }
+        public static void X2B_DEC_HL(Cpu cpu)
+        {
+            cpu.Reg.HL -= 1;
+            cpu.ProgramCounter += 1;
+            cpu.ClockCounter += 8;
+        }
 
         public static void X2C_INC_L(Cpu cpu)
         {
@@ -132,15 +134,15 @@
             cpu.ClockCounter += 4;
         }
 
-        // public static void X1D_DEC_E(Cpu cpu)
-        // {
-        //     cpu.Reg.E -= 1;
-        //     cpu.Reg.z = cpu.Reg.E == 0;
-        //     cpu.Reg.n = true;
-        //     cpu.Reg.h = (cpu.Reg.E & 0x0F) == 0x0F;
-        //     cpu.ProgramCounter += 1;
-        //     cpu.ClockCounter += 4;
-        // }
+        public static void X2D_DEC_L(Cpu cpu)
+        {
+            cpu.Reg.L -= 1;
+            cpu.Reg.z = cpu.Reg.L == 0;
+            cpu.Reg.n = true;
+            cpu.Reg.h = (cpu.Reg.L & 0x0F) == 0x0F;
+            cpu.ProgramCounter += 1;
+            cpu.ClockCounter += 4;
+        }
 
         public static void X2E_LD_L_N8(Cpu cpu)
         {

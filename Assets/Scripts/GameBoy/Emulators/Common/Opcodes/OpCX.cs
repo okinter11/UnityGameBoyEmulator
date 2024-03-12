@@ -65,6 +65,22 @@
             cpu.ClockCounter += 16;
         }
 
+        public static void XC6_ADD_A_N8(Cpu cpu)
+        {
+            byte v1 = cpu.Reg.A;
+            byte v2 = Op.Read(cpu, cpu.ProgramCounter + 1);
+            cpu.ProgramCounter += 1;
+            cpu.ClockCounter += 4;
+            byte r = (byte)(v1 + v2);
+            cpu.Reg.z = r == 0;
+            cpu.Reg.n = false;
+            cpu.Reg.h = Op.DetectHalfOverflowAdd(v1, v2);
+            cpu.Reg.c = Op.DetectOverflowAdd(v1, v2);
+            cpu.Reg.A = r;
+            cpu.ProgramCounter += 1;
+            cpu.ClockCounter += 4;
+        }
+
         public static void XC7_RST_00H(Cpu cpu)
         {
             Op.Push16(cpu, cpu.ProgramCounter);
