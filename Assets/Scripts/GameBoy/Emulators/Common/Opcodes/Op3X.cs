@@ -68,6 +68,15 @@
             cpu.ClockCounter += 8;
         }
 
+        public static void X37_SCF(Cpu cpu)
+        {
+            cpu.Reg.n = false;
+            cpu.Reg.h = false;
+            cpu.Reg.c = true;
+            cpu.ProgramCounter += 1;
+            cpu.ClockCounter += 4;
+        }
+
         public static void X38_JR_NZ_E8(Cpu cpu)
         {
             cpu.ProgramCounter += (ushort)(cpu.Reg.c ? unchecked((sbyte)Op.Read(cpu, cpu.ProgramCounter + 1)) : 2);
@@ -126,6 +135,15 @@
             cpu.Reg.A = Op.Read(cpu, cpu.ProgramCounter + 1);
             cpu.ProgramCounter += 2;
             cpu.ClockCounter += 8;
+        }
+
+        public static void X3F_CCF(Cpu cpu)
+        {
+            cpu.Reg.n = false;
+            cpu.Reg.h = false;
+            cpu.Reg.c = !cpu.Reg.c;
+            cpu.ProgramCounter += 1;
+            cpu.ClockCounter += 4;
         }
     }
 }

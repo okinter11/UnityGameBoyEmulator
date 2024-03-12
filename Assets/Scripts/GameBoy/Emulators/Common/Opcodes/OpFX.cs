@@ -41,6 +41,19 @@
             cpu.ClockCounter += 16;
         }
 
+        public static void XF6_OR_A_N8(Cpu cpu)
+        {
+            cpu.Reg.A |= Op.Read(cpu, cpu.ProgramCounter + 1);
+            cpu.ProgramCounter += 1;
+            cpu.ClockCounter += 4;
+            cpu.Reg.z = cpu.Reg.A == 0;
+            cpu.Reg.n = false;
+            cpu.Reg.h = false;
+            cpu.Reg.c = false;
+            cpu.ProgramCounter += 1;
+            cpu.ClockCounter += 4;
+        }
+
         public static void XF7_RST_30H(Cpu cpu)
         {
             Op.Push16(cpu, cpu.ProgramCounter);

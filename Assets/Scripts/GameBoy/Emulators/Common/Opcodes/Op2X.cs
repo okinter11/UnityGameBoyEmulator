@@ -59,29 +59,48 @@
 
         public static void X27_DAA(Cpu cpu)
         {
-            if (!cpu.Reg.n)
+            if (cpu.Reg.n)
             {
-                if (cpu.Reg.h || (cpu.Reg.A & 0x0F) > 9)
+                if (cpu.Reg.c)
                 {
-                    cpu.Reg.A += 0x06;
+                    if (cpu.Reg.h)
+                    {
+                        cpu.Reg.A += 0x9A;
+                    }
+                    else
+                    {
+                        cpu.Reg.A += 0xA0;
+                    }
                 }
-
-                if (cpu.Reg.c || cpu.Reg.A > 0x9F)
+                else
                 {
-                    cpu.Reg.A += 0x60;
-                    cpu.Reg.c = true;
+                    if (cpu.Reg.h)
+                    {
+                        cpu.Reg.A += 0xFA;
+                    }
                 }
             }
             else
             {
-                if (cpu.Reg.h)
+                if (cpu.Reg.c || cpu.Reg.A > 0x99)
                 {
-                    cpu.Reg.A = (byte)(cpu.Reg.A - 0x06);
-                }
+                    if (cpu.Reg.h || (cpu.Reg.A & 0x0F) > 0x09)
+                    {
+                        cpu.Reg.A += 0x66;
+                    }
+                    else
+                    {
+                        cpu.Reg.A += 0x60;
+                    }
 
-                if (cpu.Reg.c)
+                    cpu.Reg.c = true;
+                }
+                else
                 {
-                    cpu.Reg.A = (byte)(cpu.Reg.A - 0x60);
+                    if (cpu.Reg.h || (cpu.Reg.A & 0x0F) > 0x09)
+                    {
+                        cpu.Reg.A += 0x06;
+                    }
                 }
             }
 
@@ -151,16 +170,13 @@
             cpu.ClockCounter += 8;
         }
 
-        // public static void X1F_RRA(Cpu cpu)
-        // {
-        //     int cMask = cpu.Reg.c ? 0x80 : 0x00;
-        //     cpu.Reg.z = false;
-        //     cpu.Reg.n = false;
-        //     cpu.Reg.h = false;
-        //     cpu.Reg.c = (cpu.Reg.A & 0x01) == 1;
-        //     cpu.Reg.A = (byte)((cpu.Reg.A >> 1) | cMask);
-        //     cpu.ProgramCounter += 1;
-        //     cpu.ClockCounter += 4;
-        // }
+        public static void X2F_CPL(Cpu cpu)
+        {
+            cpu.Reg.A = (byte)~cpu.Reg.A;
+            cpu.Reg.n = true;
+            cpu.Reg.h = true;
+            cpu.ProgramCounter += 1;
+            cpu.ClockCounter += 4;
+        }
     }
 }

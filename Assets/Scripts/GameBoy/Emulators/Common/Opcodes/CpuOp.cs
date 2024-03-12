@@ -23,12 +23,12 @@ namespace GameBoy.Emulators.Common.Opcodes
             Op2X.X20_JR_NZ_E8, Op2X.X21_LD_HL_N16, Op2X.X22_LD_HLi_A, Op2X.X23_INC_HL,
             Op2X.X24_INC_H, Op2X.X25_DEC_H, Op2X.X26_LD_H_N8, Op2X.X27_DAA,
             Op2X.X28_JR_Z_E8, Op2X.X29_ADD_HL_HL, Op2X.X2A_LD_A_HLi, Op2X.X2B_DEC_HL,
-            Op2X.X2C_INC_L, Op2X.X2D_DEC_L, Op2X.X2E_LD_L_N8, NOT_IMP,
+            Op2X.X2C_INC_L, Op2X.X2D_DEC_L, Op2X.X2E_LD_L_N8, Op2X.X2F_CPL,
             // 0x30 - 0x3F
             Op3X.X30_JR_NZ_E8, Op3X.X31_LD_SP_N16, Op3X.X32_LD_HLd_A, Op3X.X33_INC_SP,
-            Op3X.X34_INC_HL, Op3X.X35_DEC_HL, Op3X.X36_LD_HL_N8, NOT_IMP,
+            Op3X.X34_INC_HL, Op3X.X35_DEC_HL, Op3X.X36_LD_HL_N8, Op3X.X37_SCF,
             Op3X.X38_JR_NZ_E8, Op3X.X39_ADD_HL_SP, Op3X.X3A_LD_A_HLd, Op3X.X3B_DEC_SP,
-            Op3X.X3C_INC_A, Op3X.X3D_DEC_A, Op3X.X3E_LD_A_N8, NOT_IMP,
+            Op3X.X3C_INC_A, Op3X.X3D_DEC_A, Op3X.X3E_LD_A_N8, Op3X.X3F_CCF,
             // 0x40 - 0x4F
             Op4X.X40_LD_B_B, Op4X.X41_LD_B_C, Op4X.X42_LD_B_D, Op4X.X43_LD_B_E,
             Op4X.X44_LD_B_H, Op4X.X45_LD_B_L, Op4X.X46_LD_B_HL, Op4X.X47_LD_B_A,
@@ -65,8 +65,8 @@ namespace GameBoy.Emulators.Common.Opcodes
             OpAX.XA8_XOR_A_B, OpAX.XA9_XOR_A_C, OpAX.XAA_XOR_A_D, OpAX.XAB_XOR_A_E,
             OpAX.XAC_XOR_A_H, OpAX.XAD_XOR_A_L, OpAX.XAE_XOR_A_HL, OpAX.XAF_XOR_A_A,
             // 0xB0 - 0xBF
-            NOT_IMP, NOT_IMP, NOT_IMP, NOT_IMP,
-            NOT_IMP, NOT_IMP, NOT_IMP, NOT_IMP,
+            OpBX.XB0_OR_A_B, OpBX.XB1_OR_A_C, OpBX.XB2_OR_A_D, OpBX.XB3_OR_A_E,
+            OpBX.XB4_OR_A_H, OpBX.XB5_OR_A_L, OpBX.XB6_OR_A_HL, OpBX.XB7_OR_A_A,
             OpBX.XB8_CP_A_B, OpBX.XB9_CP_A_C, OpBX.XBA_CP_A_D, OpBX.XBB_CP_A_E,
             OpBX.XBC_CP_A_H, OpBX.XBD_CP_A_L, OpBX.XBE_CP_A_HL, OpBX.XBF_CP_A_A,
             // 0xC0 - 0xCF
@@ -86,7 +86,7 @@ namespace GameBoy.Emulators.Common.Opcodes
             NOT_IMP, NOT_IMP, OpEX.XEE_XOR_A_N8, OpEX.XEF_RST_28H,
             // 0xF0 - 0xFF
             OpFX.XF0_LDH_A_A8, OpFX.XF1_POP_AF, OpFX.XF2_LDH_A_C, OpFX.XF3_DI,
-            NOT_IMP, OpFX.XF5_PUSH_AF, NOT_IMP, OpFX.XF7_RST_30H,
+            NOT_IMP, OpFX.XF5_PUSH_AF, OpFX.XF6_OR_A_N8, OpFX.XF7_RST_30H,
             OpFX.XF8_LD_HL_SP_N8, OpFX.XF9_LD_SP_HL, OpFX.XFA_LD_A_A16, NOT_IMP,
             NOT_IMP, NOT_IMP, OpFX.XFE_CP_A_N8, OpFX.XFF_RST_38H,
         };
