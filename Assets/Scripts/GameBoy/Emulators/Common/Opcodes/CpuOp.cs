@@ -27,7 +27,7 @@ namespace GameBoy.Emulators.Common.Opcodes
             // 0x30 - 0x3F
             Op3X.X30_JR_NZ_E8, Op3X.X31_LD_SP_N16, Op3X.X32_LD_HLd_A, Op3X.X33_INC_SP,
             Op3X.X34_INC_HL, Op3X.X35_DEC_HL, Op3X.X36_LD_HL_N8, NOT_IMP,
-            Op3X.X38_JR_NZ_E8, NOT_IMP, Op3X.X3A_LD_A_HLd, Op3X.X3B_DEC_SP,
+            Op3X.X38_JR_NZ_E8, Op3X.X39_ADD_HL_SP, Op3X.X3A_LD_A_HLd, Op3X.X3B_DEC_SP,
             Op3X.X3C_INC_A, Op3X.X3D_DEC_A, Op3X.X3E_LD_A_N8, NOT_IMP,
             // 0x40 - 0x4F
             Op4X.X40_LD_B_B, Op4X.X41_LD_B_C, Op4X.X42_LD_B_D, Op4X.X43_LD_B_E,
@@ -60,10 +60,10 @@ namespace GameBoy.Emulators.Common.Opcodes
             Op9X.X98_SUC_A_B, Op9X.X99_SUC_A_C, Op9X.X9A_SUC_A_D, Op9X.X9B_SUC_A_E,
             Op9X.X9C_SUC_A_H, Op9X.X9D_SUC_A_L, Op9X.X9E_SUC_A_HL, Op9X.X9F_SUC_A_A,
             // 0xA0 - 0xAF
-            NOT_IMP, NOT_IMP, NOT_IMP, NOT_IMP,
-            NOT_IMP, NOT_IMP, NOT_IMP, NOT_IMP,
-            NOT_IMP, NOT_IMP, NOT_IMP, NOT_IMP,
-            NOT_IMP, NOT_IMP, NOT_IMP, OpAX.XAF_XOR_A_A,
+            OpAX.XA0_AND_A_B, OpAX.XA1_AND_A_C, OpAX.XA2_AND_A_D, OpAX.XA3_AND_A_E,
+            OpAX.XA4_AND_A_H, OpAX.XA5_AND_A_L, OpAX.XA6_AND_A_HL, OpAX.XA7_AND_A_A,
+            OpAX.XA8_XOR_A_B, OpAX.XA9_XOR_A_C, OpAX.XAA_XOR_A_D, OpAX.XAB_XOR_A_E,
+            OpAX.XAC_XOR_A_H, OpAX.XAD_XOR_A_L, OpAX.XAE_XOR_A_HL, OpAX.XAF_XOR_A_A,
             // 0xB0 - 0xBF
             NOT_IMP, NOT_IMP, NOT_IMP, NOT_IMP,
             NOT_IMP, NOT_IMP, NOT_IMP, NOT_IMP,
@@ -83,7 +83,7 @@ namespace GameBoy.Emulators.Common.Opcodes
             OpEX.XE0_LDH_A8_A, OpEX.XE1_POP_HL, OpEX.XE2_LDH_C_A, NOT_IMP,
             NOT_IMP, OpEX.XE5_PUSH_HL, NOT_IMP, OpEX.XE7_RST_20H,
             OpEX.XE8_ADD_SP_E8, OpEX.XE9_JP_HL, OpEX.XEA_LD_A16_A, NOT_IMP,
-            NOT_IMP, NOT_IMP, NOT_IMP, OpEX.XEF_RST_28H,
+            NOT_IMP, NOT_IMP, OpEX.XEE_XOR_A_N8, OpEX.XEF_RST_28H,
             // 0xF0 - 0xFF
             OpFX.XF0_LDH_A_A8, OpFX.XF1_POP_AF, OpFX.XF2_LDH_A_C, OpFX.XF3_DI,
             NOT_IMP, OpFX.XF5_PUSH_AF, NOT_IMP, OpFX.XF7_RST_30H,
