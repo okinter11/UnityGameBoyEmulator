@@ -44,6 +44,13 @@
             cpu.ClockCounter += 8;
         }
 
+        public static void X76_HALT(Cpu cpu)
+        {
+            cpu.Halted = true;
+            cpu.ProgramCounter += 1;
+            cpu.ClockCounter += 4;
+        }
+
         public static void X77_LD_HL_A(Cpu cpu)
         {
             Op.Write(cpu, cpu.Reg.HL, cpu.Reg.A);

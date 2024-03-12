@@ -126,11 +126,20 @@
         public static void XCB_PREFIX(Cpu cpu)
         {
             byte opcode = Op.Read(cpu, cpu.ProgramCounter + 1);
-            byte opBit = (byte)((opcode & 0xF8) >> 5);
-            byte opReg = (byte)(opcode & 0x07);
+            cpu.ProgramCounter += 1;
+            cpu.ClockCounter += 4;
             ref byte opRef = ref cpu.Reg.A;
+            byte opReg = (byte)(opcode & 0x07);
             Op.GetRegister(cpu, opReg, ref opRef);
+            byte opBit = (byte)((opcode & 0xF8) >> 3);
             Op.CbOperation(cpu, opBit, ref opRef);
+            if ((opBit <= 0x07 || opBit >= 0x10) && opReg == 0x06)
+            {
+                cpu.ClockCounter += 4;
+            }
+
+            cpu.ProgramCounter += 1;
+            cpu.ClockCounter += 4;
         }
 
         public static void XCC_CALL_Z_A16(Cpu cpu)

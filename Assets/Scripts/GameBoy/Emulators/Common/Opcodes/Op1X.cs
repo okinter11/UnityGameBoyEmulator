@@ -6,6 +6,7 @@ namespace GameBoy.Emulators.Common.Opcodes
     {
         public static void X10_STOP_N8(Cpu cpu)
         {
+            Op.Read(cpu, cpu.ProgramCounter + 1);
             cpu.ProgramCounter += 2;
             cpu.ClockCounter += 4;
             throw new NotImplementedException();
