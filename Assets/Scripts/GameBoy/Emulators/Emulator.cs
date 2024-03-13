@@ -100,11 +100,12 @@ namespace GameBoy.Emulators
                         StepNext = false;
                         try
                         {
-                            var opcode1 = Op.Read(cpu, cpu.ProgramCounter);
-                            var opcode2 = Op.Read(cpu, (ushort) (cpu.ProgramCounter + 1));
-                            var opcode3 = Op.Read(cpu, (ushort) (cpu.ProgramCounter + 2));
-                            var opcode4 = Op.Read(cpu, (ushort) (cpu.ProgramCounter + 3));
-                            Debug.Log($"pc:{cpu.ProgramCounter:X4},opcode:{opcode1:X2},{opcode2:X2},{opcode3:X2},{opcode4:X2}");
+                            byte opcode1 = Op.Read(cpu, cpu.ProgramCounter);
+                            byte opcode2 = Op.Read(cpu, (ushort)(cpu.ProgramCounter + 1));
+                            byte opcode3 = Op.Read(cpu, (ushort)(cpu.ProgramCounter + 2));
+                            byte opcode4 = Op.Read(cpu, (ushort)(cpu.ProgramCounter + 3));
+                            Debug.Log(
+                                $"pc:{cpu.ProgramCounter:X4},opcode:{opcode1:X2},{opcode2:X2},{opcode3:X2},{opcode4:X2}");
                             CpuOp.Step(cpu);
                             clockCounter = cpu.ClockCounter;
                             programCounter = cpu.ProgramCounter;

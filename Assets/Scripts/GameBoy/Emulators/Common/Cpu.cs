@@ -7,18 +7,20 @@ namespace GameBoy.Emulators.Common
 {
     public sealed class Cpu
     {
-        #region IO
-
-        public readonly Joypad Joypad = new();
-
-        #endregion
         /// <summary>
         ///     Clock speed of the GameBoy
         ///     https://gbdev.io/pandocs/Specifications.html
         /// </summary>
         public const ulong CLOCK_SPEED = 4194304;
         public readonly byte[] HRAM = new byte[Ram.MAP_HRAM_END - Ram.MAP_HRAM + 1];
-        public readonly Ppu    Ppu  = new();
+
+        #region IO
+
+        public readonly Joypad Joypad = new();
+
+        #endregion
+
+        public readonly Ppu Ppu = new();
 
         #region RAM
 
@@ -213,7 +215,7 @@ namespace GameBoy.Emulators.Common
         public Cpu()
         {
             Ram = new Ram();
-            Ppu = new Ppu(); 
+            Ppu = new Ppu();
             Joypad = new Joypad();
             Init();
         }
