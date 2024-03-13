@@ -165,6 +165,9 @@ namespace GameBoy.Emulators.Common.Opcodes
 
         public static void Step(Cpu cpu)
         {
+            Joypad.JoypadTick(cpu);
+            Cpu.TimerTick(cpu);
+            Ppu.PpuTick(cpu);
             if (!cpu.Halted)
             {
                 if (cpu._ime && cpu._intFlags != 0 && cpu._intEnableFlags != 0)
@@ -210,8 +213,6 @@ namespace GameBoy.Emulators.Common.Opcodes
             for (int i = 0; i < cycles; i++)
             {
                 Step(cpu);
-                Cpu.TimerTick(cpu);
-                Ppu.PpuTick(cpu);
             }
         }
 

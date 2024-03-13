@@ -7,6 +7,11 @@ namespace GameBoy.Emulators.Common
 {
     public sealed class Cpu
     {
+        #region IO
+
+        public readonly Joypad Joypad = new();
+
+        #endregion
         /// <summary>
         ///     Clock speed of the GameBoy
         ///     https://gbdev.io/pandocs/Specifications.html
@@ -208,7 +213,8 @@ namespace GameBoy.Emulators.Common
         public Cpu()
         {
             Ram = new Ram();
-            Ppu = new Ppu();
+            Ppu = new Ppu(); 
+            Joypad = new Joypad();
             Init();
         }
 

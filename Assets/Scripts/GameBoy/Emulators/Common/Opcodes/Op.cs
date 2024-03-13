@@ -50,7 +50,7 @@ namespace GameBoy.Emulators.Common.Opcodes
             }
             else if (address <= Ram.MAP_EXTERNAL_RAM_END)
             {
-                return cpu.RomData[address];
+                return cpu.RomData[address - Ram.MAP_EXTERNAL_RAM];
             }
             else if (address <= Ram.MAP_WORK_RAM_END)
             {
@@ -72,6 +72,7 @@ namespace GameBoy.Emulators.Common.Opcodes
             {
                 switch (address)
                 {
+                    case 0xFF00: return cpu.Joypad.p1;
                     case 0xFF01: return 0xFF; // TODO
                     case 0xFF02: return 0xFF; // TODO
                     case 0xFF03: return 0xFF; // TODO
@@ -113,111 +114,122 @@ namespace GameBoy.Emulators.Common.Opcodes
 
         public static void Write(Cpu cpu, int address, byte value)
         {
-            if (address < Ram.MAP_ROM_BANK_0)
+            try
             {
-                throw new Exception($"Invalid address:{address:X8}");
-            }
-            else if (address <= Ram.MAP_ROM_BANK_1_END)
-            {
-                cpu.RomData[address] = value;
-            }
-            else if (address <= Ram.MAP_VRAM_END)
-            {
-                cpu.VRAM[address - Ram.MAP_VRAM] = value;
-            }
-            else if (address <= Ram.MAP_EXTERNAL_RAM_END)
-            {
-                cpu.RomData[address] = value;
-            }
-            else if (address <= Ram.MAP_WORK_RAM_END)
-            {
-                cpu.WRAM[address - Ram.MAP_WORK_RAM] = value;
-            }
-            else if (address <= Ram.MAP_ECHO_RAM_END)
-            {
-                throw new NotImplementedException();
-            }
-            else if (address <= Ram.MAP_OAM_END)
-            {
-                throw new NotImplementedException();
-            }
-            else if (address <= Ram.MAP_UNUSED_END)
-            {
-                throw new NotImplementedException();
-            }
-            else if (address <= Ram.MAP_IO_REGISTERS_END)
-            {
-                switch (address)
+                if (address < Ram.MAP_ROM_BANK_0)
                 {
-                    case 0xFF01: return; // TODO
-                    case 0xFF02: return; // TODO 
-                    case 0xFF03: return; // TODO
-                    case 0xFF04:
-                        cpu.div = 0;
-                        return;
-                    case 0xFF05:
-                        cpu.tima = value;
-                        return;
-                    case 0xFF06:
-                        cpu.tma = value;
-                        return;
-                    case 0xFF07:
-                        cpu.tac = (byte)(0xF8 | (value & 0x07));
-                        return;
-                    case 0xFF0F:
-                        cpu._intFlags = (byte)(value & 0x1F);
-                        return;
-                    case 0xFF40:
-                        if (cpu.Ppu.Enabled && (value & (1 << 7)) == 0)
-                        {
-                            cpu.Ppu.lcds &= 0x7C;
-                            cpu.Ppu.ly = 0;
-                            cpu.Ppu.lineCycles = 0;
-                        }
-
-                        return;
-                    case 0xFF41:
-                        cpu.Ppu.lcds = (byte)((cpu.Ppu.lcds & 0x07) | (byte)(value & 0xF8));
-                        return;
-                    case 0xFF42:
-                        cpu.Ppu.scroll_y = value;
-                        return;
-                    case 0xFF43:
-                        cpu.Ppu.scroll_x = value;
-                        return;
-                    case 0xFF44: return; // read only
-                    case 0xFF45:
-                        cpu.Ppu.lyc = value;
-                        return;
-                    case 0xFF46:
-                        cpu.Ppu.dma = value;
-                        return;
-                    case 0xFF47:
-                        cpu.Ppu.bgp = value;
-                        return;
-                    case 0xFF48:
-                        cpu.Ppu.obp0 = value;
-                        return;
-                    case 0xFF49:
-                        cpu.Ppu.obp1 = value;
-                        return;
-                    case 0xFF4A:
-                        cpu.Ppu.wy = value;
-                        return;
-                    case 0xFF4B:
-                        cpu.Ppu.wx = value;
-                        return;
+                    throw new Exception($"Invalid address:{address:X8}");
                 }
+                else if (address <= Ram.MAP_ROM_BANK_1_END)
+                {
+                    cpu.RomData[address] = value;
+                }
+                else if (address <= Ram.MAP_VRAM_END)
+                {
+                    cpu.VRAM[address - Ram.MAP_VRAM] = value;
+                }
+                else if (address <= Ram.MAP_EXTERNAL_RAM_END)
+                {
+                    cpu.RomData[address - Ram.MAP_EXTERNAL_RAM] = value;
+                }
+                else if (address <= Ram.MAP_WORK_RAM_END)
+                {
+                    cpu.WRAM[address - Ram.MAP_WORK_RAM] = value;
+                }
+                else if (address <= Ram.MAP_ECHO_RAM_END)
+                {
+                    throw new NotImplementedException();
+                }
+                else if (address <= Ram.MAP_OAM_END)
+                {
+                    throw new NotImplementedException();
+                }
+                else if (address <= Ram.MAP_UNUSED_END)
+                {
+                    throw new NotImplementedException();
+                }
+                else if (address <= Ram.MAP_IO_REGISTERS_END)
+                {
+                    switch (address)
+                    {
+                        case 0xFF00:
+                            cpu.Joypad.p1 = (byte)((value & 0x30) | (cpu.Joypad.p1 & 0xCF));
+                            cpu.Joypad.p1 = cpu.Joypad.GetKeyState();
+                            return;
+                        case 0xFF01: return; // TODO
+                        case 0xFF02: return; // TODO 
+                        case 0xFF03: return; // TODO
+                        case 0xFF04:
+                            cpu.div = 0;
+                            return;
+                        case 0xFF05:
+                            cpu.tima = value;
+                            return;
+                        case 0xFF06:
+                            cpu.tma = value;
+                            return;
+                        case 0xFF07:
+                            cpu.tac = (byte)(0xF8 | (value & 0x07));
+                            return;
+                        case 0xFF0F:
+                            cpu._intFlags = (byte)(value & 0x1F);
+                            return;
+                        case 0xFF40:
+                            if (cpu.Ppu.Enabled && (value & (1 << 7)) == 0)
+                            {
+                                cpu.Ppu.lcds &= 0x7C;
+                                cpu.Ppu.ly = 0;
+                                cpu.Ppu.lineCycles = 0;
+                            }
 
-                throw new NotImplementedException($"address write:{address:X4}");
+                            return;
+                        case 0xFF41:
+                            cpu.Ppu.lcds = (byte)((cpu.Ppu.lcds & 0x07) | (byte)(value & 0xF8));
+                            return;
+                        case 0xFF42:
+                            cpu.Ppu.scroll_y = value;
+                            return;
+                        case 0xFF43:
+                            cpu.Ppu.scroll_x = value;
+                            return;
+                        case 0xFF44: return; // read only
+                        case 0xFF45:
+                            cpu.Ppu.lyc = value;
+                            return;
+                        case 0xFF46:
+                            cpu.Ppu.dma = value;
+                            return;
+                        case 0xFF47:
+                            cpu.Ppu.bgp = value;
+                            return;
+                        case 0xFF48:
+                            cpu.Ppu.obp0 = value;
+                            return;
+                        case 0xFF49:
+                            cpu.Ppu.obp1 = value;
+                            return;
+                        case 0xFF4A:
+                            cpu.Ppu.wy = value;
+                            return;
+                        case 0xFF4B:
+                            cpu.Ppu.wx = value;
+                            return;
+                    }
+
+                    throw new NotImplementedException($"address write:{address:X4}");
+                }
+                else if (address <= Ram.MAP_HRAM_END)
+                {
+                    cpu.HRAM[address - Ram.MAP_HRAM] = value;
+                }
+                else if (address <= Ram.MAP_INTERRUPT_ENABLE)
+                {
+                    cpu._intEnableFlags = value;
+                }
             }
-            else if (address <= Ram.MAP_HRAM_END)
+            catch (IndexOutOfRangeException e)
             {
-                cpu.HRAM[address - Ram.MAP_HRAM] = value;
-            }
-            else if (address <= Ram.MAP_INTERRUPT_ENABLE)
-            {
-                cpu._intEnableFlags = value;
+                throw new Exception($"Invalid address:{address:X4}", e);
             }
         }
 

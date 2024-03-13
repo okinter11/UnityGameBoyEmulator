@@ -11,9 +11,12 @@ namespace GameBoy.Emulators
     {
         public const string TEST_ROM_PATH1 =
             @"Assets/Resources/ROMs/Legend of Zelda, The - Link's Awakening (G) [!].gb";
-        public const             string TEST_ROM_PATH2 = @"Assets/Resources/ROMs/Pokemon Red-Blue 2-in-1 (Unl) [S].gb";
-        public const             string TEST_ROM_PATH3 = @"Assets/Resources/ROMs/Super Mario Land (JUE) (V1.1) [!].gb";
-        [HideInInspector] public byte[] romData        = Array.Empty<byte>();
+
+        public const string TEST_ROM_PATH2 = @"Assets/Resources/ROMs/Pokemon Red-Blue 2-in-1 (Unl) [S].gb";
+        public const string TEST_ROM_PATH3 = @"Assets/Resources/ROMs/Super Mario Land (JUE) (V1.1) [!].gb";
+        public const string TEST_ROM_PATH4 = @"Assets/Resources/ROMs/Dr. Mario (JU) (V1.1).gb";
+
+        [HideInInspector] public byte[] romData = Array.Empty<byte>();
 
         [SerializeField]
         private ulong clockCounter = 0;
@@ -52,7 +55,7 @@ namespace GameBoy.Emulators
 
         private void Awake()
         {
-            romData = File.ReadAllBytes(Path.GetFullPath(TEST_ROM_PATH2));
+            romData = File.ReadAllBytes(Path.GetFullPath(TEST_ROM_PATH4));
             if (!Valid.CheckSum(romData, out string err))
             {
                 Debug.LogError(err);
@@ -66,6 +69,7 @@ namespace GameBoy.Emulators
             Debug.Log(new Info(File.ReadAllBytes(Path.GetFullPath(TEST_ROM_PATH1))).ToString());
             Debug.Log(new Info(File.ReadAllBytes(Path.GetFullPath(TEST_ROM_PATH2))).ToString());
             Debug.Log(new Info(File.ReadAllBytes(Path.GetFullPath(TEST_ROM_PATH3))).ToString());
+            Debug.Log(new Info(File.ReadAllBytes(Path.GetFullPath(TEST_ROM_PATH4))).ToString());
         }
 
         private void Update()
@@ -96,7 +100,11 @@ namespace GameBoy.Emulators
                         StepNext = false;
                         try
                         {
-                            Debug.Log($"opcode:{Op.Read(cpu, cpu.ProgramCounter):X2}");
+                            var opcode1 = Op.Read(cpu, cpu.ProgramCounter);
+                            var opcode2 = Op.Read(cpu, (ushort) (cpu.ProgramCounter + 1));
+                            var opcode3 = Op.Read(cpu, (ushort) (cpu.ProgramCounter + 2));
+                            var opcode4 = Op.Read(cpu, (ushort) (cpu.ProgramCounter + 3));
+                            Debug.Log($"pc:{cpu.ProgramCounter:X4},opcode:{opcode1:X2},{opcode2:X2},{opcode3:X2},{opcode4:X2}");
                             CpuOp.Step(cpu);
                             clockCounter = cpu.ClockCounter;
                             programCounter = cpu.ProgramCounter;
