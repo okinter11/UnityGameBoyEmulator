@@ -2,10 +2,10 @@
 {
     public class MemoryMapData
     {
+        public byte[] HRAM;
+        public byte[] OAM;
         public byte[] ROM;
         public byte[] VRAM;
         public byte[] WRAM;
-        public byte[] OAM;
-        public byte[] HRAM;
     }
 }

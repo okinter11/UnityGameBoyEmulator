@@ -5,6 +5,10 @@ namespace GameBoy.Emulators.Common.Cpus
 {
     public class FetchExecuteSchedule
     {
+        public void Tick()
+        {
+        }
+
         #region Init
 
         public FetchExecuteSchedule(Cpu cpu)
@@ -19,10 +23,5 @@ namespace GameBoy.Emulators.Common.Cpus
         private Queue<Executor> _executorList;
 
         #endregion
-
-        public void Tick()
-        {
-            
-        }
     }
 }
