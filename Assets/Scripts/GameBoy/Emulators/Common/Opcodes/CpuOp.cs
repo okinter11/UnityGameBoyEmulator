@@ -172,7 +172,37 @@ namespace GameBoy.Emulators.Common.Opcodes
                 opcodes.Add(cpu.Reg.IR);
             }
             
-            Executor.Execute(cpu);
+            Joypad.JoypadTick(cpu);
+            Cpu.TimerTick(cpu);
+            Ppu.PpuTick(cpu);
+            if (!cpu.Halted)
+            {
+                if (cpu._ime && cpu._intFlags != 0 && cpu._intEnableFlags != 0)
+                {
+                    ServiceInterrupt(cpu);
+                }
+                else
+                {
+                    Executor.Execute(cpu);
+                }
+            }
+            else
+            {
+                cpu.ClockCounter += 4;
+                if (cpu._intFlags != 0 && cpu._intEnableFlags != 0)
+                {
+                    cpu.Halted = false;
+                }
+            }
+
+            if (cpu._imeCountdown != 0)
+            {
+                cpu._imeCountdown -= 1;
+                if (cpu._imeCountdown == 0)
+                {
+                    cpu._ime = true;
+                }
+            }
         }
 
         public static void Step(Cpu cpu, HashSet<byte> opcodes = null)

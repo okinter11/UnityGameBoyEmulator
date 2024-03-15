@@ -136,7 +136,7 @@ namespace GameBoy.Emulators
                             byte opcode4 = Op.Read(cpu, (ushort)(cpu.ProgramCounter + 3));
                             Debug.Log(
                                 $"pc:{cpu.ProgramCounter:X4},opcode:{opcode1:X2},{opcode2:X2},{opcode3:X2},{opcode4:X2}");
-                            CpuOp.Step(cpu, DebugOpcode);
+                            CpuOp.StepByExecutor(cpu, DebugOpcode);
                             clockCounter = cpu.ClockCounter;
                             programCounter = cpu.ProgramCounter;
                         }

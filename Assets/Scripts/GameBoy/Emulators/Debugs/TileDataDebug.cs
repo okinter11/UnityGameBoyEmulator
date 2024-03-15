@@ -1,5 +1,6 @@
 ﻿using System;
 using GameBoy.Emulators.Common.Opcodes;
+using TMPro;
 using UnityEngine;
 
 namespace GameBoy.Emulators.Debugs
@@ -11,6 +12,8 @@ namespace GameBoy.Emulators.Debugs
         public Texture2D      _Texture;
 
         public Emulator _Emulator;
+
+        public TextMeshProUGUI _cpuInfo;
 
         private void Start()
         {
@@ -55,6 +58,23 @@ namespace GameBoy.Emulators.Debugs
                 }
                 _Texture.SetPixels32(color32s);
                 _Texture.Apply();
+            }
+
+            if (_Emulator && _cpuInfo)
+            {
+                var reg = _Emulator.cpu.Reg;
+                var sb = new System.Text.StringBuilder();
+                sb.AppendLine($"IR:{reg.IR:X2}");
+                sb.AppendLine($"IE:{reg.IE:X2}");
+                sb.AppendLine($"AF:{reg.AF:X4}");
+                sb.AppendLine($"BC:{reg.BC:X4}");
+                sb.AppendLine($"DE:{reg.DE:X4}");
+                sb.AppendLine($"HL:{reg.HL:X4}");
+                sb.AppendLine($"PC:{reg.PC:X4}");
+                sb.AppendLine($"SP:{reg.SP:X4}");
+                
+                _cpuInfo.SetText(sb);
+                Debug.Log($"PC:{Op.Read(_Emulator.cpu,reg.PC):X2}");
             }
         }
 

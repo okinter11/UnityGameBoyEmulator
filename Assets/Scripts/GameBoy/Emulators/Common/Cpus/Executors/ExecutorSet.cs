@@ -3522,6 +3522,9 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
             
+            cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
+            cpu.ProgramCounter += 1;
+            cpu.ClockCounter += 4; 
             byte a = cpu.Reg.A;
             byte n = z;
             cpu.Reg.A -= n;
