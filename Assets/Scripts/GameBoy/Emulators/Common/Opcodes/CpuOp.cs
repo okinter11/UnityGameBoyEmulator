@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using GameBoy.Emulators.Common.Cpus;
+using GameBoy.Emulators.Common.Cpus.Structs;
 
 namespace GameBoy.Emulators.Common.Opcodes
 {
@@ -163,7 +165,17 @@ namespace GameBoy.Emulators.Common.Opcodes
             cpu.ClockCounter += 4;
         }
 
-        public static void Step(Cpu cpu)
+        public static void StepByExecutor(Cpu cpu, HashSet<byte> opcodes = null)
+        {
+            if (opcodes!=null)
+            {
+                opcodes.Add(cpu.Reg.IR);
+            }
+            
+            Executor.Execute(cpu);
+        }
+
+        public static void Step(Cpu cpu, HashSet<byte> opcodes = null)
         {
             Joypad.JoypadTick(cpu);
             Cpu.TimerTick(cpu);
@@ -177,6 +189,10 @@ namespace GameBoy.Emulators.Common.Opcodes
                 else
                 {
                     byte opcode = Op.Read(cpu, cpu.ProgramCounter);
+                    if (opcodes != null)
+                    {
+                        opcodes.Add(opcode); 
+                    }
                     try
                     {
                         Instruction[opcode](cpu);
@@ -206,13 +222,13 @@ namespace GameBoy.Emulators.Common.Opcodes
             }
         }
 
-        public static void Step(Cpu cpu, double deltaTime)
+        public static void Step(Cpu cpu, double deltaTime, HashSet<byte> opcodes = null)
         {
             deltaTime = Math.Clamp(deltaTime, 0, 0.125);
             int cycles = (int)(Cpu.CLOCK_SPEED * deltaTime);
             for (int i = 0; i < cycles; i++)
             {
-                Step(cpu);
+                StepByExecutor(cpu,opcodes);
             }
         }
 

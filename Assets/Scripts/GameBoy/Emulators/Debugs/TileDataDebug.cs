@@ -34,28 +34,26 @@ namespace GameBoy.Emulators.Debugs
         {
             if (_Emulator && _Texture)
             {
-                // Update Texture Data
-                int numPixelBytes = _Texture.width * _Texture.height * 4;
-                int rowPitch = _Texture.width * 4;
-                for (int y = 0; y < _Texture.height / 8; ++y)
+                var color32s = _Texture.GetPixels32();
+                for (int yIndex = 0; yIndex < 24; yIndex++)
+                for (int xIndex = 0; xIndex < 16; xIndex++)
                 {
-                    for (int x = 0; x < _Texture.width / 8; ++x)
+                    var tileIndex = yIndex * 16 + xIndex;
+                    // 16 byte to 64 color32
+                    var memoryIndex = 0x8000 + tileIndex * 16;
+                    for (int line = 0; line < 8; line++)
                     {
-                        int tileIndex = y * _Texture.width / 8 + x;
-                        int tileColorBegin = y * rowPitch * 8 + x * 8 * 4;
-                        for (int line = 0; line < 8; line++)
+                        var l = Op.Read(_Emulator.cpu, (ushort)(memoryIndex + line * 2));
+                        var h = Op.Read(_Emulator.cpu, (ushort)(memoryIndex + line * 2 + 1));
+                        var colors = DecodeTileLine(l, h);
+                        for (int i = 0; i < 8; i++)
                         {
-                            byte l = Op.Read(_Emulator.cpu, (ushort)(0x8000 + tileIndex * 16 + line * 2));
-                            byte h = Op.Read(_Emulator.cpu, (ushort)(0x8000 + tileIndex * 16 + line * 2 + 1));
-                            Color32[] colors = DecodeTileLine(l, h);
-                            for (int i = 0; i < 8; i++)
-                            {
-                                _Texture.SetPixel(x * 8 + i, y * 8 + line, colors[i]);
-                            }
+                            var offset = yIndex * 16 * 8 * 8 + line * 16 * 8 + xIndex * 8 + i;
+                            color32s[offset] = colors[i];
                         }
                     }
                 }
-
+                _Texture.SetPixels32(color32s);
                 _Texture.Apply();
             }
         }
@@ -65,8 +63,8 @@ namespace GameBoy.Emulators.Debugs
             Color32[] result = new Color32[8];
             for (int b = 7; b >= 0; b--)
             {
-                byte lo = (l & (1 << b)) == 0 ? (byte)0 : (byte)1;
-                byte hi = (h & (1 << b)) == 0 ? (byte)0 : (byte)2;
+                byte lo = (l & (1 << b)) == 0 ? (byte)0 : (byte)(1 << 0);
+                byte hi = (h & (1 << b)) == 0 ? (byte)0 : (byte)(1 << 1);
                 byte color = (byte)(lo | hi);
                 switch (color)
                 {
@@ -74,16 +72,20 @@ namespace GameBoy.Emulators.Debugs
                         result[7 - b] = new Color32(255, 255, 255, 255);
                         break;
                     case 1:
-                        result[7 - b] = new Color32(192, 192, 192, 255);
+                        result[7 - b] = new Color32(170, 170, 170, 255);
                         break;
                     case 2:
-                        result[7 - b] = new Color32(96, 96, 96, 255);
+                        result[7 - b] = new Color32(85, 85, 85, 255);
                         break;
                     case 3:
                         result[7 - b] = new Color32(0, 0, 0, 255);
                         break;
+                    default:
+                        throw new Exception("Invalid color");
                 }
             }
+
+            // Debug.Log($"l:{l:X2},h:{h:X2},result:{string.Join(",", result)}");
 
             return result;
         }
