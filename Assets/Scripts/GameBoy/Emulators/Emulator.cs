@@ -13,7 +13,6 @@ namespace GameBoy.Emulators
     {
         public const string TEST_ROM_PATH1 =
             @"Assets/Resources/ROMs/Legend of Zelda, The - Link's Awakening (G) [!].gb";
-
         public const string TEST_ROM_PATH2 = @"Assets/Resources/ROMs/Pokemon Red-Blue 2-in-1 (Unl) [S].gb";
         public const string TEST_ROM_PATH3 = @"Assets/Resources/ROMs/Super Mario Land (JUE) (V1.1) [!].gb";
         public const string TEST_ROM_PATH4 = @"Assets/Resources/ROMs/Dr. Mario (JU) (V1.1).gb";
@@ -96,19 +95,19 @@ namespace GameBoy.Emulators
                     {
                         Debug.LogException(e);
                         isException = true;
-                        Debug.Log($"pc:{cpu.ProgramCounter:X4}");
+                        Debug.LogWarning($"pc:{cpu.ProgramCounter:X4}");
                         byte opcode1 = Op.Read(cpu, cpu.ProgramCounter);
-                        Debug.Log($"pc:{opcode1:X4}");
+                        Debug.LogWarning($"pc:{opcode1:X4}");
                         byte opcode2 = Op.Read(cpu, (ushort)(cpu.ProgramCounter + 1));
-                        Debug.Log($"pc:{opcode2:X4}");
+                        Debug.LogWarning($"pc:{opcode2:X4}");
                         byte opcode3 = Op.Read(cpu, (ushort)(cpu.ProgramCounter + 2));
-                        Debug.Log($"pc:{opcode3:X4}");
+                        Debug.LogWarning($"pc:{opcode3:X4}");
                         byte opcode4 = Op.Read(cpu, (ushort)(cpu.ProgramCounter + 3));
-                        Debug.Log($"pc:{opcode4:X4}");
+                        Debug.LogWarning($"pc:{opcode4:X4}");
 
                         if (DebugOpcode != null)
                         {
-                            Debug.Log(string.Join(',', DebugOpcode
+                            Debug.LogWarning(string.Join(',', DebugOpcode
                                                       .OrderBy(o => o)
                                                       .Select(o => o.ToString("X2"))
                                                       .ToArray()));

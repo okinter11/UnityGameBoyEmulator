@@ -226,6 +226,7 @@ namespace GameBoy.Emulators.Common.Opcodes
                                 cpu.Ppu.ly = 0;
                                 cpu.Ppu.lineCycles = 0;
                             }
+                            cpu.Ppu.lcdc = value;
 
                             return;
                         case 0xFF41:
