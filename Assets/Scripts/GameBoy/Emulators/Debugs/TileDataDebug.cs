@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Text;
+using GameBoy.Emulators.Common;
 using GameBoy.Emulators.Common.Opcodes;
 using TMPro;
 using UnityEngine;
@@ -26,6 +28,7 @@ namespace GameBoy.Emulators.Debugs
                 Array.Fill(pixels, Color.black);
                 _Texture.SetPixels(pixels);
                 _Texture.name = "图块数据";
+                _Texture.filterMode = FilterMode.Point;
                 _Texture.Apply();
                 _Sprite = Sprite.Create(_Texture, new Rect(0, 0, 16 * 8, 24 * 8), new Vector2(0.5f, 0.5f));
                 _Sprite.name = "图块数据精灵";
@@ -37,33 +40,34 @@ namespace GameBoy.Emulators.Debugs
         {
             if (_Emulator && _Texture)
             {
-                var color32s = _Texture.GetPixels32();
+                Color32[] color32s = _Texture.GetPixels32();
                 for (int yIndex = 0; yIndex < 24; yIndex++)
                 for (int xIndex = 0; xIndex < 16; xIndex++)
                 {
-                    var tileIndex = yIndex * 16 + xIndex;
+                    int tileIndex = yIndex * 16 + xIndex;
                     // 16 byte to 64 color32
-                    var memoryIndex = 0x8000 + tileIndex * 16;
+                    int memoryIndex = 0x8000 + tileIndex * 16;
                     for (int line = 0; line < 8; line++)
                     {
-                        var l = Op.Read(_Emulator.cpu, (ushort)(memoryIndex + line * 2));
-                        var h = Op.Read(_Emulator.cpu, (ushort)(memoryIndex + line * 2 + 1));
-                        var colors = DecodeTileLine(l, h);
+                        byte l = Op.Read(_Emulator.cpu, (ushort)(memoryIndex + line * 2));
+                        byte h = Op.Read(_Emulator.cpu, (ushort)(memoryIndex + line * 2 + 1));
+                        Color32[] colors = DecodeTileLine(l, h);
                         for (int i = 0; i < 8; i++)
                         {
-                            var offset = yIndex * 16 * 8 * 8 + line * 16 * 8 + xIndex * 8 + i;
+                            int offset = yIndex * 16 * 8 * 8 + line * 16 * 8 + xIndex * 8 + i;
                             color32s[offset] = colors[i];
                         }
                     }
                 }
+
                 _Texture.SetPixels32(color32s);
                 _Texture.Apply();
             }
 
             if (_Emulator && _cpuInfo)
             {
-                var reg = _Emulator.cpu.Reg;
-                var sb = new System.Text.StringBuilder();
+                Cpu.GameBoyEmulatorCpuRegister reg = _Emulator.cpu.Reg;
+                StringBuilder sb = new();
                 sb.AppendLine($"IR:{reg.IR:X2}");
                 sb.AppendLine($"IE:{reg.IE:X2}");
                 sb.AppendLine($"AF:{reg.AF:X4}");
@@ -72,9 +76,9 @@ namespace GameBoy.Emulators.Debugs
                 sb.AppendLine($"HL:{reg.HL:X4}");
                 sb.AppendLine($"PC:{reg.PC:X4}");
                 sb.AppendLine($"SP:{reg.SP:X4}");
-                
+
                 _cpuInfo.SetText(sb);
-                Debug.Log($"PC:{Op.Read(_Emulator.cpu,reg.PC):X2}");
+                Debug.Log($"PC:{Op.Read(_Emulator.cpu, reg.PC):X2}");
             }
         }
 

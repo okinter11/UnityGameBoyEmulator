@@ -30,9 +30,9 @@ namespace GameBoy.Emulators.Common
 
         public readonly byte[] VRAM = new byte[Ram.MAP_VRAM_END - Ram.MAP_VRAM + 1];
         public readonly byte[] WRAM = new byte[Ram.MAP_WORK_RAM_END - Ram.MAP_WORK_RAM + 1];
-        public readonly byte[] OAM = new byte[Ram.MAP_OAM_END - Ram.MAP_OAM + 1];
+        public readonly byte[] OAM  = new byte[Ram.MAP_OAM_END - Ram.MAP_OAM + 1];
         private         ulong  _clockCounter;
-        public bool   _ime;
+        public          bool   _ime;
         public          byte   _imeCountdown;
         public          byte   _intEnableFlags;
 
@@ -95,7 +95,7 @@ namespace GameBoy.Emulators.Common
             public ushort AF
             {
                 get => _af;
-                set => _af =(ushort) (value & 0xFFF0);
+                set => _af = (ushort)(value & 0xFFF0);
             }
             [FieldOffset(3)] private ushort _af;
             /// <summary>
@@ -110,16 +110,16 @@ namespace GameBoy.Emulators.Common
                 get => (byte)(_f & 0b11110000);
                 set => _f = (byte)(value & 0b11110000);
             }
-            [FieldOffset(2)] private byte _f;
-            [FieldOffset(4)] public ushort BC;
-            [FieldOffset(5)] public byte   B;
-            [FieldOffset(4)] public byte   C;
-            [FieldOffset(6)] public ushort DE;
-            [FieldOffset(7)] public byte   D;
-            [FieldOffset(6)] public byte   E;
-            [FieldOffset(8)] public ushort HL;
-            [FieldOffset(9)] public byte   H;
-            [FieldOffset(8)] public byte   L;
+            [FieldOffset(2)] private byte   _f;
+            [FieldOffset(4)] public  ushort BC;
+            [FieldOffset(5)] public  byte   B;
+            [FieldOffset(4)] public  byte   C;
+            [FieldOffset(6)] public  ushort DE;
+            [FieldOffset(7)] public  byte   D;
+            [FieldOffset(6)] public  byte   E;
+            [FieldOffset(8)] public  ushort HL;
+            [FieldOffset(9)] public  byte   H;
+            [FieldOffset(8)] public  byte   L;
             /// <summary>
             ///     Program Counter
             /// </summary>
@@ -129,7 +129,7 @@ namespace GameBoy.Emulators.Common
             /// </summary>
             [FieldOffset(12)] public ushort SP;
 
-           
+
             /// <summary>
             ///     Zero Flag
             /// </summary>

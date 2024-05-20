@@ -75,7 +75,7 @@ namespace GameBoy.Emulators
             Debug.Log(new Info(File.ReadAllBytes(Path.GetFullPath(TEST_ROM_PATH4))).ToString());
         }
 
-        public HashSet<byte> DebugOpcode = new HashSet<byte>();
+        public HashSet<byte> DebugOpcode = new();
 
         private void Update()
         {
@@ -105,12 +105,12 @@ namespace GameBoy.Emulators
                         Debug.Log($"pc:{opcode3:X4}");
                         byte opcode4 = Op.Read(cpu, (ushort)(cpu.ProgramCounter + 3));
                         Debug.Log($"pc:{opcode4:X4}");
-                    
+
                         if (DebugOpcode != null)
                         {
                             Debug.Log(string.Join(',', DebugOpcode
                                                       .OrderBy(o => o)
-                                                      .Select(o=>o.ToString("X2"))
+                                                      .Select(o => o.ToString("X2"))
                                                       .ToArray()));
                         }
                     }
@@ -123,7 +123,7 @@ namespace GameBoy.Emulators
                         {
                             Debug.Log(string.Join(',', DebugOpcode
                                                       .OrderBy(o => o)
-                                                      .Select(o=>o.ToString("X2"))
+                                                      .Select(o => o.ToString("X2"))
                                                       .ToArray()));
                         }
 

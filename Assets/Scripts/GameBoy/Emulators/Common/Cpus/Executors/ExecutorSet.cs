@@ -8,10 +8,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
     {
         #region Executor
 
-        public static Executor GetExecutor(byte opcode)
-        {
-            return default(Executor);
-        }
+        public static Executor GetExecutor(byte opcode) => default(Executor);
 
         // public static void Execute(Cpu cpu)
         // {
@@ -34,11 +31,11 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             byte z = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             byte w = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -59,7 +56,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
         {
             cpu.Reg.BC += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -70,7 +67,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.B += 1;
             cpu.Reg.z = cpu.Reg.B == 0;
             cpu.Reg.n = false;
@@ -82,7 +79,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.B -= 1;
             cpu.Reg.z = cpu.Reg.B == 0;
             cpu.Reg.n = true;
@@ -94,7 +91,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             byte z = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -118,19 +115,19 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             byte z = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             byte w = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             ushort wz = Op.Make16(w, z);
             Op.Write(cpu, wz, Op.MakeLow(cpu.Reg.SP));
             wz += 1;
             cpu.ClockCounter += 4;
-            
+
             Op.Write(cpu, wz, Op.MakeHigh(cpu.Reg.SP));
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -141,8 +138,8 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             ushort v1 = cpu.Reg.HL;
             ushort v2 = cpu.Reg.BC;
             cpu.ClockCounter += 4;
-            
-            cpu.Reg.IR = Op.Read( cpu, cpu.ProgramCounter);
+
+            cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
             cpu.Reg.n = false;
@@ -166,7 +163,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
         {
             cpu.Reg.BC -= 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -177,7 +174,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.C += 1;
             cpu.Reg.z = cpu.Reg.C == 0;
             cpu.Reg.n = false;
@@ -189,7 +186,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.C -= 1;
             cpu.Reg.z = cpu.Reg.C == 0;
             cpu.Reg.n = true;
@@ -201,7 +198,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             byte z = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -226,10 +223,10 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
 
         public static void _10(Cpu cpu)
         {
-            byte z = Op.Read(cpu, cpu.ProgramCounter);
+            // byte z = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             // just stop the GameBoy
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -241,11 +238,11 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             byte z = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             byte w = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -266,7 +263,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
         {
             cpu.Reg.DE += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -277,7 +274,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.D += 1;
             cpu.Reg.z = cpu.Reg.D == 0;
             cpu.Reg.n = false;
@@ -289,7 +286,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.D -= 1;
             cpu.Reg.z = cpu.Reg.D == 0;
             cpu.Reg.n = true;
@@ -301,7 +298,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             byte z = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -329,7 +326,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
 
             cpu.Reg.PC += (ushort)z;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -340,8 +337,8 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             ushort v1 = cpu.Reg.HL;
             ushort v2 = cpu.Reg.DE;
             cpu.ClockCounter += 4;
-            
-            cpu.Reg.IR = Op.Read( cpu, cpu.ProgramCounter);
+
+            cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
             cpu.Reg.n = false;
@@ -365,7 +362,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
         {
             cpu.Reg.DE -= 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -376,7 +373,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.E += 1;
             cpu.Reg.z = cpu.Reg.E == 0;
             cpu.Reg.n = false;
@@ -388,7 +385,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.E -= 1;
             cpu.Reg.z = cpu.Reg.E == 0;
             cpu.Reg.n = true;
@@ -400,7 +397,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             byte z = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -434,9 +431,8 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             {
                 cpu.Reg.PC += (ushort)z;
                 cpu.ClockCounter += 4;
-            
             }
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -447,11 +443,11 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             byte z = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             byte w = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -460,10 +456,10 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
 
         public static void _22(Cpu cpu)
         {
-            Op.Write( cpu, cpu.Reg.HL, cpu.Reg.A);
+            Op.Write(cpu, cpu.Reg.HL, cpu.Reg.A);
             cpu.Reg.HL += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -473,7 +469,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
         {
             cpu.Reg.HL += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -484,7 +480,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.H += 1;
             cpu.Reg.z = cpu.Reg.H == 0;
             cpu.Reg.n = false;
@@ -496,7 +492,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.H -= 1;
             cpu.Reg.z = cpu.Reg.H == 0;
             cpu.Reg.n = true;
@@ -508,7 +504,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             byte z = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -564,6 +560,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
                     }
                 }
             }
+
             cpu.Reg.z = cpu.Reg.A == 0;
             cpu.Reg.h = false;
         }
@@ -578,9 +575,8 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             {
                 cpu.Reg.PC += (ushort)z;
                 cpu.ClockCounter += 4;
-            
             }
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -591,8 +587,8 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             ushort v1 = cpu.Reg.HL;
             ushort v2 = cpu.Reg.HL;
             cpu.ClockCounter += 4;
-            
-            cpu.Reg.IR = Op.Read( cpu, cpu.ProgramCounter);
+
+            cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
             cpu.Reg.n = false;
@@ -606,7 +602,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             byte z = Op.Read(cpu, cpu.Reg.HL);
             cpu.Reg.HL += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -617,7 +613,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
         {
             cpu.Reg.HL -= 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -628,7 +624,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.L += 1;
             cpu.Reg.z = cpu.Reg.L == 0;
             cpu.Reg.n = false;
@@ -640,7 +636,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.L -= 1;
             cpu.Reg.z = cpu.Reg.L == 0;
             cpu.Reg.n = true;
@@ -652,7 +648,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             byte z = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -683,9 +679,8 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             {
                 cpu.Reg.PC += (ushort)z;
                 cpu.ClockCounter += 4;
-            
             }
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -696,11 +691,11 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             byte z = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             byte w = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -709,10 +704,10 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
 
         public static void _32(Cpu cpu)
         {
-            Op.Write( cpu, cpu.Reg.HL, cpu.Reg.A);
+            Op.Write(cpu, cpu.Reg.HL, cpu.Reg.A);
             cpu.Reg.HL -= 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -722,7 +717,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
         {
             cpu.Reg.SP += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -740,7 +735,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             cpu.Reg.z = z == 0;
             cpu.Reg.n = false;
             cpu.Reg.h = (z & 0x0F) == 0;
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -758,7 +753,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             cpu.Reg.z = z == 0;
             cpu.Reg.n = false;
             cpu.Reg.h = (z & 0x0F) == 0x0F;
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -769,7 +764,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             byte z = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             Op.Write(cpu, cpu.Reg.HL, z);
             cpu.ClockCounter += 4;
 
@@ -798,9 +793,8 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             {
                 cpu.Reg.PC += (ushort)z;
                 cpu.ClockCounter += 4;
-            
             }
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -811,8 +805,8 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             ushort v1 = cpu.Reg.HL;
             ushort v2 = cpu.Reg.SP;
             cpu.ClockCounter += 4;
-            
-            cpu.Reg.IR = Op.Read( cpu, cpu.ProgramCounter);
+
+            cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
             cpu.Reg.n = false;
@@ -826,7 +820,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             byte z = Op.Read(cpu, cpu.Reg.HL);
             cpu.Reg.HL -= 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -837,7 +831,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
         {
             cpu.Reg.SP -= 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -848,7 +842,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.A += 1;
             cpu.Reg.z = cpu.Reg.A == 0;
             cpu.Reg.n = false;
@@ -860,7 +854,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.A -= 1;
             cpu.Reg.z = cpu.Reg.A == 0;
             cpu.Reg.n = true;
@@ -872,7 +866,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             byte z = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -898,7 +892,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.B = cpu.Reg.B;
         }
 
@@ -907,7 +901,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.B = cpu.Reg.C;
         }
 
@@ -916,7 +910,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.B = cpu.Reg.D;
         }
 
@@ -925,7 +919,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.B = cpu.Reg.E;
         }
 
@@ -934,7 +928,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.B = cpu.Reg.H;
         }
 
@@ -943,7 +937,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.B = cpu.Reg.L;
         }
 
@@ -951,7 +945,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
         {
             byte z = Op.Read(cpu, cpu.Reg.HL);
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -963,7 +957,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.B = cpu.Reg.A;
         }
 
@@ -972,7 +966,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.C = cpu.Reg.B;
         }
 
@@ -981,7 +975,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.C = cpu.Reg.C;
         }
 
@@ -990,7 +984,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.C = cpu.Reg.D;
         }
 
@@ -999,7 +993,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.C = cpu.Reg.E;
         }
 
@@ -1008,7 +1002,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.C = cpu.Reg.H;
         }
 
@@ -1017,7 +1011,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.C = cpu.Reg.L;
         }
 
@@ -1025,7 +1019,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
         {
             byte z = Op.Read(cpu, cpu.Reg.HL);
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -1037,7 +1031,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.C = cpu.Reg.A;
         }
 
@@ -1050,7 +1044,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.D = cpu.Reg.B;
         }
 
@@ -1059,7 +1053,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.D = cpu.Reg.C;
         }
 
@@ -1068,7 +1062,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.D = cpu.Reg.D;
         }
 
@@ -1077,7 +1071,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.D = cpu.Reg.E;
         }
 
@@ -1086,7 +1080,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.D = cpu.Reg.H;
         }
 
@@ -1095,7 +1089,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.D = cpu.Reg.L;
         }
 
@@ -1103,7 +1097,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
         {
             byte z = Op.Read(cpu, cpu.Reg.HL);
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -1115,7 +1109,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.D = cpu.Reg.A;
         }
 
@@ -1124,7 +1118,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.E = cpu.Reg.B;
         }
 
@@ -1133,7 +1127,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.E = cpu.Reg.C;
         }
 
@@ -1142,7 +1136,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.E = cpu.Reg.D;
         }
 
@@ -1151,7 +1145,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.E = cpu.Reg.E;
         }
 
@@ -1160,7 +1154,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.E = cpu.Reg.H;
         }
 
@@ -1169,7 +1163,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.E = cpu.Reg.L;
         }
 
@@ -1177,7 +1171,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
         {
             byte z = Op.Read(cpu, cpu.Reg.HL);
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -1189,7 +1183,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.E = cpu.Reg.A;
         }
 
@@ -1202,7 +1196,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.H = cpu.Reg.B;
         }
 
@@ -1211,7 +1205,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.H = cpu.Reg.C;
         }
 
@@ -1220,7 +1214,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.H = cpu.Reg.D;
         }
 
@@ -1229,7 +1223,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.H = cpu.Reg.E;
         }
 
@@ -1238,7 +1232,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.H = cpu.Reg.H;
         }
 
@@ -1247,7 +1241,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.H = cpu.Reg.L;
         }
 
@@ -1255,7 +1249,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
         {
             byte z = Op.Read(cpu, cpu.Reg.HL);
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -1267,7 +1261,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.H = cpu.Reg.A;
         }
 
@@ -1276,7 +1270,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.L = cpu.Reg.B;
         }
 
@@ -1285,7 +1279,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.L = cpu.Reg.C;
         }
 
@@ -1294,7 +1288,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.L = cpu.Reg.D;
         }
 
@@ -1303,7 +1297,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.L = cpu.Reg.E;
         }
 
@@ -1312,7 +1306,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.L = cpu.Reg.H;
         }
 
@@ -1321,7 +1315,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.L = cpu.Reg.L;
         }
 
@@ -1329,7 +1323,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
         {
             byte z = Op.Read(cpu, cpu.Reg.HL);
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -1341,7 +1335,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.L = cpu.Reg.A;
         }
 
@@ -1432,7 +1426,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.A = cpu.Reg.B;
         }
 
@@ -1441,7 +1435,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.A = cpu.Reg.C;
         }
 
@@ -1450,7 +1444,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.A = cpu.Reg.D;
         }
 
@@ -1459,7 +1453,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.A = cpu.Reg.E;
         }
 
@@ -1468,7 +1462,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.A = cpu.Reg.H;
         }
 
@@ -1477,7 +1471,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.A = cpu.Reg.L;
         }
 
@@ -1485,7 +1479,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
         {
             byte z = Op.Read(cpu, cpu.Reg.HL);
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -1497,7 +1491,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.A = cpu.Reg.A;
         }
 
@@ -1593,7 +1587,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
         {
             byte z = Op.Read(cpu, cpu.Reg.HL);
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -1708,7 +1702,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
         {
             byte z = Op.Read(cpu, cpu.Reg.HL);
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -1827,7 +1821,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
         {
             byte z = Op.Read(cpu, cpu.Reg.HL);
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -1942,7 +1936,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
         {
             byte z = Op.Read(cpu, cpu.Reg.HL);
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -2049,7 +2043,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
         {
             byte z = Op.Read(cpu, cpu.Reg.HL);
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -2148,7 +2142,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
         {
             byte z = Op.Read(cpu, cpu.Reg.HL);
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -2180,7 +2174,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             byte a = cpu.Reg.A |= cpu.Reg.B;
             cpu.Reg.z = a == 0;
             cpu.Reg.n = false;
@@ -2193,7 +2187,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             byte a = cpu.Reg.A |= cpu.Reg.C;
             cpu.Reg.z = a == 0;
             cpu.Reg.n = false;
@@ -2206,7 +2200,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             byte a = cpu.Reg.A |= cpu.Reg.D;
             cpu.Reg.z = a == 0;
             cpu.Reg.n = false;
@@ -2219,7 +2213,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             byte a = cpu.Reg.A |= cpu.Reg.E;
             cpu.Reg.z = a == 0;
             cpu.Reg.n = false;
@@ -2232,7 +2226,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             byte a = cpu.Reg.A |= cpu.Reg.H;
             cpu.Reg.z = a == 0;
             cpu.Reg.n = false;
@@ -2245,7 +2239,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             byte a = cpu.Reg.A |= cpu.Reg.L;
             cpu.Reg.z = a == 0;
             cpu.Reg.n = false;
@@ -2257,7 +2251,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
         {
             byte z = Op.Read(cpu, cpu.Reg.HL);
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -2273,7 +2267,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             byte a = cpu.Reg.A |= cpu.Reg.A;
             cpu.Reg.z = a == 0;
             cpu.Reg.n = false;
@@ -2291,8 +2285,8 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             cpu.Reg.A -= n;
             cpu.Reg.z = cpu.Reg.A == 0;
             cpu.Reg.n = true;
-            cpu.Reg.h =  (a & 0x0F) < (n & 0x0F);
-            cpu.Reg.c =  a < n;
+            cpu.Reg.h = (a & 0x0F) < (n & 0x0F);
+            cpu.Reg.c = a < n;
         }
 
         public static void _B9(Cpu cpu)
@@ -2305,8 +2299,8 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             cpu.Reg.A -= n;
             cpu.Reg.z = cpu.Reg.A == 0;
             cpu.Reg.n = true;
-            cpu.Reg.h =  (a & 0x0F) < (n & 0x0F);
-            cpu.Reg.c =  a < n;
+            cpu.Reg.h = (a & 0x0F) < (n & 0x0F);
+            cpu.Reg.c = a < n;
         }
 
         public static void _BA(Cpu cpu)
@@ -2319,8 +2313,8 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             cpu.Reg.A -= n;
             cpu.Reg.z = cpu.Reg.A == 0;
             cpu.Reg.n = true;
-            cpu.Reg.h =  (a & 0x0F) < (n & 0x0F);
-            cpu.Reg.c =  a < n;
+            cpu.Reg.h = (a & 0x0F) < (n & 0x0F);
+            cpu.Reg.c = a < n;
         }
 
         public static void _BB(Cpu cpu)
@@ -2333,8 +2327,8 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             cpu.Reg.A -= n;
             cpu.Reg.z = cpu.Reg.A == 0;
             cpu.Reg.n = true;
-            cpu.Reg.h =  (a & 0x0F) < (n & 0x0F);
-            cpu.Reg.c =  a < n;
+            cpu.Reg.h = (a & 0x0F) < (n & 0x0F);
+            cpu.Reg.c = a < n;
         }
 
         public static void _BC(Cpu cpu)
@@ -2347,8 +2341,8 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             cpu.Reg.A -= n;
             cpu.Reg.z = cpu.Reg.A == 0;
             cpu.Reg.n = true;
-            cpu.Reg.h =  (a & 0x0F) < (n & 0x0F);
-            cpu.Reg.c =  a < n;
+            cpu.Reg.h = (a & 0x0F) < (n & 0x0F);
+            cpu.Reg.c = a < n;
         }
 
         public static void _BD(Cpu cpu)
@@ -2361,15 +2355,15 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             cpu.Reg.A -= n;
             cpu.Reg.z = cpu.Reg.A == 0;
             cpu.Reg.n = true;
-            cpu.Reg.h =  (a & 0x0F) < (n & 0x0F);
-            cpu.Reg.c =  a < n;
+            cpu.Reg.h = (a & 0x0F) < (n & 0x0F);
+            cpu.Reg.c = a < n;
         }
 
         public static void _BE(Cpu cpu)
         {
             byte z = Op.Read(cpu, cpu.Reg.HL);
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -2378,8 +2372,8 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             cpu.Reg.A -= n;
             cpu.Reg.z = cpu.Reg.A == 0;
             cpu.Reg.n = true;
-            cpu.Reg.h =  (a & 0x0F) < (n & 0x0F);
-            cpu.Reg.c =  a < n;
+            cpu.Reg.h = (a & 0x0F) < (n & 0x0F);
+            cpu.Reg.c = a < n;
         }
 
         public static void _BF(Cpu cpu)
@@ -2392,8 +2386,8 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             cpu.Reg.A -= n;
             cpu.Reg.z = cpu.Reg.A == 0;
             cpu.Reg.n = true;
-            cpu.Reg.h =  (a & 0x0F) < (n & 0x0F);
-            cpu.Reg.c =  a < n;
+            cpu.Reg.h = (a & 0x0F) < (n & 0x0F);
+            cpu.Reg.c = a < n;
         }
 
         #endregion
@@ -2403,21 +2397,21 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
         public static void _C0(Cpu cpu)
         {
             cpu.ClockCounter += 4;
-            
+
             if (!cpu.Reg.z)
             {
                 byte z = Op.Read(cpu, cpu.Reg.SP);
                 cpu.Reg.SP += 1;
                 cpu.ClockCounter += 4;
-            
+
                 byte w = Op.Read(cpu, cpu.Reg.SP);
                 cpu.Reg.SP += 1;
                 cpu.ClockCounter += 4;
-            
+
                 cpu.Reg.PC = Op.Make16(w, z);
                 cpu.ClockCounter += 4;
             }
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -2428,11 +2422,11 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             byte z = Op.Read(cpu, cpu.Reg.SP);
             cpu.Reg.SP += 1;
             cpu.ClockCounter += 4;
-            
+
             byte w = Op.Read(cpu, cpu.Reg.SP);
             cpu.Reg.SP += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -2444,17 +2438,17 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             byte nn_lsb = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             byte nn_msb = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             if (!cpu.Reg.z)
             {
                 cpu.Reg.PC = Op.Make16(nn_msb, nn_lsb);
-                cpu.ClockCounter += 4; 
+                cpu.ClockCounter += 4;
             }
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -2465,14 +2459,14 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             byte z = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             byte w = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.PC = Op.Make16(w, z);
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -2483,25 +2477,25 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             byte z = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             byte w = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             if (!cpu.Reg.z)
             {
                 cpu.Reg.SP -= 1;
                 cpu.ClockCounter += 4;
-                
+
                 Op.Write(cpu, cpu.Reg.SP, Op.MakeHigh(cpu.Reg.PC));
                 cpu.Reg.SP -= 1;
                 cpu.ClockCounter += 4;
-                
+
                 Op.Write(cpu, cpu.Reg.SP, Op.MakeLow(cpu.Reg.PC));
                 cpu.Reg.PC = Op.Make16(w, z);
                 cpu.ClockCounter += 4;
             }
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -2511,14 +2505,14 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
         {
             cpu.Reg.SP -= 1;
             cpu.ClockCounter += 4;
-            
+
             Op.Write(cpu, cpu.Reg.SP, cpu.Reg.B);
             cpu.Reg.SP -= 1;
             cpu.ClockCounter += 4;
 
             Op.Write(cpu, cpu.Reg.SP, cpu.Reg.C);
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -2529,7 +2523,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             byte z = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -2546,15 +2540,15 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
         {
             cpu.Reg.SP -= 1;
             cpu.ClockCounter += 4;
-            
+
             Op.Write(cpu, cpu.Reg.SP, Op.MakeHigh(cpu.Reg.PC));
             cpu.Reg.SP -= 1;
             cpu.ClockCounter += 4;
-            
+
             Op.Write(cpu, cpu.Reg.SP, Op.MakeLow(cpu.Reg.PC));
             cpu.Reg.PC = 0x00;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -2563,21 +2557,21 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
         public static void _C8(Cpu cpu)
         {
             cpu.ClockCounter += 4;
-            
+
             if (cpu.Reg.z)
             {
                 byte z = Op.Read(cpu, cpu.Reg.SP);
                 cpu.Reg.SP += 1;
                 cpu.ClockCounter += 4;
-            
+
                 byte w = Op.Read(cpu, cpu.Reg.SP);
                 cpu.Reg.SP += 1;
                 cpu.ClockCounter += 4;
-            
+
                 cpu.Reg.PC = Op.Make16(w, z);
                 cpu.ClockCounter += 4;
             }
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -2588,14 +2582,14 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             byte z = Op.Read(cpu, cpu.Reg.SP);
             cpu.Reg.SP += 1;
             cpu.ClockCounter += 4;
-            
+
             byte w = Op.Read(cpu, cpu.Reg.SP);
             cpu.Reg.SP += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.PC = Op.Make16(w, z);
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -2606,17 +2600,17 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             byte nn_lsb = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             byte nn_msb = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             if (cpu.Reg.z)
             {
                 cpu.Reg.PC = Op.Make16(nn_msb, nn_lsb);
-                cpu.ClockCounter += 4; 
+                cpu.ClockCounter += 4;
             }
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -2630,7 +2624,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             cpu.ClockCounter += 4;
 
             byte opcode = cpu.Reg.IR;
-            byte z = 0;
+            byte z;
             byte opReg = (byte)(opcode & 0x07);
             switch (opReg)
             {
@@ -2661,6 +2655,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
                     break;
                 default: throw new Exception("Invalid opReg");
             }
+
             byte opBit = (byte)((opcode & 0xF8) >> 3);
             switch (opBit)
             {
@@ -2691,7 +2686,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
                 default:
                     if (opBit <= 0x0F)
                     {
-                        z = Op.CB_BIT(cpu,  z,(byte)(opBit - 0x08));
+                        z = Op.CB_BIT(cpu, z, (byte)(opBit - 0x08));
                         break;
                     }
                     else if (opBit <= 0x1F)
@@ -2701,7 +2696,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
                     }
                     else if (opBit <= 0x2F)
                     {
-                        z = Op.CB_SET(cpu,z, (byte)(opBit - 0x18));
+                        z = Op.CB_SET(cpu, z, (byte)(opBit - 0x18));
                         break;
                     }
                     else
@@ -2721,7 +2716,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
                     Op.Write(cpu, cpu.Reg.HL, z);
                     cpu.ClockCounter += 4;
                 }
-                
+
                 cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
                 cpu.ProgramCounter += 1;
                 cpu.ClockCounter += 4;
@@ -2763,25 +2758,25 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             byte z = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             byte w = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             if (cpu.Reg.z)
             {
                 cpu.Reg.SP -= 1;
                 cpu.ClockCounter += 4;
-                
+
                 Op.Write(cpu, cpu.Reg.SP, Op.MakeHigh(cpu.Reg.PC));
                 cpu.Reg.SP -= 1;
                 cpu.ClockCounter += 4;
-                
+
                 Op.Write(cpu, cpu.Reg.SP, Op.MakeLow(cpu.Reg.PC));
                 cpu.Reg.PC = Op.Make16(w, z);
                 cpu.ClockCounter += 4;
             }
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -2792,22 +2787,22 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             byte z = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             byte w = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.SP -= 1;
             cpu.ClockCounter += 4;
-            
+
             Op.Write(cpu, cpu.Reg.SP, Op.MakeHigh(cpu.Reg.PC));
             cpu.Reg.SP -= 1;
             cpu.ClockCounter += 4;
-            
+
             Op.Write(cpu, cpu.Reg.SP, Op.MakeLow(cpu.Reg.PC));
             cpu.Reg.PC = Op.Make16(w, z);
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -2818,7 +2813,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             byte z = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -2835,15 +2830,15 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
         {
             cpu.Reg.SP -= 1;
             cpu.ClockCounter += 4;
-            
+
             Op.Write(cpu, cpu.Reg.SP, Op.MakeHigh(cpu.Reg.PC));
             cpu.Reg.SP -= 1;
             cpu.ClockCounter += 4;
-            
+
             Op.Write(cpu, cpu.Reg.SP, Op.MakeLow(cpu.Reg.PC));
             cpu.Reg.PC = 0x08;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -2856,21 +2851,21 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
         public static void _D0(Cpu cpu)
         {
             cpu.ClockCounter += 4;
-            
+
             if (!cpu.Reg.c)
             {
                 byte z = Op.Read(cpu, cpu.Reg.SP);
                 cpu.Reg.SP += 1;
                 cpu.ClockCounter += 4;
-            
+
                 byte w = Op.Read(cpu, cpu.Reg.SP);
                 cpu.Reg.SP += 1;
                 cpu.ClockCounter += 4;
-            
+
                 cpu.Reg.PC = Op.Make16(w, z);
                 cpu.ClockCounter += 4;
             }
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -2881,11 +2876,11 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             byte z = Op.Read(cpu, cpu.Reg.SP);
             cpu.Reg.SP += 1;
             cpu.ClockCounter += 4;
-            
+
             byte w = Op.Read(cpu, cpu.Reg.SP);
             cpu.Reg.SP += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -2897,17 +2892,17 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             byte nn_lsb = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             byte nn_msb = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             if (!cpu.Reg.c)
             {
                 cpu.Reg.PC = Op.Make16(nn_msb, nn_lsb);
-                cpu.ClockCounter += 4; 
+                cpu.ClockCounter += 4;
             }
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -2923,25 +2918,25 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             byte z = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             byte w = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             if (!cpu.Reg.c)
             {
                 cpu.Reg.SP -= 1;
                 cpu.ClockCounter += 4;
-                
+
                 Op.Write(cpu, cpu.Reg.SP, Op.MakeHigh(cpu.Reg.PC));
                 cpu.Reg.SP -= 1;
                 cpu.ClockCounter += 4;
-                
+
                 Op.Write(cpu, cpu.Reg.SP, Op.MakeLow(cpu.Reg.PC));
                 cpu.Reg.PC = Op.Make16(w, z);
                 cpu.ClockCounter += 4;
             }
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -2951,14 +2946,14 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
         {
             cpu.Reg.SP -= 1;
             cpu.ClockCounter += 4;
-            
+
             Op.Write(cpu, cpu.Reg.SP, cpu.Reg.D);
             cpu.Reg.SP -= 1;
             cpu.ClockCounter += 4;
 
             Op.Write(cpu, cpu.Reg.SP, cpu.Reg.E);
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -2969,7 +2964,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             byte z = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -2986,15 +2981,15 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
         {
             cpu.Reg.SP -= 1;
             cpu.ClockCounter += 4;
-            
+
             Op.Write(cpu, cpu.Reg.SP, Op.MakeHigh(cpu.Reg.PC));
             cpu.Reg.SP -= 1;
             cpu.ClockCounter += 4;
-            
+
             Op.Write(cpu, cpu.Reg.SP, Op.MakeLow(cpu.Reg.PC));
             cpu.Reg.PC = 0x10;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -3003,21 +2998,21 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
         public static void _D8(Cpu cpu)
         {
             cpu.ClockCounter += 4;
-            
+
             if (cpu.Reg.c)
             {
                 byte z = Op.Read(cpu, cpu.Reg.SP);
                 cpu.Reg.SP += 1;
                 cpu.ClockCounter += 4;
-            
+
                 byte w = Op.Read(cpu, cpu.Reg.SP);
                 cpu.Reg.SP += 1;
                 cpu.ClockCounter += 4;
-            
+
                 cpu.Reg.PC = Op.Make16(w, z);
                 cpu.ClockCounter += 4;
             }
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -3028,15 +3023,15 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             byte z = Op.Read(cpu, cpu.Reg.SP);
             cpu.Reg.SP += 1;
             cpu.ClockCounter += 4;
-            
+
             byte w = Op.Read(cpu, cpu.Reg.SP);
             cpu.Reg.SP += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.PC = Op.Make16(w, z);
             cpu.IME = true;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -3047,17 +3042,17 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             byte nn_lsb = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             byte nn_msb = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             if (cpu.Reg.c)
             {
                 cpu.Reg.PC = Op.Make16(nn_msb, nn_lsb);
-                cpu.ClockCounter += 4; 
+                cpu.ClockCounter += 4;
             }
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -3073,25 +3068,25 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             byte z = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             byte w = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             if (cpu.Reg.c)
             {
                 cpu.Reg.SP -= 1;
                 cpu.ClockCounter += 4;
-                
+
                 Op.Write(cpu, cpu.Reg.SP, Op.MakeHigh(cpu.Reg.PC));
                 cpu.Reg.SP -= 1;
                 cpu.ClockCounter += 4;
-                
+
                 Op.Write(cpu, cpu.Reg.SP, Op.MakeLow(cpu.Reg.PC));
                 cpu.Reg.PC = Op.Make16(w, z);
                 cpu.ClockCounter += 4;
             }
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -3107,7 +3102,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             byte z = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -3124,15 +3119,15 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
         {
             cpu.Reg.SP -= 1;
             cpu.ClockCounter += 4;
-            
+
             Op.Write(cpu, cpu.Reg.SP, Op.MakeHigh(cpu.Reg.PC));
             cpu.Reg.SP -= 1;
             cpu.ClockCounter += 4;
-            
+
             Op.Write(cpu, cpu.Reg.SP, Op.MakeLow(cpu.Reg.PC));
             cpu.Reg.PC = 0x18;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -3147,10 +3142,10 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             byte z = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             Op.Write(cpu, Op.Make16(0xFF, z), cpu.Reg.A);
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -3161,11 +3156,11 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             byte z = Op.Read(cpu, cpu.Reg.SP);
             cpu.Reg.SP += 1;
             cpu.ClockCounter += 4;
-            
+
             byte w = Op.Read(cpu, cpu.Reg.SP);
             cpu.Reg.SP += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -3176,7 +3171,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
         {
             Op.Write(cpu, Op.Make16(0xFF, cpu.Reg.C), cpu.Reg.A);
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -3196,14 +3191,14 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
         {
             cpu.Reg.SP -= 1;
             cpu.ClockCounter += 4;
-            
+
             Op.Write(cpu, cpu.Reg.SP, cpu.Reg.H);
             cpu.Reg.SP -= 1;
             cpu.ClockCounter += 4;
 
             Op.Write(cpu, cpu.Reg.SP, cpu.Reg.L);
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -3214,7 +3209,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             byte z = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -3229,15 +3224,15 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
         {
             cpu.Reg.SP -= 1;
             cpu.ClockCounter += 4;
-            
+
             Op.Write(cpu, cpu.Reg.SP, Op.MakeHigh(cpu.Reg.PC));
             cpu.Reg.SP -= 1;
             cpu.ClockCounter += 4;
-            
+
             Op.Write(cpu, cpu.Reg.SP, Op.MakeLow(cpu.Reg.PC));
             cpu.Reg.PC = 0x20;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -3255,10 +3250,10 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             cpu.Reg.h = Op.DH_ADD(v1, v2);
             cpu.Reg.c = Op.D_ADD(v1, v2);
             cpu.ClockCounter += 4;
-            
+
             ushort r = (ushort)(v1 + v2);
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -3278,14 +3273,14 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             byte z = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             byte w = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             Op.Write(cpu, Op.Make16(w, z), cpu.Reg.A);
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -3311,7 +3306,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             byte z = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -3326,15 +3321,15 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
         {
             cpu.Reg.SP -= 1;
             cpu.ClockCounter += 4;
-            
+
             Op.Write(cpu, cpu.Reg.SP, Op.MakeHigh(cpu.Reg.PC));
             cpu.Reg.SP -= 1;
             cpu.ClockCounter += 4;
-            
+
             Op.Write(cpu, cpu.Reg.SP, Op.MakeLow(cpu.Reg.PC));
             cpu.Reg.PC = 0x28;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -3349,10 +3344,10 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             byte z = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             z = Op.Read(cpu, Op.Make16(0xFF, z));
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -3364,11 +3359,11 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             byte z = Op.Read(cpu, cpu.Reg.SP);
             cpu.Reg.SP += 1;
             cpu.ClockCounter += 4;
-            
+
             byte w = Op.Read(cpu, cpu.Reg.SP);
             cpu.Reg.SP += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -3379,7 +3374,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
         {
             byte z = Op.Read(cpu, Op.Make16(0xFF, cpu.Reg.C));
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -3403,14 +3398,14 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
         {
             cpu.Reg.SP -= 1;
             cpu.ClockCounter += 4;
-            
+
             Op.Write(cpu, cpu.Reg.SP, cpu.Reg.A);
             cpu.Reg.SP -= 1;
             cpu.ClockCounter += 4;
 
             Op.Write(cpu, cpu.Reg.SP, cpu.Reg.F);
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -3421,7 +3416,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             byte z = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -3436,15 +3431,15 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
         {
             cpu.Reg.SP -= 1;
             cpu.ClockCounter += 4;
-            
+
             Op.Write(cpu, cpu.Reg.SP, Op.MakeHigh(cpu.Reg.PC));
             cpu.Reg.SP -= 1;
             cpu.ClockCounter += 4;
-            
+
             Op.Write(cpu, cpu.Reg.SP, Op.MakeLow(cpu.Reg.PC));
             cpu.Reg.PC = 0x30;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -3463,7 +3458,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             cpu.Reg.h = Op.DH_ADD(sp, z);
             cpu.Reg.c = Op.D_ADD(sp, z);
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -3474,7 +3469,7 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
         {
             cpu.Reg.SP = cpu.Reg.HL;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
@@ -3521,32 +3516,32 @@ namespace GameBoy.Emulators.Common.Cpus.Executors
             byte z = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
-            cpu.ClockCounter += 4; 
+            cpu.ClockCounter += 4;
             byte a = cpu.Reg.A;
             byte n = z;
             cpu.Reg.A -= n;
             cpu.Reg.z = cpu.Reg.A == 0;
             cpu.Reg.n = true;
             cpu.Reg.h = (a & 0x0F) < (n & 0x0F);
-            cpu.Reg.c =  a < n;
+            cpu.Reg.c = a < n;
         }
 
         public static void _FF(Cpu cpu)
         {
             cpu.Reg.SP -= 1;
             cpu.ClockCounter += 4;
-            
+
             Op.Write(cpu, cpu.Reg.SP, Op.MakeHigh(cpu.Reg.PC));
             cpu.Reg.SP -= 1;
             cpu.ClockCounter += 4;
-            
+
             Op.Write(cpu, cpu.Reg.SP, Op.MakeLow(cpu.Reg.PC));
             cpu.Reg.PC = 0x38;
             cpu.ClockCounter += 4;
-            
+
             cpu.Reg.IR = Op.Read(cpu, cpu.ProgramCounter);
             cpu.ProgramCounter += 1;
             cpu.ClockCounter += 4;

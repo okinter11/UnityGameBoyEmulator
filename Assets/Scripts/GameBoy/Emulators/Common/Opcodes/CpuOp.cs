@@ -167,11 +167,11 @@ namespace GameBoy.Emulators.Common.Opcodes
 
         public static void StepByExecutor(Cpu cpu, HashSet<byte> opcodes = null)
         {
-            if (opcodes!=null)
+            if (opcodes != null)
             {
                 opcodes.Add(cpu.Reg.IR);
             }
-            
+
             Joypad.JoypadTick(cpu);
             Cpu.TimerTick(cpu);
             Ppu.PpuTick(cpu);
@@ -221,8 +221,9 @@ namespace GameBoy.Emulators.Common.Opcodes
                     byte opcode = Op.Read(cpu, cpu.ProgramCounter);
                     if (opcodes != null)
                     {
-                        opcodes.Add(opcode); 
+                        opcodes.Add(opcode);
                     }
+
                     try
                     {
                         Instruction[opcode](cpu);
@@ -258,7 +259,7 @@ namespace GameBoy.Emulators.Common.Opcodes
             int cycles = (int)(Cpu.CLOCK_SPEED * deltaTime);
             for (int i = 0; i < cycles; i++)
             {
-                StepByExecutor(cpu,opcodes);
+                StepByExecutor(cpu, opcodes);
             }
         }
 

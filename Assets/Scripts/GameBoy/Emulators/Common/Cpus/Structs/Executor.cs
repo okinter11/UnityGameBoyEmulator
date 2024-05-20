@@ -1,4 +1,5 @@
-﻿using GameBoy.Emulators.Common.Cpus.Executors;
+﻿using System;
+using GameBoy.Emulators.Common.Cpus.Executors;
 
 namespace GameBoy.Emulators.Common.Cpus.Structs
 {
@@ -6,7 +7,7 @@ namespace GameBoy.Emulators.Common.Cpus.Structs
     {
         public ulong LastCycles; // last cycle count
         public byte  Opcode;     // opcode to execute
-        public byte TempZ;       // temporary Z flag
+        public byte  TempZ;      // temporary Z flag
 
         public Executor(byte opcode, ulong fetchCycles)
         {
@@ -804,7 +805,7 @@ namespace GameBoy.Emulators.Common.Cpus.Structs
                 case 0xFF:
                     ExecutorSet._FF(cpu);
                     break;
-                default: throw new System.Exception("Invalid opcode");
+                default: throw new Exception("Invalid opcode");
             }
 
             // last
