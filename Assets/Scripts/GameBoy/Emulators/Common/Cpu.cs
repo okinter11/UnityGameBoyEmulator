@@ -7,11 +7,13 @@ namespace GameBoy.Emulators.Common
 {
     public sealed class Cpu
     {
+        public const  ulong  CLOCK_SPEED_UNSCALED = 4194304;
+        public static double ClockSpeedScale      = 1.0;
         /// <summary>
         ///     Clock speed of the GameBoy
         ///     https://gbdev.io/pandocs/Specifications.html
         /// </summary>
-        public const ulong CLOCK_SPEED = 4194304;
+        public static ulong CLOCK_SPEED => (ulong)Math.Ceiling(CLOCK_SPEED_UNSCALED * ClockSpeedScale);
         public readonly byte[] HRAM = new byte[Ram.MAP_HRAM_END - Ram.MAP_HRAM + 1];
 
         #region IO
