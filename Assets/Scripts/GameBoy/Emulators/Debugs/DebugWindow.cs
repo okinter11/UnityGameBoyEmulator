@@ -24,7 +24,6 @@ namespace GameBoy.Emulators.Debugs
 
         protected override void OnEnableInit(ref DisposableBuilder builder)
         {
-            // _gameSpeedSlider.value = (float)Cpu.ClockSpeedScale;
             Observable.EveryValueChanged(_gameSpeedSlider, x => x.value)
                       .Select(v => Mathf.Clamp01(v))
                       .Subscribe(v =>
