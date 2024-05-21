@@ -74,6 +74,29 @@ namespace GameBoy.Emulators
             Debug.Log(new Info(File.ReadAllBytes(Path.GetFullPath(TEST_ROM_PATH4))).ToString());
         }
 
+        public void ReloadRom(string fullPath)
+        {
+            var data = File.ReadAllBytes(Path.GetFullPath(fullPath));
+            if (!Valid.CheckSum(data, out string err))
+            {
+                Debug.LogError(err);
+                return;
+            }
+            else
+            {
+                Debug.Log(new Info(data).ToString());
+            }
+            
+            DebugOpcode = new HashSet<byte>();
+            romData = data;
+            cpu = new Cpu();
+            cpu.ProgramCounter = 0x100;
+            cpu.RomData = romData;
+            isException = false;
+            StepMode = false;
+            StepNext = false;
+        }
+
         public HashSet<byte> DebugOpcode = new();
 
         private void Update()

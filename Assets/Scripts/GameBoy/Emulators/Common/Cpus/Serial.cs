@@ -30,6 +30,7 @@ namespace GameBoy.Emulators.Common.Cpus
             sb = 0xFF;
             sc = 0x7C;
             transferring = false;
+            output_buffer = new Queue<byte>();
         }
 
         public void BeginTransfer()
