@@ -16,15 +16,21 @@ namespace GameBoy.Emulators.Common
 
         #region IO
 
-        public readonly Joypad Joypad = new();
+        public readonly Joypad Joypad;
 
         #endregion
 
-        public readonly Ppu Ppu = new();
+        public readonly Ppu Ppu;
 
         #region RAM
 
-        public readonly Ram Ram = new();
+        public readonly Ram Ram;
+
+        #endregion
+
+        #region Serial
+
+        public readonly Serial Serial;
 
         #endregion
 
@@ -237,6 +243,7 @@ namespace GameBoy.Emulators.Common
             Ram = new Ram();
             Ppu = new Ppu();
             Joypad = new Joypad();
+            Serial = new Serial();
             Init();
         }
 

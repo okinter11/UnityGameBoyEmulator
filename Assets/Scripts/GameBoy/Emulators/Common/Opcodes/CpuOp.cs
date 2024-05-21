@@ -174,6 +174,11 @@ namespace GameBoy.Emulators.Common.Opcodes
 
             Joypad.JoypadTick(cpu);
             Cpu.TimerTick(cpu);
+            if (cpu.ClockCounter % 512 == 0)
+            {
+                Serial.Tick(cpu);
+            }
+
             Ppu.PpuTick(cpu);
             if (!cpu.Halted)
             {

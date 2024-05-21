@@ -118,8 +118,8 @@ namespace GameBoy.Emulators.Common.Opcodes
                 switch (address)
                 {
                     case 0xFF00: return cpu.Joypad.p1;
-                    case 0xFF01: return 0xFF; // TODO
-                    case 0xFF02: return 0xFF; // TODO
+                    case 0xFF01: return cpu.Serial.sb; // TODO
+                    case 0xFF02: return cpu.Serial.sc; // TODO
                     case 0xFF03: return 0xFF; // TODO
                     case 0xFF04: return Cpu.ReadDiv(cpu);
                     case 0xFF05: return cpu.tima;
@@ -200,8 +200,12 @@ namespace GameBoy.Emulators.Common.Opcodes
                             cpu.Joypad.p1 = (byte)((value & 0x30) | (cpu.Joypad.p1 & 0xCF));
                             cpu.Joypad.p1 = cpu.Joypad.GetKeyState();
                             return;
-                        case 0xFF01: return; // TODO
-                        case 0xFF02: return; // TODO 
+                        case 0xFF01:
+                            cpu.Serial.sb = value;
+                            return;
+                        case 0xFF02:
+                            cpu.Serial.sc = (byte)(0x7C | (value & 0x83));
+                            return;
                         case 0xFF03: return; // TODO
                         case 0xFF04:
                             cpu.div = 0;
