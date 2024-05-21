@@ -1,5 +1,7 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
+using System.Text;
 using GameBoy.Emulators.Common;
 using MyUtils.Extensions;
 using MyUtils.R3;
@@ -32,9 +34,11 @@ namespace GameBoy.Emulators.Debugs
         [SerializeField]
         private GameObject _buttonPrefab;
 
+        // [SerializeField]
+        // private string romPathRoot = @"Assets/Resources/ROMs";
+        // private string rootPath = "Assets/Resources/ROMs";
         [SerializeField]
-        private string romPathRoot = @"Assets/Resources/ROMs";
-        private string rootPath = "Assets/Resources/ROMs";
+        private TextMeshProUGUI _tmp_serial_debug;
 
         protected override void OnEnableInit(ref DisposableBuilder builder)
         {
@@ -51,7 +55,7 @@ namespace GameBoy.Emulators.Debugs
                       .Subscribe(_ => _emulator.ReloadRom(fileInfo.FullName))
                       .AddTo(ref builder);
             }
-            
+
             Observable.EveryValueChanged(_gameSpeedSlider, x => x.value)
                       .Select(v => Mathf.Clamp01(v))
                       .Subscribe(v =>
@@ -64,6 +68,18 @@ namespace GameBoy.Emulators.Debugs
             Observable.EveryValueChanged(this, _ => _showDebugWindow)
                       .Where(_ => _debugWindow)
                       .Subscribe(v => _debugWindow.SetActive(v))
+                      .AddTo(ref builder);
+
+            Observable.EveryValueChanged(_emulator, x => x.cpu.Serial.output_buffer.Count)
+                      .Subscribe(_ =>
+                       {
+                           var arr = _emulator.cpu.Serial.output_buffer.ToArray();
+                           // Array.Reverse(arr);
+                           var text = Encoding.UTF8.GetString(arr);
+                           // var arr = _emulator.cpu.Serial.output_buffer.Select(b => b.ToString("X2")).ToArray();
+                           // var text = string.Join("", arr);
+                           _tmp_serial_debug.SetText(text);
+                       })
                       .AddTo(ref builder);
         }
 

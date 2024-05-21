@@ -16,7 +16,7 @@ namespace GameBoy.Emulators.Common.Cpus
 
         private bool transferring;
 
-        private Queue<byte> output_buffer;
+        public LinkedList<byte> output_buffer;
 
         private byte out_byte;
 
@@ -30,7 +30,7 @@ namespace GameBoy.Emulators.Common.Cpus
             sb = 0xFF;
             sc = 0x7C;
             transferring = false;
-            output_buffer = new Queue<byte>();
+            output_buffer = new ();
         }
 
         public void BeginTransfer()
@@ -42,7 +42,7 @@ namespace GameBoy.Emulators.Common.Cpus
 
         public void EndTransfer(Cpu cpu)
         {
-            output_buffer.Enqueue(out_byte);
+            output_buffer.AddLast(out_byte);
             Valid.BitReset(ref sc, 7);
             transferring = false;
             cpu._intFlags |= CpuOp.INT_SERIAL;

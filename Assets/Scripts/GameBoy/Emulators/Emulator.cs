@@ -4,12 +4,13 @@ using System.IO;
 using System.Linq;
 using GameBoy.Emulators.Common;
 using GameBoy.Emulators.Common.Opcodes;
+using MyUtils;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 
 namespace GameBoy.Emulators
 {
-    public class Emulator : MonoBehaviour
+    public class Emulator : Singleton<Emulator>
     {
         public const string TEST_ROM_PATH1 =
             @"Assets/Resources/ROMs/Legend of Zelda, The - Link's Awakening (G) [!].gb";
@@ -53,9 +54,16 @@ namespace GameBoy.Emulators
         public Cpu cpu = new();
 
         private bool isException = false;
+        
+        public  LinkedList<string> log = new();
+        [SerializeField]
+        public bool isLog = true;
+        [SerializeField]
+        public bool isOutput = false;
 
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             DebugOpcode = new HashSet<byte>();
             romData = File.ReadAllBytes(Path.GetFullPath(TEST_ROM_PATH4));
             if (!Valid.CheckSum(romData, out string err))
@@ -95,12 +103,20 @@ namespace GameBoy.Emulators
             isException = false;
             StepMode = false;
             StepNext = false;
+            log.Clear();
         }
 
         public HashSet<byte> DebugOpcode = new();
 
         private void Update()
         {
+            if (isOutput)
+            {
+                isOutput = false;
+                const string path = @"C:\Users\Lenovo\Desktop\log2.txt";
+                File.WriteAllLines(path, log);
+            }
+            
             if (cpu != null
              && !isException
              && cpu.RomData != null

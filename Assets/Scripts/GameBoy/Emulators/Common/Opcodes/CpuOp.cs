@@ -174,12 +174,7 @@ namespace GameBoy.Emulators.Common.Opcodes
 
             Joypad.JoypadTick(cpu);
             Cpu.TimerTick(cpu);
-            if (cpu.ClockCounter % 512 == 0)
-            {
-                Serial.Tick(cpu);
-            }
-
-            Ppu.PpuTick(cpu);
+            // Ppu.PpuTick(cpu);
             if (!cpu.Halted)
             {
                 if (cpu._ime && cpu._intFlags != 0 && cpu._intEnableFlags != 0)
@@ -210,53 +205,53 @@ namespace GameBoy.Emulators.Common.Opcodes
             }
         }
 
-        public static void Step(Cpu cpu, HashSet<byte> opcodes = null)
-        {
-            Joypad.JoypadTick(cpu);
-            Cpu.TimerTick(cpu);
-            Ppu.PpuTick(cpu);
-            if (!cpu.Halted)
-            {
-                if (cpu._ime && cpu._intFlags != 0 && cpu._intEnableFlags != 0)
-                {
-                    ServiceInterrupt(cpu);
-                }
-                else
-                {
-                    byte opcode = Op.Read(cpu, cpu.ProgramCounter);
-                    if (opcodes != null)
-                    {
-                        opcodes.Add(opcode);
-                    }
-
-                    try
-                    {
-                        Instruction[opcode](cpu);
-                    }
-                    catch (Exception e)
-                    {
-                        throw new Exception($"Opcode {opcode:X2} -> {e}");
-                    }
-                }
-            }
-            else
-            {
-                cpu.ClockCounter += 4;
-                if (cpu._intFlags != 0 && cpu._intEnableFlags != 0)
-                {
-                    cpu.Halted = false;
-                }
-            }
-
-            if (cpu._imeCountdown != 0)
-            {
-                cpu._imeCountdown -= 1;
-                if (cpu._imeCountdown == 0)
-                {
-                    cpu._ime = true;
-                }
-            }
-        }
+        // public static void Step(Cpu cpu, HashSet<byte> opcodes = null)
+        // {
+        //     Joypad.JoypadTick(cpu);
+        //     Cpu.TimerTick(cpu);
+        //     // Ppu.PpuTick(cpu);
+        //     if (!cpu.Halted)
+        //     {
+        //         if (cpu._ime && cpu._intFlags != 0 && cpu._intEnableFlags != 0)
+        //         {
+        //             ServiceInterrupt(cpu);
+        //         }
+        //         else
+        //         {
+        //             byte opcode = Op.Read(cpu, cpu.ProgramCounter);
+        //             if (opcodes != null)
+        //             {
+        //                 opcodes.Add(opcode);
+        //             }
+        //
+        //             try
+        //             {
+        //                 Instruction[opcode](cpu);
+        //             }
+        //             catch (Exception e)
+        //             {
+        //                 throw new Exception($"Opcode {opcode:X2} -> {e}");
+        //             }
+        //         }
+        //     }
+        //     else
+        //     {
+        //         cpu.ClockCounter += 4;
+        //         if (cpu._intFlags != 0 && cpu._intEnableFlags != 0)
+        //         {
+        //             cpu.Halted = false;
+        //         }
+        //     }
+        //
+        //     if (cpu._imeCountdown != 0)
+        //     {
+        //         cpu._imeCountdown -= 1;
+        //         if (cpu._imeCountdown == 0)
+        //         {
+        //             cpu._ime = true;
+        //         }
+        //     }
+        // }
 
         public static void Step(Cpu cpu, double deltaTime, HashSet<byte> opcodes = null)
         {

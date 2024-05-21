@@ -68,14 +68,14 @@ namespace GameBoy.Emulators.Debugs
             {
                 Cpu.GameBoyEmulatorCpuRegister reg = _Emulator.cpu.Reg;
                 StringBuilder sb = new();
+                sb.AppendLine($"AF:{reg.AF:X4} A:{reg.A:X2} F:{reg.F:X2}");
+                sb.AppendLine($"BC:{reg.BC:X4} B:{reg.B:X2} C:{reg.C:X2}");
+                sb.AppendLine($"DE:{reg.DE:X4} D:{reg.D:X2} E:{reg.E:X2}");
+                sb.AppendLine($"HL:{reg.HL:X4} H:{reg.H:X2} L:{reg.L:X2}");
+                sb.AppendLine($"PC:{reg.PC:X4} SP:{reg.SP:X4}");
+                sb.AppendLine($"Z:{(reg.z ? 'T' : 'F')} N:{(reg.n ? 'T' : 'F')} H:{(reg.h ? 'T' : 'F')} C:{(reg.c ? 'T' : 'F')}");
                 sb.AppendLine($"IR:{reg.IR:X2}");
                 sb.AppendLine($"IE:{reg.IE:X2}");
-                sb.AppendLine($"AF:{reg.AF:X4}");
-                sb.AppendLine($"BC:{reg.BC:X4}");
-                sb.AppendLine($"DE:{reg.DE:X4}");
-                sb.AppendLine($"HL:{reg.HL:X4}");
-                sb.AppendLine($"PC:{reg.PC:X4}");
-                sb.AppendLine($"SP:{reg.SP:X4}");
 
                 _cpuInfo.SetText(sb);
                 Debug.Log($"PC:{Op.Read(_Emulator.cpu, reg.PC):X2}");

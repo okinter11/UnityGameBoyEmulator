@@ -65,6 +65,11 @@ namespace GameBoy.Emulators.Common
                 {
                     _clockCounter += 1;
                     TimerTick(this);
+                    if (_clockCounter % 512 == 0)
+                    {
+                        Serial.Tick(this);
+                    }
+                    Ppu.PpuTick(this);
                 }
             }
         }
@@ -92,7 +97,34 @@ namespace GameBoy.Emulators.Common
             /// <summary>
             ///     Interrupt Register
             /// </summary>
-            [FieldOffset(0)] public byte IR;
+            [FieldOffset(0)] public byte _ir;
+            public byte IR
+            {
+                get => _ir;
+                set
+                {
+                    if (Emulator.Instance.isLog)
+                    {
+                        var cpu = Emulator.Instance.cpu;
+                        string v1 = Op.Read(cpu, cpu.ProgramCounter).ToString("X2");
+                        string v2 = Op.Read(cpu, (ushort)(cpu.ProgramCounter + 1)).ToString("X2");
+                        string v3 = Op.Read(cpu, (ushort)(cpu.ProgramCounter + 2)).ToString("X2");
+                        string v4 = cpu.Reg.A.ToString("X2");
+                        string flags =
+                            $"{(cpu.Reg.z ? 'Z' : '-')}{(cpu.Reg.n ? 'N' : '-')}{(cpu.Reg.h ? 'H' : '-')}{(cpu.Reg.c ? 'C' : '-')}";
+                        string v5 = cpu.Reg.BC.ToString("X4");
+                        string v6 = cpu.Reg.DE.ToString("X4");
+                        string v7 = cpu.Reg.HL.ToString("X4");
+                        string v8 = cpu.Reg.PC.ToString("X4");
+                        string v9 = cpu.Reg.SP.ToString("X4");
+                        string v10 = cpu.Reg.IR.ToString("X2");
+                        Emulator.Instance.log.AddLast(
+                            $"{v10} {v1} {v2} {v3} A: {v4} F: {flags} BC: {v5} DE: {v6} HL: {v7} PC: {v8} SP: {v9}");
+                    }
+
+                    _ir = value;
+                }
+            }
             /// <summary>
             ///     Interrupt Enable
             /// </summary>
@@ -105,7 +137,7 @@ namespace GameBoy.Emulators.Common
                 get => _af;
                 set => _af = (ushort)(value & 0xFFF0);
             }
-            [FieldOffset(3)] private ushort _af;
+            [FieldOffset(2)] private ushort _af;
             /// <summary>
             ///     Accumulator
             /// </summary>
