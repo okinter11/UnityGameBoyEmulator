@@ -4,7 +4,53 @@ namespace GameBoy.Emulators.Common.Opcodes
 {
     public static class Op
     {
+        #region Make
+
+        public static ushort Make16(byte     high, byte low) => (ushort)((high << 8) | low);
+        public static byte   MakeLow(ushort  value) => (byte)(value & 0x00FF);
+        public static byte   MakeHigh(ushort value) => (byte)((value & 0xFF00) >> 8);
+
+        #endregion
+
         #region OverFlowDetect
+
+        public static bool DH_ADC(byte left, byte right, bool c) => (left & 0x0F) + (right & 0x0F) + (c ? 1 : 0) > 0x0F;
+
+        public static bool D_ADC(byte left, byte right, bool c) => left + right + (c ? 1 : 0) > 0xFF;
+
+        public static bool DH_ADC(ushort left, ushort right, bool c) =>
+            (left & 0x00FF) + (right & 0x00FF) + (c ? 1 : 0) > 0x00FF;
+
+        public static bool D_ADC(ushort left, ushort right, bool c) => left + right + (c ? 1 : 0) > 0xFFFF;
+
+        public static bool DH_SBC(byte left, byte right, bool c) => (left & 0x0F) < (right & 0x0F) + (c ? 1 : 0);
+
+        public static bool D_SBC(byte left, byte right, bool c) => left < right + (c ? 1 : 0);
+
+        public static bool DH_SBC(ushort left, ushort right, bool c) =>
+            (left & 0x00FF) < (right & 0x00FF) + (c ? 1 : 0);
+
+        public static bool D_SBC(ushort left, ushort right, bool c) => left < right + (c ? 1 : 0);
+
+        public static bool DH_ADD(byte left, byte right) => ((left ^ right ^ (left + right)) & 0b0001_0000) != 0;
+
+        public static bool D_ADD(byte left, byte right) => ((left ^ right ^ (left + right)) & 0b1_0000_0000) != 0;
+
+        public static bool DH_ADD(ushort left, ushort right) =>
+            ((left ^ right ^ (left + right)) & 0b0000_0001_0000_0000) != 0;
+
+        public static bool D_ADD(ushort left, ushort right) =>
+            ((left ^ right ^ (left + right)) & 0b1_0000_0000_0000_0000) != 0;
+
+        public static bool DH_SUB(byte left, byte right) => ((left ^ right ^ (left - right)) & 0b0001_0000) != 0;
+
+        public static bool D_SUB(byte left, byte right) => ((left ^ right ^ (left - right)) & 0b1_0000_0000) != 0;
+
+        public static bool DH_SUB(ushort left, ushort right) =>
+            ((left ^ right ^ (left - right)) & 0b0000_0001_0000_0000) != 0;
+
+        public static bool D_SUB(ushort left, ushort right) =>
+            ((left ^ right ^ (left - right)) & 0b1_0000_0000_0000_0000) != 0;
 
         public static bool DetectHalfOverflowAdd(byte left, byte right, byte val = 0)
             => (left & 0x0F)
@@ -58,23 +104,22 @@ namespace GameBoy.Emulators.Common.Opcodes
             }
             else if (address <= Ram.MAP_ECHO_RAM_END)
             {
-                throw new NotImplementedException();
+                return cpu.WRAM[address - Ram.MAP_ECHO_RAM];
             }
             else if (address <= Ram.MAP_OAM_END)
             {
-                throw new NotImplementedException();
+                return cpu.OAM[address - Ram.MAP_OAM];
             }
             else if (address <= Ram.MAP_UNUSED_END)
             {
-                throw new NotImplementedException();
             }
             else if (address <= Ram.MAP_IO_REGISTERS_END)
             {
                 switch (address)
                 {
                     case 0xFF00: return cpu.Joypad.p1;
-                    case 0xFF01: return 0xFF; // TODO
-                    case 0xFF02: return 0xFF; // TODO
+                    case 0xFF01: return cpu.Serial.sb; // TODO
+                    case 0xFF02: return cpu.Serial.sc; // TODO
                     case 0xFF03: return 0xFF; // TODO
                     case 0xFF04: return Cpu.ReadDiv(cpu);
                     case 0xFF05: return cpu.tima;
@@ -95,7 +140,7 @@ namespace GameBoy.Emulators.Common.Opcodes
                     case 0xFF4B: return cpu.Ppu.wx;
                 }
 
-                throw new NotImplementedException($"address read:{address:X4}");
+                return 0xFF;
             }
             else if (address <= Ram.MAP_HRAM_END)
             {
@@ -138,15 +183,14 @@ namespace GameBoy.Emulators.Common.Opcodes
                 }
                 else if (address <= Ram.MAP_ECHO_RAM_END)
                 {
-                    throw new NotImplementedException();
+                    cpu.WRAM[address - Ram.MAP_ECHO_RAM] = value;
                 }
                 else if (address <= Ram.MAP_OAM_END)
                 {
-                    throw new NotImplementedException();
+                    cpu.OAM[address - Ram.MAP_OAM] = value;
                 }
                 else if (address <= Ram.MAP_UNUSED_END)
                 {
-                    throw new NotImplementedException();
                 }
                 else if (address <= Ram.MAP_IO_REGISTERS_END)
                 {
@@ -156,11 +200,16 @@ namespace GameBoy.Emulators.Common.Opcodes
                             cpu.Joypad.p1 = (byte)((value & 0x30) | (cpu.Joypad.p1 & 0xCF));
                             cpu.Joypad.p1 = cpu.Joypad.GetKeyState();
                             return;
-                        case 0xFF01: return; // TODO
-                        case 0xFF02: return; // TODO 
+                        case 0xFF01:
+                            cpu.Serial.sb = value;
+                            return;
+                        case 0xFF02:
+                            cpu.Serial.sc = (byte)(0x7C | (value & 0x83));
+                            return;
                         case 0xFF03: return; // TODO
                         case 0xFF04:
                             cpu.div = 0;
+                            // cpu.tima = 0;
                             return;
                         case 0xFF05:
                             cpu.tima = value;
@@ -181,6 +230,7 @@ namespace GameBoy.Emulators.Common.Opcodes
                                 cpu.Ppu.ly = 0;
                                 cpu.Ppu.lineCycles = 0;
                             }
+                            cpu.Ppu.lcdc = value;
 
                             return;
                         case 0xFF41:
@@ -216,7 +266,8 @@ namespace GameBoy.Emulators.Common.Opcodes
                             return;
                     }
 
-                    throw new NotImplementedException($"address write:{address:X4}");
+                    // ignore
+                    // throw new Exception($"address write:{address:X4}");
                 }
                 else if (address <= Ram.MAP_HRAM_END)
                 {
@@ -452,6 +503,101 @@ namespace GameBoy.Emulators.Common.Opcodes
             cpu.ProgramCounter += 2;
             cpu.ClockCounter += 8;
         }
+
+
+        public static byte CB_RLC(Cpu cpu, byte value)
+        {
+            value = (byte)((value << 1) | (value >> 7));
+            cpu.Reg.z = value == 0;
+            cpu.Reg.n = false;
+            cpu.Reg.h = false;
+            cpu.Reg.c = (value & 0x01) != 0;
+            return value;
+        }
+
+        public static byte CB_RRC(Cpu cpu, byte value)
+        {
+            value = (byte)((value >> 1) | (value << 7));
+            cpu.Reg.z = value == 0;
+            cpu.Reg.n = false;
+            cpu.Reg.h = false;
+            cpu.Reg.c = (value & 0x80) != 0;
+            return value;
+        }
+
+        public static byte CB_RL(Cpu cpu, byte value)
+        {
+            byte c = (byte)(value >> 7);
+            value = (byte)((value << 1) | (cpu.Reg.c ? 1 : 0));
+            cpu.Reg.z = value == 0;
+            cpu.Reg.n = false;
+            cpu.Reg.h = false;
+            cpu.Reg.c = c != 0;
+            return value;
+        }
+
+        public static byte CB_RR(Cpu cpu, byte value)
+        {
+            byte c = (byte)(value & 0x01);
+            value = (byte)((value >> 1) | (cpu.Reg.c ? 0x80 : 0));
+            cpu.Reg.z = value == 0;
+            cpu.Reg.n = false;
+            cpu.Reg.h = false;
+            cpu.Reg.c = c != 0;
+            return value;
+        }
+
+        public static byte CB_SLA(Cpu cpu, byte value)
+        {
+            cpu.Reg.c = (value & 0x80) != 0;
+            value = (byte)(value << 1);
+            cpu.Reg.z = value == 0;
+            cpu.Reg.n = false;
+            cpu.Reg.h = false;
+            return value;
+        }
+
+        public static byte CB_SRA(Cpu cpu, byte value)
+        {
+            cpu.Reg.c = (value & 0x01) != 0;
+            value = (byte)((value & 0x80) | (value >> 1));
+            cpu.Reg.z = value == 0;
+            cpu.Reg.n = false;
+            cpu.Reg.h = false;
+            return value;
+        }
+
+        public static byte CB_SRL(Cpu cpu, byte value)
+        {
+            cpu.Reg.c = (value & 0x01) != 0;
+            value = (byte)(value >> 1);
+            cpu.Reg.z = value == 0;
+            cpu.Reg.n = false;
+            cpu.Reg.h = false;
+            return value;
+        }
+
+        public static byte CB_SWAP(Cpu cpu, byte value)
+        {
+            value = (byte)((value << 4) | (value >> 4));
+            cpu.Reg.z = value == 0;
+            cpu.Reg.n = false;
+            cpu.Reg.h = false;
+            cpu.Reg.c = false;
+            return value;
+        }
+
+        public static byte CB_BIT(Cpu cpu, byte value, byte bit)
+        {
+            cpu.Reg.z = (value & (1 << bit)) != 0;
+            cpu.Reg.n = false;
+            cpu.Reg.h = true;
+            return value;
+        }
+
+        public static byte CB_RES(Cpu cpu, byte value, byte bit) => value &= (byte)~(1 << bit);
+
+        public static byte CB_SET(Cpu cpu, byte value, byte bit) => value |= (byte)(1 << bit);
 
         #endregion
     }

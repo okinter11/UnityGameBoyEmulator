@@ -7,29 +7,38 @@ namespace GameBoy.Emulators.Common
 {
     public sealed class Cpu
     {
+        public const  ulong  CLOCK_SPEED_UNSCALED = 4194304;
+        public static double ClockSpeedScale      = 1.0;
         /// <summary>
         ///     Clock speed of the GameBoy
         ///     https://gbdev.io/pandocs/Specifications.html
         /// </summary>
-        public const ulong CLOCK_SPEED = 4194304;
+        public static ulong CLOCK_SPEED => (ulong)Math.Ceiling(CLOCK_SPEED_UNSCALED * ClockSpeedScale);
         public readonly byte[] HRAM = new byte[Ram.MAP_HRAM_END - Ram.MAP_HRAM + 1];
 
         #region IO
 
-        public readonly Joypad Joypad = new();
+        public readonly Joypad Joypad;
 
         #endregion
 
-        public readonly Ppu Ppu = new();
+        public readonly Ppu Ppu;
 
         #region RAM
 
-        public readonly Ram Ram = new();
+        public readonly Ram Ram;
+
+        #endregion
+
+        #region Serial
+
+        public readonly Serial Serial;
 
         #endregion
 
         public readonly byte[] VRAM = new byte[Ram.MAP_VRAM_END - Ram.MAP_VRAM + 1];
         public readonly byte[] WRAM = new byte[Ram.MAP_WORK_RAM_END - Ram.MAP_WORK_RAM + 1];
+        public readonly byte[] OAM  = new byte[Ram.MAP_OAM_END - Ram.MAP_OAM + 1];
         private         ulong  _clockCounter;
         public          bool   _ime;
         public          byte   _imeCountdown;
@@ -81,42 +90,61 @@ namespace GameBoy.Emulators.Common
         public struct GameBoyEmulatorCpuRegister
         {
             /// <summary>
+            ///     Interrupt Register
+            /// </summary>
+            [FieldOffset(0)] public byte IR;
+            /// <summary>
+            ///     Interrupt Enable
+            /// </summary>
+            [FieldOffset(1)] public byte IE;
+            /// <summary>
             ///     Accumulator & Flags
             /// </summary>
-            [FieldOffset(0)] public ushort AF;
+            public ushort AF
+            {
+                get => _af;
+                set => _af = (ushort)(value & 0xFFF0);
+            }
+            [FieldOffset(3)] private ushort _af;
             /// <summary>
             ///     Accumulator
             /// </summary>
-            [FieldOffset(0)] public byte A;
+            [FieldOffset(3)] public byte A;
             /// <summary>
             ///     Flags
             /// </summary>
-            [FieldOffset(1)] public byte F;
-            [FieldOffset(2)] public ushort BC;
-            [FieldOffset(2)] public byte   B;
-            [FieldOffset(3)] public byte   C;
-            [FieldOffset(4)] public ushort DE;
-            [FieldOffset(4)] public byte   D;
-            [FieldOffset(5)] public byte   E;
-            [FieldOffset(6)] public ushort HL;
-            [FieldOffset(6)] public byte   H;
-            [FieldOffset(7)] public byte   L;
-            /// <summary>
-            ///     Stack Pointer
-            /// </summary>
-            [FieldOffset(8)] public ushort SP;
+            public byte F
+            {
+                get => (byte)(_f & 0b11110000);
+                set => _f = (byte)(value & 0b11110000);
+            }
+            [FieldOffset(2)] private byte   _f;
+            [FieldOffset(4)] public  ushort BC;
+            [FieldOffset(5)] public  byte   B;
+            [FieldOffset(4)] public  byte   C;
+            [FieldOffset(6)] public  ushort DE;
+            [FieldOffset(7)] public  byte   D;
+            [FieldOffset(6)] public  byte   E;
+            [FieldOffset(8)] public  ushort HL;
+            [FieldOffset(9)] public  byte   H;
+            [FieldOffset(8)] public  byte   L;
             /// <summary>
             ///     Program Counter
             /// </summary>
             [FieldOffset(10)] public ushort PC;
+            /// <summary>
+            ///     Stack Pointer
+            /// </summary>
+            [FieldOffset(12)] public ushort SP;
+
 
             /// <summary>
             ///     Zero Flag
             /// </summary>
             public bool z
             {
-                get => (F & 0b10000000) != 0;
-                set => F = (byte)(value ? F | 0b10000000 : F & 0b01111111);
+                get => (_f & 0b10000000) != 0;
+                set => _f = (byte)(value ? _f | 0b10000000 : _f & 0b01110000);
             }
 
             /// <summary>
@@ -124,8 +152,8 @@ namespace GameBoy.Emulators.Common
             /// </summary>
             public bool n
             {
-                get => (F & 0b01000000) != 0;
-                set => F = (byte)(value ? F | 0b01000000 : F & 0b10111111);
+                get => (_f & 0b01000000) != 0;
+                set => _f = (byte)(value ? _f | 0b01000000 : _f & 0b10110000);
             }
 
             /// <summary>
@@ -133,8 +161,8 @@ namespace GameBoy.Emulators.Common
             /// </summary>
             public bool h
             {
-                get => (F & 0b00100000) != 0;
-                set => F = (byte)(value ? F | 0b00100000 : F & 0b11011111);
+                get => (_f & 0b00100000) != 0;
+                set => _f = (byte)(value ? _f | 0b00100000 : _f & 0b11010000);
             }
 
             /// <summary>
@@ -142,8 +170,8 @@ namespace GameBoy.Emulators.Common
             /// </summary>
             public bool c
             {
-                get => (F & 0b00010000) != 0;
-                set => F = (byte)(value ? F | 0b00010000 : F & 0b11101111);
+                get => (_f & 0b00010000) != 0;
+                set => _f = (byte)(value ? _f | 0b00010000 : _f & 0b11100000);
             }
         }
 
@@ -217,6 +245,7 @@ namespace GameBoy.Emulators.Common
             Ram = new Ram();
             Ppu = new Ppu();
             Joypad = new Joypad();
+            Serial = new Serial();
             Init();
         }
 
@@ -224,6 +253,7 @@ namespace GameBoy.Emulators.Common
         {
             Array.Clear(VRAM, 0, VRAM.Length);
             Array.Clear(WRAM, 0, WRAM.Length);
+            Array.Clear(OAM, 0, OAM.Length);
             Array.Clear(HRAM, 0, HRAM.Length);
             Reg.AF = 0x01B0;
             Reg.BC = 0x0013;

@@ -7,6 +7,15 @@
       "dependencies": {},
       "hash": "e8f6b5a1d11b791ed0bce502f92d52ae8d9c3243"
     },
+    "com.cysharp.r3": {
+      "version": "https://github.com/Cysharp/R3.git?path=src/R3.Unity/Assets/R3.Unity#1.1.11",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.unity.modules.imgui": "1.0.0"
+      },
+      "hash": "96c13c71cbd6cdd7ef0faaea90237bac7dfbdf9e"
+    },
     "com.cysharp.yetanotherhttphandler": {
       "version": "https://github.com/Cysharp/YetAnotherHttpHandler.git?path=src/YetAnotherHttpHandler",
       "depth": 0,

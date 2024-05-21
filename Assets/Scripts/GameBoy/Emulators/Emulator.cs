@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using GameBoy.Emulators.Common;
 using GameBoy.Emulators.Common.Opcodes;
 using UnityEngine;
@@ -11,7 +13,6 @@ namespace GameBoy.Emulators
     {
         public const string TEST_ROM_PATH1 =
             @"Assets/Resources/ROMs/Legend of Zelda, The - Link's Awakening (G) [!].gb";
-
         public const string TEST_ROM_PATH2 = @"Assets/Resources/ROMs/Pokemon Red-Blue 2-in-1 (Unl) [S].gb";
         public const string TEST_ROM_PATH3 = @"Assets/Resources/ROMs/Super Mario Land (JUE) (V1.1) [!].gb";
         public const string TEST_ROM_PATH4 = @"Assets/Resources/ROMs/Dr. Mario (JU) (V1.1).gb";
@@ -55,6 +56,7 @@ namespace GameBoy.Emulators
 
         private void Awake()
         {
+            DebugOpcode = new HashSet<byte>();
             romData = File.ReadAllBytes(Path.GetFullPath(TEST_ROM_PATH4));
             if (!Valid.CheckSum(romData, out string err))
             {
@@ -72,6 +74,8 @@ namespace GameBoy.Emulators
             Debug.Log(new Info(File.ReadAllBytes(Path.GetFullPath(TEST_ROM_PATH4))).ToString());
         }
 
+        public HashSet<byte> DebugOpcode = new();
+
         private void Update()
         {
             if (cpu != null
@@ -83,7 +87,7 @@ namespace GameBoy.Emulators
                 {
                     try
                     {
-                        CpuOp.Step(cpu, Time.deltaTime);
+                        CpuOp.Step(cpu, Time.deltaTime, DebugOpcode);
                         clockCounter = cpu.ClockCounter;
                         programCounter = cpu.ProgramCounter;
                     }
@@ -91,12 +95,37 @@ namespace GameBoy.Emulators
                     {
                         Debug.LogException(e);
                         isException = true;
+                        Debug.LogWarning($"pc:{cpu.ProgramCounter:X4}");
+                        byte opcode1 = Op.Read(cpu, cpu.ProgramCounter);
+                        Debug.LogWarning($"pc:{opcode1:X4}");
+                        byte opcode2 = Op.Read(cpu, (ushort)(cpu.ProgramCounter + 1));
+                        Debug.LogWarning($"pc:{opcode2:X4}");
+                        byte opcode3 = Op.Read(cpu, (ushort)(cpu.ProgramCounter + 2));
+                        Debug.LogWarning($"pc:{opcode3:X4}");
+                        byte opcode4 = Op.Read(cpu, (ushort)(cpu.ProgramCounter + 3));
+                        Debug.LogWarning($"pc:{opcode4:X4}");
+
+                        if (DebugOpcode != null)
+                        {
+                            Debug.LogWarning(string.Join(',', DebugOpcode
+                                                      .OrderBy(o => o)
+                                                      .Select(o => o.ToString("X2"))
+                                                      .ToArray()));
+                        }
                     }
                 }
                 else
                 {
                     if (StepNext)
                     {
+                        if (DebugOpcode != null)
+                        {
+                            Debug.Log(string.Join(',', DebugOpcode
+                                                      .OrderBy(o => o)
+                                                      .Select(o => o.ToString("X2"))
+                                                      .ToArray()));
+                        }
+
                         StepNext = false;
                         try
                         {
@@ -106,7 +135,7 @@ namespace GameBoy.Emulators
                             byte opcode4 = Op.Read(cpu, (ushort)(cpu.ProgramCounter + 3));
                             Debug.Log(
                                 $"pc:{cpu.ProgramCounter:X4},opcode:{opcode1:X2},{opcode2:X2},{opcode3:X2},{opcode4:X2}");
-                            CpuOp.Step(cpu);
+                            CpuOp.StepByExecutor(cpu, DebugOpcode);
                             clockCounter = cpu.ClockCounter;
                             programCounter = cpu.ProgramCounter;
                         }

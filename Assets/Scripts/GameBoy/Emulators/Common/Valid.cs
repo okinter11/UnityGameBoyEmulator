@@ -140,5 +140,8 @@
 
             return true;
         }
+        
+        public static bool BitTest(byte value, int bit) => (value & (1 << bit)) != 0;
+        public static void BitReset(ref byte value, int bit) => value &= (byte)~(1 << bit);
     }
 }
