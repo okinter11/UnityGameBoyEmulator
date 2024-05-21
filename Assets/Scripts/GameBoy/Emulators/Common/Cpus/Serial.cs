@@ -6,11 +6,11 @@ namespace GameBoy.Emulators.Common.Cpus
     public class Serial
     {
         /// <summary>
-        /// 0xFF01
+        ///     0xFF01
         /// </summary>
         public byte sb;
         /// <summary>
-        /// 0xFF02
+        ///     0xFF02
         /// </summary>
         public byte sc;
 

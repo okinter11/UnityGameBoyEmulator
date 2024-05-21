@@ -108,9 +108,9 @@ namespace GameBoy.Emulators
                         if (DebugOpcode != null)
                         {
                             Debug.LogWarning(string.Join(',', DebugOpcode
-                                                      .OrderBy(o => o)
-                                                      .Select(o => o.ToString("X2"))
-                                                      .ToArray()));
+                                                             .OrderBy(o => o)
+                                                             .Select(o => o.ToString("X2"))
+                                                             .ToArray()));
                         }
                     }
                 }

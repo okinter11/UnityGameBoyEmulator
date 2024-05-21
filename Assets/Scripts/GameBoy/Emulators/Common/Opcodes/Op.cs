@@ -120,7 +120,7 @@ namespace GameBoy.Emulators.Common.Opcodes
                     case 0xFF00: return cpu.Joypad.p1;
                     case 0xFF01: return cpu.Serial.sb; // TODO
                     case 0xFF02: return cpu.Serial.sc; // TODO
-                    case 0xFF03: return 0xFF; // TODO
+                    case 0xFF03: return 0xFF;          // TODO
                     case 0xFF04: return Cpu.ReadDiv(cpu);
                     case 0xFF05: return cpu.tima;
                     case 0xFF06: return cpu.tma;
@@ -230,6 +230,7 @@ namespace GameBoy.Emulators.Common.Opcodes
                                 cpu.Ppu.ly = 0;
                                 cpu.Ppu.lineCycles = 0;
                             }
+
                             cpu.Ppu.lcdc = value;
 
                             return;
